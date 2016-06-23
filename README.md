@@ -15,14 +15,16 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### MySQL
 
-- [Build and install the source code](MySQL/build-and-install-the-source-code.md)
-- [Run MySQL](MySQL/run-mysql.md)
+- [Build and install the source code](mysql/build-and-install-the-source-code.md)
+- [Run MySQL](mysql/run-mysql.md)
 
 ### Git
 
 ### Go
 
 ### Vim
+
+- [Search and replace](vim/search-and-replace.md)
 
 
 ## About
