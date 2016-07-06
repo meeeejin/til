@@ -7,6 +7,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Categories
 
+* [Linux](#linux)
 * [MySQL](#mysql)
 * [Git](#git)
 * [Go](#go)
@@ -14,6 +15,11 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ---
 
+
+### Linux
+
+- [Direct IO](linux/direct-io.md)
+- [Synchronous IO](linux/synchronous-io.md)
 
 ### MySQL
 
@@ -23,6 +29,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Git
 
 - [Rename folders with git](git/rename-folders-with-git.md)
+- [Modify previous commit messages](git/modify-previous-commit-messages.md)
 
 ### Go
 
