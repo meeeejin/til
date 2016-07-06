@@ -24,7 +24,7 @@ pick 310154e updated README formatting and added blame
 pick a5f4a0d added cat-file
 ```
 
-We can see the last 3 commits. Find the commit message to modify and change 'pick' to 'edit'
+We can see the last 3 commits. Find the commit message to modify and change `pick` to `edit`
 
 ```bash
 edit f7f3f6d changed my name a bit
@@ -32,7 +32,7 @@ pick 310154e updated README formatting and added blame
 pick a5f4a0d added cat-file
 ```
 
-Save and quit. Then run 'commit' command.
+Save and quit. Then run `commit` command.
 
 ```bash
 git commit --all --amend
