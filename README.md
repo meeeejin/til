@@ -11,6 +11,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [MySQL](#mysql)
 * [Git](#git)
 * [Go](#go)
+* [SSD](#ssd)
 * [Vim](#vim)
 
 ---
@@ -30,8 +31,15 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Rename folders with git](git/rename-folders-with-git.md)
 - [Modify previous commit messages](git/modify-previous-commit-messages.md)
+- [Remove a file added in an older commit](git/remove-a-file-added-in-an-older-commit.md)
 
 ### Go
+
+
+### SSD
+
+- [Basic operations](git/basic-operations.md)
+- [FTL (Flash Translation Layer)](git/ftl.md)
 
 ### Vim
 
