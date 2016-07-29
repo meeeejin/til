@@ -21,7 +21,7 @@ I learned from this [page](https://www.percona.com/live/mysql-conference-2014/si
 - Read their space ID from the page 0 (FSP_HDR) header.
 - Populate the space ID to table name mapping.
 
-* In Face, if the most recent copy of the page 0 is stored in SSD cache, it should be read in from the SSD cache, instead of the storage.
+In Face, if the most recent copy of the page 0 is stored in SSD cache, it should be read in from the SSD cache, instead of the storage.
 
 ## Torn page recovery
 
@@ -31,7 +31,7 @@ All 128 pages from the doublewrite buffer are examined:
 - If the header and trailer LSN do not match or the page checksum is invalid, the page is restored from the doublewrite buffer.
 - If the doublewrite buffer version of the page is also corrupt, the server will assert(crash).
 
-* FaCE does not use doublewrite buffer. So this sequences should be replaced with SSD cache (that is, instead of restoring pages from doublewrite buffer, restores pages from the SSD cache).
+FaCE does not use doublewrite buffer. So this sequences should be replaced with SSD cache (that is, instead of restoring pages from doublewrite buffer, restores pages from the SSD cache).
 
 ## Rollback of uncommitted transactions
 
