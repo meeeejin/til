@@ -8,7 +8,7 @@ Applying the redo log is the first step and is performed during initialization. 
 
 ## Rolling back incomplete transactions
 
-Rolling back any transactions that were active at the time of crash or [fast shutdown](mysql/types-of-shutdown.md). It is special to crash recovery. And the rollback is performed by a background thread, executed in parallel with transactions from new connections. 
+Rolling back any transactions that were active at the time of crash or [fast shutdown](types-of-shutdown.md). It is special to crash recovery. And the rollback is performed by a background thread, executed in parallel with transactions from new connections. 
 
 ## Change buffer merge
 
