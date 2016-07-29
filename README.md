@@ -26,6 +26,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Build and install the source code](mysql/build-and-install-the-source-code.md)
 - [Run MySQL](mysql/run-mysql.md)
+- [The InnoDB recovery process](mysql/the-innodb-recovery-process.md)
+- [Types of shutdown](mysql/types-of-shutdown.md)
 
 ### Git
 
