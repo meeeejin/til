@@ -29,6 +29,9 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [The InnoDB recovery process](mysql/the-innodb-recovery-process.md)
 - [Types of shutdown](mysql/types-of-shutdown.md)
 - [Crash recovery](mysql/crash-recovery.md)
+- [Redo](mysql/redo.md)
+- [Undo](mysql/undo.md)
+- [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
 
 ### Git
 
