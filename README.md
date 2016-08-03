@@ -7,14 +7,23 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Categories
 
-* [Linux](#linux)
-* [MySQL](#mysql)
 * [Git](#git)
 * [Go](#go)
+* [Linux](#linux)
+* [MySQL](#mysql)
 * [SSD](#ssd)
 * [Vim](#vim)
 
 ---
+
+
+### Git
+
+- [Rename folders with git](git/rename-folders-with-git.md)
+- [Modify previous commit messages](git/modify-previous-commit-messages.md)
+- [Remove a file added in an older commit](git/Remove-a-file-added-in-an-older-commit.md)
+
+### Go
 
 
 ### Linux
@@ -32,15 +41,6 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Redo](mysql/redo.md)
 - [Undo](mysql/undo.md)
 - [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
-
-### Git
-
-- [Rename folders with git](git/rename-folders-with-git.md)
-- [Modify previous commit messages](git/modify-previous-commit-messages.md)
-- [Remove a file added in an older commit](git/Remove-a-file-added-in-an-older-commit.md)
-
-### Go
-
 
 ### SSD
 
