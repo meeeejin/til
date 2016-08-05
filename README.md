@@ -41,6 +41,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Redo](mysql/redo.md)
 - [Undo](mysql/undo.md)
 - [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
+- [Change buffer](mysql/change-buffer.md)
 
 ### SSD
 
