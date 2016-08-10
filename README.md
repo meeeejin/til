@@ -48,6 +48,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Basic operations](ssd/basic-operations.md)
 - [FTL (Flash Translation Layer)](ssd/ftl.md)
 - [Device initialization](ssd/device-initialization.md)
+- [Logical block mapping](ssd/logical-block-mapping.md)
 
 ### Vim
 
