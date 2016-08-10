@@ -50,6 +50,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Device initialization](ssd/device-initialization.md)
 - [Logical block mapping](ssd/logical-block-mapping.md)
 - [Garbage collection](ssd/garbage-collection.md)
+- [TRIM](ssd/trim.md)
+- [Over-provisioning](ssd/over-provisioning.md)
 
 ### Vim
 
