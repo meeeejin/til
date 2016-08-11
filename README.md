@@ -52,6 +52,9 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Garbage collection](ssd/garbage-collection.md)
 - [TRIM](ssd/trim.md)
 - [Over-provisioning](ssd/over-provisioning.md)
+- [Writes](ssd/writes.md)
+- [Reads](ssd/reads.md)
+- [Concurrent reads and writes](ssd/concurrent-reads-and-writes.md)
 
 ### Vim
 
