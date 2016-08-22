@@ -9,6 +9,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 * [Git](#git)
 * [Go](#go)
+* [IPL](#ipl)
 * [Linux](#linux)
 * [MySQL](#mysql)
 * [SSD](#ssd)
@@ -28,6 +29,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### IPL
 - [Basic concept](ipl/basic-concept.md)
+- [Merge operation](ipl/merge-operation.md)
 
 ### Linux
 
