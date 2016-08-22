@@ -51,7 +51,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Percona
 
-- [Multi-threaded LRU flushing](percona/multi-threaded-LRU-flushing)
+- [Multi-threaded LRU flushing](percona/multi-threaded-LRU-flushing.md)
 - [innodb_empty_free_list_algorithm](percona/innodb_empty_free_list_algorithm.md)
 
 ### SSD
