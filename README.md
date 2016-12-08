@@ -48,6 +48,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Undo](mysql/undo.md)
 - [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
 - [Change buffer](mysql/change-buffer.md)
+- [MySQL connection error](mysql/mysql-connection-error.md)
 
 ### Percona
 
