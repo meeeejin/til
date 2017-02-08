@@ -13,6 +13,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Linux](#linux)
 * [MySQL](#mysql)
 * [Percona](#percona)
+* [RocksDB](#rocksdb)
 * [SSD](#ssd)
 * [Vim](#vim)
 
@@ -54,6 +55,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Multi-threaded LRU flushing](percona/multi-threaded-LRU-flushing.md)
 - [innodb_empty_free_list_algorithm](percona/innodb_empty_free_list_algorithm.md)
+
+### RocksDB
+
+- [How to use db_bench](rocksdb/how-to-use-db_bench.md)
 
 ### SSD
 
