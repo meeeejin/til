@@ -39,5 +39,5 @@ $ ./db_bench
 
 You can see options of `db_bench` using below command.
 ```bash
-$./db_bench --help
+$ ./db_bench --help
 ```
