@@ -37,6 +37,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Direct IO](linux/direct-io.md)
 - [Synchronous IO](linux/synchronous-io.md)
+- [Extracts certain rows from a file](linux/extracts-certain-rows-from-a-file.md)
+- [AWK command](linux/awk-command.md)
 
 ### MySQL
 
@@ -50,6 +52,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
 - [Change buffer](mysql/change-buffer.md)
 - [MySQL connection error](mysql/mysql-connection-error.md)
+- [Log Flush at Commit](mysql/log-flush-at-commit.md)
 
 ### Percona
 
