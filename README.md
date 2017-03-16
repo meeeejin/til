@@ -53,6 +53,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Change buffer](mysql/change-buffer.md)
 - [MySQL connection error](mysql/mysql-connection-error.md)
 - [Log Flush at Commit](mysql/log-flush-at-commit.md)
+- [innodb_flush_method](mysql/innodb-flush-method.md)
 
 ### Percona
 
