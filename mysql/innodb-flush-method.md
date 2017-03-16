@@ -2,10 +2,7 @@
 
 `innodb_flush_method` variable defines the method used to flush data to InnoDB data files and log files. [Detail](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_flush_method)
 
-## NULL(Default)
-- `fdatasync()`
-
-## fsync
+## fsync(Default)
 - `fsync()` to flush both the *data* and *log* files
 
 ## O_DSYNC
