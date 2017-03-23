@@ -7,6 +7,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Categories
 
+* [Benchmark](#benchmark)
 * [Git](#git)
 * [Go](#go)
 * [IPL](#ipl)
@@ -19,6 +20,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ---
 
+
+### Benchmark
+
+- [How to install SysBench 0.5 on Ubuntu](benchmark/how-to-install-sysbench-0.5-on-ubuntu.md)
 
 ### Git
 
