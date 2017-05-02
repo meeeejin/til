@@ -31,7 +31,7 @@ make install
 If you have MySQL headers and libraries in non-standard locations (and no mysql_config can be found in the PATH), you can specify them explicitly with `--with-mysql-includes` and `--with-mysql-libs` options to `./configure` like below example.
 
 ```bash
-./configure --with-mysql-includes=/home/mijin/mysql-5.6.25/include --with-mysql-libs=/home/mijin/mysql-5.6.26/lib
+./configure --with-mysql-includes=/home/mijin/mysql-5.6.26/include --with-mysql-libs=/home/mijin/mysql-5.6.26/lib
 ```
 
 4. Now you can run SysBench 0.5 using `./sysbench` command.
