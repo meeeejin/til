@@ -14,12 +14,6 @@ $ mysqld_safe --defaults-file=/path/to/my.cnf
 $ mysql -uroot
 ```
 
-or
-
-```bash
-$ mysqladmin -uroot
-```
-
 ## Shut down the database server
 
 ```bash
