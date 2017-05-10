@@ -19,7 +19,7 @@ $ sudo apt-get install libaio libaio-dev
 - etc.
 
 ```bash
-$ sudo apt-get install cmake libncurses5 libncurses5-dev bison
+$ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison
 ```
 
 ## Build and install
