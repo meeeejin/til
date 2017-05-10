@@ -5,7 +5,22 @@ Building MySQL from the source code enables you to customize build parameters, c
 ## Pre-requisites
 
 - libreadline
+
+```bash
+$ sudo apt-get install libreadline6 libreadline6-dev
+```
+
 - libaio
+
+```bash
+$ sudo apt-get install libaio libaio-dev
+```
+
+- etc.
+
+```bash
+$ sudo apt-get install cmake libncurses5 libncurses5-dev bison
+```
 
 ## Build and install
 
