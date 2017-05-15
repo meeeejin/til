@@ -13,7 +13,7 @@ $ sudo apt-get install libreadline6 libreadline6-dev
 - libaio
 
 ```bash
-$ sudo apt-get install libaio libaio-dev
+$ sudo apt-get install libaio1 libaio-dev
 ```
 
 - etc.
