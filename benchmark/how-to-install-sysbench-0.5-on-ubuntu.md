@@ -70,3 +70,18 @@ sysbench --test=/home/mijin/sysbench-0.5/sysbench/tests/db/oltp.lua \
 ```
 
 You can get more information from [SysBench manual](http://imysql.com/wp-content/uploads/2014/10/sysbench-manual.pdf) and [SysBench Github repository](https://github.com/akopytov/sysbench).
+
+# Error
+
+If you get an error message as follows:
+
+```bash
+$ sysbench
+sysbench: error while loading shared libraries: libmysqlclient.so.18: cannot open shared object file: No such file or directory
+```
+
+Export the LD_LIBRARY_PATH variable.
+
+```bash
+export LD_LIBRARY_PATH=/path/to/mysql/lib/
+```
