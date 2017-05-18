@@ -45,6 +45,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Extracts certain rows from a file](linux/extracts-certain-rows-from-a-file.md)
 - [AWK command](linux/awk-command.md)
 - [How to control cores via bash command](linux/how-to-control-cores-via-bash-command.md)
+- [Copy and paste in tmux](linux/copy-and-paste-in-tmux.md)
 
 ### MySQL
 
