@@ -1,6 +1,6 @@
 # Build and install the source code
 
-Building MySQL from the source code enables you to customize build parameters, compiler optimizations, and installation location.
+Building MySQL 5.6 from the source code enables you to customize build parameters, compiler optimizations, and installation location.
 
 ## Pre-requisites
 

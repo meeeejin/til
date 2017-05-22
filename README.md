@@ -61,6 +61,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [MySQL connection error](mysql/mysql-connection-error.md)
 - [Log Flush at Commit](mysql/log-flush-at-commit.md)
 - [innodb_flush_method](mysql/innodb-flush-method.md)
+- [Update root password in MySQL 5.7](mysql/update-root-password-in-mysql-5.7.md)
 
 ### Percona
 
