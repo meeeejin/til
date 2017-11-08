@@ -42,15 +42,15 @@ Initialize tasks that must be performed before the MySQL server, mysqld, is read
 - `--basedir` : the path to the MySQL installation directory.
 
 ```bash
-$ bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+$ ./bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
 ```
 
 Reset the root password.
 
 ```bash
-$ bin/mysqld_safe --skip-grant-tables
+$ ./bin/mysqld_safe --skip-grant-tables
 
-$ bin/mysql -uroot
+$ ./bin/mysql -uroot
 
 root:(none)> use mysql;
 
