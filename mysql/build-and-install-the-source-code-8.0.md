@@ -1,6 +1,6 @@
-# Build and install the source code (5.7)
+# Build and install the source code (8.0)
 
-Building MySQL 5.7 from the source code enables you to customize build parameters, compiler optimizations, and installation location.
+Building MySQL 8.0 from the source code enables you to customize build parameters, compiler optimizations, and installation location.
 
 ## Pre-requisites
 
@@ -24,7 +24,7 @@ $ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison
 
 ## Build and install
 
-In MySQL 5.7, the Boost library is required to build MySQL. Therefore, download it first.
+In MySQL 8.0, the Boost library is required to build MySQL. Therefore, download it first.
 
 ```bash
 $ cmake -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir
@@ -48,7 +48,8 @@ Initialize tasks that must be performed before the MySQL server, mysqld, is read
 - `--basedir` : the path to the MySQL installation directory.
 
 ```bash
-$ ./bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+$ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+$ ./bin/mysql_ssl_rsa_setup
 ```
 
 Reset the root password.
