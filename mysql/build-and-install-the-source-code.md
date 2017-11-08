@@ -1,4 +1,4 @@
-# Build and install the source code
+# Build and install the source code (5.6)
 
 Building MySQL 5.6 from the source code enables you to customize build parameters, compiler optimizations, and installation location.
 

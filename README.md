@@ -49,7 +49,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### MySQL
 
-- [Build and install the source code](mysql/build-and-install-the-source-code.md)
+- [Build and install the source code (5.6)](mysql/build-and-install-the-source-code.md)
 - [Run MySQL](mysql/run-mysql.md)
 - [The InnoDB recovery process](mysql/the-innodb-recovery-process.md)
 - [Types of shutdown](mysql/types-of-shutdown.md)
@@ -62,6 +62,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Log Flush at Commit](mysql/log-flush-at-commit.md)
 - [innodb_flush_method](mysql/innodb-flush-method.md)
 - [Update root password in MySQL 5.7](mysql/update-root-password-in-mysql-5.7.md)
+- [Build and install the source code (5.7)](mysql/build-and-install-the-source-code-5.7.md)
 
 ### Percona
 
