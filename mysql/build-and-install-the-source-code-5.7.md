@@ -51,6 +51,12 @@ Initialize tasks that must be performed before the MySQL server, mysqld, is read
 $ ./bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
 ```
 
+or
+
+```bash
+$ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+```
+
 Reset the root password.
 
 ```bash
