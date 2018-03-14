@@ -64,6 +64,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Update root password in MySQL 5.7](mysql/update-root-password-in-mysql-5.7.md)
 - [Build and install the source code (5.7)](mysql/build-and-install-the-source-code-5.7.md)
 - [Useful MySQL performance tuning tips](mysql/useful-mysql-performance-tuning-tips.md)
+- [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
 
 ### Percona
 
