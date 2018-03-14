@@ -63,8 +63,12 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [innodb_flush_method](mysql/innodb-flush-method.md)
 - [Update root password in MySQL 5.7](mysql/update-root-password-in-mysql-5.7.md)
 - [Build and install the source code (5.7)](mysql/build-and-install-the-source-code-5.7.md)
+<<<<<<< HEAD
 - [Useful MySQL performance tuning tips](mysql/useful-mysql-performance-tuning-tips.md)
 - [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
+=======
+- [Build and install the source code (8.0)](mysql/build-and-install-the-source-code-8.0.md)
+>>>>>>> origin/master
 
 ### Percona
 
