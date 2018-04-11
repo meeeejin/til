@@ -66,6 +66,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Build and install the source code (8.0)](mysql/build-and-install-the-source-code-8.0.md)
 - [Useful MySQL performance tuning tips](mysql/useful-mysql-performance-tuning-tips.md)
 - [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
+- [Monitoring InnoDB mutex and lock waits](mysql/monitoring-innodb-mutex-and-lock-waits.md)
 
 ### Percona
 
