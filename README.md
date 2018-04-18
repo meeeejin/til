@@ -67,6 +67,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Useful MySQL performance tuning tips](mysql/useful-mysql-performance-tuning-tips.md)
 - [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
 - [Monitoring InnoDB mutex and lock waits](mysql/monitoring-innodb-mutex-and-lock-waits.md)
+- [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md)
 
 ### Percona
 
