@@ -46,6 +46,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [AWK command](linux/awk-command.md)
 - [How to control cores via bash command](linux/how-to-control-cores-via-bash-command.md)
 - [Copy and paste in tmux](linux/copy-and-paste-in-tmux.md)
+- [Extract multiple lines from a file](linux/extract-multiple-lines-from-a-file.md)
 
 ### MySQL
 
@@ -95,8 +96,6 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Vim
 
 - [Search and replace](vim/search-and-replace.md)
-- [Extract multiple lines from a file](vim/extract-multiple-lines-from-a-file.md)
-
 
 ## About
 
