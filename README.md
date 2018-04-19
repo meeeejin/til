@@ -95,6 +95,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Vim
 
 - [Search and replace](vim/search-and-replace.md)
+- [Extract multiple lines from a file](vim\extract-multiple-lines-from-a-file.md)
 
 
 ## About
