@@ -1,7 +1,5 @@
 # How InnoDB performs a checkpoint
 
-> 수정 중..
-
 이 문서는 [InnoDB 체크포인트 관련 포스팅(2011/01/29)](https://www.xaprb.com/blog/2011/01/29/how-innodb-performs-a-checkpoint/)을 한글 번역한 문서로, 개인적인 학습 및 사용을 목적으로 번역된 비공식 문서이다.
 
 ## Introduction
