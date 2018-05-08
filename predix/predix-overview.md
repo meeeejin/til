@@ -1,7 +1,5 @@
 # Predix Overview
 
-> 수정 중..
-
 이 문서는 [Predix Overview](https://docs.predix.io/en-US/content/platform/get_started/predix_overview/)를 일부 한글 번역한 문서로, 개인적인 학습 및 사용을 목적으로 번역된 비공식 문서이다.
 
 ## What is Predix Platform?
