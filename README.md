@@ -14,6 +14,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Linux](#linux)
 * [MySQL](#mysql)
 * [Percona](#percona)
+* [Predix](#predix)
 * [RocksDB](#rocksdb)
 * [SSD](#ssd)
 * [Vim](#vim)
@@ -69,11 +70,16 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
 - [Monitoring InnoDB mutex and lock waits](mysql/monitoring-innodb-mutex-and-lock-waits.md)
 - [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md)
+- [InnoDB adaptive flushing](mysql/adaptive-flushing.md)
 
 ### Percona
 
 - [Multi-threaded LRU flushing](percona/multi-threaded-LRU-flushing.md)
 - [innodb_empty_free_list_algorithm](percona/innodb_empty_free_list_algorithm.md)
+
+### Predix
+
+- [Predix overview](predix/predix-overview.md)
 
 ### RocksDB
 
