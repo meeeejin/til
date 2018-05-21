@@ -2,8 +2,6 @@
 
 > 수정 중..
 
-- [로그 체크포인트와 dirty 페이지 간의 관계](https://www.percona.com/blog/2012/02/17/the-relationship-between-innodb-log-checkpointing-and-dirty-buffer-pool-pages/)
-
 # InnoDB adaptive flushing in MySQL 5.6: checkpoint age and io capacity
 
 > [원문(2013/10/30)](https://www.percona.com/blog/2013/10/30/innodb-adaptive-flushing-in-mysql-5-6-checkpoint-age-and-io-capacity/)
@@ -81,3 +79,82 @@ InnoDB는 백그라운드 플러싱 속도를 제어할 수 있는 두 개의 �
 - 페이지 크기를 줄일 수 있다. 페이지를 더 작게 만들면, 이론상 긴 꼬리 페이지를 플러시하는 일이 줄어든다. 이걸 조심해라! InnoDB의 디폴트 페이지 크기가 이미 너무 작고, 디폴트 페이지 크기가 아닌 경우 실사용 사례가 많지 않음을 보여주는 연구가 있다.
 - 종료하기 전에 dirty 페이지를 플러시하지 않도록 InnoDB를 설정할 수 있다. 이는 본질적으로 체크포인트 없이 종료하는 것과 동일하며, 충돌(crashing)과 동일하다. 복구 과정은 데이터베이스가 사용 가능하게 되기 전에, 시작 시에 실행해야 한다. 이는 crash 복구의 메커니즘으로 인해 clean shutdown보다 훨씬 느릴 수 있다.
 - 이 목적을 위해 별도의 스레드를 가진 버전으로 업그레이드 하거나 네이티브 비동기 I/O를 사용하여, InnoDB가 훨씬 더 많이 플러시 할 수 있도록 만들 수 있다. 이것은 실제로는 종료 과정에 도움이 되지 않을 수도 있다. 사실을 말하면, 나(*블로그 작성자*)는 이 방법을 확인해보지 않았다.
+
+# The relationship between Innodb Log checkpointing and dirty Buffer pool pages
+
+> [원문](https://www.percona.com/blog/2012/02/17/the-relationship-between-innodb-log-checkpointing-and-dirty-buffer-pool-pages/)
+
+## Some basic facts
+
+- 우리 대부분은 InnoDB에 쓰기를 하는 것은 메모리의 버퍼 풀 페이지들을 업데이트하고, 페이지 작업을 트랜잭션 로그(REDO)에 기록한다는 것을 알고 있다.
+- 뒷편에서는, 업데이트 된(dirty) 버퍼 풀 페이지들이 테이블스페이스로 플러시 된다.
+- InnoDB가 dirty 버퍼 풀 페이지들을 가진 상태로 멈춘다면(crash), InnoDB 복구는 데이터베이스의 마지막 일관된(consistent) 상태를 재구성해야 한다.
+- 복구는 트랜잭션 로그를 사용하는데, 이는 아직 테이블스페이스로 플러시 되지 않은 로그에서 페이지 작업을 재실행함으로써(따라서, 이름이 `redo log`임) 가능하다.
+
+궁극적으로 이 메커니즘은 느린 드라이브에 대한 최적화였다. 모든 변경 사항을 순차적으로 로그에 기록할 수 있다면, 테이블스페이스 전체에 걸친 변경 내용을 무작위로 쓰는 것보다 트랜잭션이 들어올 때 바로 쓰는 것이 더 빠르다. 왜냐하면 순차 I/O가 랜덤 I/O보다 더 빠르기 때문이다.
+
+그러나, 오늘날의 플래시 스토리지 세계에서 랜덤 I/O가 현저히 저렴할지라도(가격이 아니라 레이턴시 관점에서 볼 때), 테이블스페이스 업데이트를 지연할수록, 잠재적으로 절약하고, 압축하고, 병합할 수 있는 IOPs가 더 많아지기 때문에 이것은 여전히 최적화 방안이다. 그 이유는 다음과 같다:
+
+- 페이지가 플러시 되기 전에 동일한 행이 여러번 기록될 수 있다.
+- 페이지가 플러시 되기 전에 같은 페이지 내의 여러 행을 쓸 수 있다.
+
+## Innodb Log Checkpointing
+
+먼저, InnoDB 로그 체크포인트에 대해 우리는 무엇을 발견할 수 있을까?
+
+```bash
+mysql> SHOW ENGINE INNODB STATUS\G
+---
+LOG
+---
+Log sequence number 9682004056
+Log flushed up to   9682004056
+Last checkpoint at  9682002296
+```
+
+위 내용은 로그의 가상 헤드(`Log sequence number`), 로그가 디스크로 플러시 된 마지막 위치(`Log flushed up to`) 및 마지막 체크포인트(`Last checkpoint at`)를 보여준다. LSN은 영원히 커지지만, 트랜잭션 로그 내의 실제 위치는 순환 방식으로 재사용된다. 이 숫자를 기반으로, 가장 오래된 체크포인트 되지 않은 트랜잭션이 트랜잭션 로그에서 몇 바이트 뒤에 있는지 `Last checkpoint at` 값에서 `Log sequence number`를 빼서 확인할 수 있다.
+
+```bash
+---
+LOG
+---
+Log sequence number 9682004056
+Log flushed up to   9682004056
+Last checkpoint at  9682002296
+Max checkpoint age    108005254
+Checkpoint age target 104630090
+Modified age          1760
+Checkpoint age        1760
+```
+
+여기에서 가장 흥미로운 부분은 체크포인트 age(`Checkpoint age`)인데, 이 값은 위에서 설명한 뺄셈의 결과이다. `Max checkpoint age`는 InnoDB가 트랜잭션 로그에 쓰는 걸 허용하는 가장 멀리 떨어진 체크포인트(원문: as roughly the furthest back Innodb will allow us to go in the transaction logs)를 나타낸다. *(간단하게 설명하면, 체크포인트 age가 커질 수 있는 최대값을 말함)* Dirty 버퍼를 플러시하기 위해 InnoDB에서 클라이언트의 작업을 막지 않고서는, `Checkpoint age`는 이 값을 초과할 수 없다. `Max checkpoint age`는 모든 트랜잭션 로그의 총 바이트 수의 약 80%인 것으로 나타나지만, 항상 이렇다고 확신할 수는 없다.
+
+트랜잭션 로그는 원형(circular)이고, 체크포인트 age는 가장 오랫동안 플러시되지 않은 트랜잭션이 로그에서 얼마나 멀리 떨어져 있는지를 나타낸다는 것을 기억해라. 잠재적으로 충돌시 데이터를 손실하지 않고는 트랜잭션 로그를 덮어쓸 수 없기 때문에, InnoDB는 그러한 작업을 허용하지 않고, 계속해서 (안전하게) 로그를 쓸 수 있을 때까지 들어오는 쓰기를 차단한다.
+
+## Dirty Buffer Pool Pages
+
+한편, dirty 버퍼와 관련한 이슈도 있는데, 아래 두 숫자는 `SHOW ENGINE INNODB STATUS`의 **BUFFER POOL AND MEMORY** 섹션과 관련이 있다.
+
+```bash
+Database pages          65530
+...
+Modified db pages       3
+```
+
+위의 경우 데이터가 수정된 3개의 페이지가 dirty 버퍼 안에 있는데, 이것은 전체 버퍼 풀에 비하면 아주 작은 비율을 차지한다. InnoDB의 페이지는 행, 인덱스 등을 포함하는 반면, 하나의 트랜잭션은 한 개 또는 수백만 개의 행을 수정할 수 있다. 또한 버퍼 풀의 수정된 단일 페이지에는 트랜잭션 로그의 여러 트랜잭션에서 수정된 데이터가 포함될 수 있다.
+
+전에 말했듯이, dirty 페이지는 백그라운드에서 디스크로 플러시 된다. 플러시 되는 순서는 연관된 트랜잭션이나 트랜잭션 로그에서 그들의 수정된 위치와 관련이 거의 없다. 이것의 효과는, dirty 페이지 플러싱을 관리하는 쓰레드가 자신의 일로서, 체크포인트 age를 최적화하기 위해 반드시 플러시를 하는 것이 아니라, I/O를 최적화하고 버퍼 풀의 LRU를 따르려고 플러시 하는 것이다.
+
+버퍼가 비순차적으로 플러시 될 수 있기 때문에, 트랜잭션 로그에 디스크로 완전히 플러시 된 많은 트랜잭션이 존재하는 반면(즉, 해당 트랜잭션과 관련된 모든 페이지가 clean 페이지), 여전히 플러시 되지 않은 더 오래된 트랜잭션들이 존재할 수도 있다. 본질적으로, 이것이 fuzzy 체크포인트라는 것이다.
+
+체크포인트 과정은 실제로 논리적인 작업이다. 때때로 (dirty 페이지의 chunk가 플러시 되기 때문에) 버퍼 풀의 dirty 페이지를 살펴보면서 가장 오래된 LSN을 갖는 페이지를 찾는데, 이것이 체크포인트다. 그 페이지보다 오래된 모든 페이지들은 완전히 플러시 되어야만 한다.
+
+**이것이 중요한 이유는, 체크포인트 age가 dirty 버퍼 플러싱에 영향을 미치지 않는다면, dirty 버퍼가 너무 커져서 클라이언트 작업이 지연(stall)될 수 있기 때문이다. 플러시 할 dirty 페이지를 결정하는 알고리즘은 이 과정에 [잘] 최적화 되어 있지 않고, 가끔은 그 자체로 불충분하다.**
+
+그럼 여기서 어떻게 최적화할 수 있을까? 목적은 InnoDB가 더 많은 dirty 페이지를 플러시 하도록 만드는 것이다. 이를 튜닝할 수 있는 많은 방법이 있는데, 이는 아래의 설정값들을 변경시킴으로써 가능하다. 아래는 가장 중요한 설정값들의 목록이고 대충 정렬되어있다. 가장 오래된 순, 동시에 가장 효과가 적은 순으로 정렬되어 있다:
+
+- [innodb_max_dirty_pages_pct](http://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_max_dirty_pages_pct): This attempts to keep the percentage of dirty pages under control, and before the Innodb plugin this was really the only way to tune dirty buffer flushing. However, I have seen servers with 3% dirty buffers and they are hitting their max checkpoint age. The way this increases dirty buffer flushing also doesn’t scale well on high io subsystems, it effectively just doubles the dirty buffer flushing per second when the % dirty pages exceeds this amount.
+- [innodb_io_capacity](http://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_io_capacity): This setting, in spite of all our grand hopes that it would allow Innodb to make better use of our IO in all operations, simply controls the amount of dirty page flushing per second (and other background tasks like read-ahead). Make this bigger, you flush more per second. This does not adapt, it simply does that many iops every second if there are dirty buffers to flush. It will effectively eliminate any optimization of I/O consolidation if you have a low enough write workload (that is, dirty pages get flushed almost immediately, we might be better off without a transaction log in this case). It also can quickly starve data reads and writes to the transaction log if you set this too high.
+- [innodb_write_io_threads](http://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_write_io_threads): Controls how many threads will have writes in progress to the disk. I’m not sure why this is still useful if you can use Linux native AIO. These can also be rendered useless by filesystems that don’t allow parallel writing to the same file by more than one thread (particularly if you have relatively few tables and/or use the global tablespaces) *cough ext3 cough*.
+- [innodb_adaptive_flushing](http://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_adaptive_flushing): An Innodb plugin/5.5 setting that tries to be smarter about flushing more aggressively based on the number of dirty pages and the rate of transaction log growth.
+- [innodb_adaptive_flushing_method](https://www.percona.com/doc/percona-server/5.5/scalability/innodb_io_55.html#innodb_adaptive_flushing_method): (Percona Server only) This adds a few new different algorithms, but the more effective ones adjust the amount of dirty page flushing using a formula that considers the Checkpoint age and the [Checkpoint age target](https://www.percona.com/doc/percona-server/5.5/scalability/innodb_io_55.html#innodb_checkpoint_age_target) (something you can set in Percona Server, otherwise it is effectively just a hair under the Max Checkpoint age). The two main methods here would be ‘estimate’ (good default) and ‘keep_average’ designed for SSD type storage.
