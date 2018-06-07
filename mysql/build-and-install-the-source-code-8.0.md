@@ -16,6 +16,13 @@ $ sudo apt-get install libreadline6 libreadline6-dev
 $ sudo apt-get install libaio1 libaio-dev
 ```
 
+- libssl
+
+
+```bash
+$ sudo apt-get install libssl-dev
+```
+
 - etc.
 
 ```bash
