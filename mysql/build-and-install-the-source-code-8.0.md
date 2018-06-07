@@ -51,6 +51,7 @@ $ make -j8 install
 ```
 
 Initialize tasks that must be performed before the MySQL server, mysqld, is ready to use.
+
 - `--datadir` : the path to the MySQL data directory
 - `--basedir` : the path to the MySQL installation directory.
 
@@ -59,23 +60,22 @@ $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/p
 $ ./bin/mysql_ssl_rsa_setup
 ```
 
-Reset the root password.
+Reset the root password. First, create a text file containing the password-assignment statement on a single line. Replace the password with the password that you want to use.
 
 ```bash
-$ ./bin/mysqld_safe --skip-grant-tables
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+```
 
-$ ./bin/mysql -uroot
+Then, start the MySQL server with the special `--init-file` option:
 
-root:(none)> use mysql;
+```bash
+./bin/mysqld --init-file=/home/mijin/mysql-init
+```
 
-root:mysql> update user set authentication_string=password('abc') where user='root';
-root:mysql> flush privileges;
-root:mysql> quit;
+The server executes the contents of the file named by the `--init-file` option at startup, changing the 'root'@'localhost' account password. After the server has started successfully, shut down the server and delete `/home/mijin/mysql-init`.
 
-$ ./bin/mysql -uroot
-
-root:mysql> set password = password('abc');
-root:mysql> quit;
+```bash
+./bin/mysqladmin -uroot -pMyNewPass shutdown
 ```
 
 Run the MySQL server.
