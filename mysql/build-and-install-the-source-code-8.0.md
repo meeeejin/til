@@ -57,7 +57,7 @@ Initialize tasks that must be performed before the MySQL server, mysqld, is read
 
 ```bash
 $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
-$ ./bin/mysql_ssl_rsa_setup
+$ ./bin/mysql_ssl_rsa_setup --datadir=/path/to/datadir
 ```
 
 Reset the root password. First, create a text file containing the password-assignment statement on a single line. Replace the password with the password that you want to use.
@@ -69,13 +69,13 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
 Then, start the MySQL server with the special `--init-file` option:
 
 ```bash
-./bin/mysqld --init-file=/home/mijin/mysql-init
+$ ./bin/mysqld --init-file=/home/mijin/mysql-init
 ```
 
 The server executes the contents of the file named by the `--init-file` option at startup, changing the 'root'@'localhost' account password. After the server has started successfully, shut down the server and delete `/home/mijin/mysql-init`.
 
 ```bash
-./bin/mysqladmin -uroot -pMyNewPass shutdown
+$ ./bin/mysqladmin -uroot -pMyNewPass shutdown
 ```
 
 Run the MySQL server.
