@@ -70,7 +70,7 @@ root:mysql> update user set authentication_string=password('abc') where user='ro
 root:mysql> flush privileges;
 root:mysql> quit;
 
-$ ./bin/mysql -uroot
+$ ./bin/mysql -uroot -p
 
 root:mysql> set password = password('abc');
 root:mysql> quit;
