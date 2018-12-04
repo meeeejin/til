@@ -1,4 +1,4 @@
-# Synchronous IO
+# Synchronous I/O
 
 I learned from this [page](http://stackoverflow.com/questions/5055859/how-are-the-o-sync-and-o-direct-flags-in-open2-different-alike).
 
