@@ -1,8 +1,8 @@
-# Direct IO
+# Direct I/O
 
 I learned from this [page](http://stackoverflow.com/questions/5055859/how-are-the-o-sync-and-o-direct-flags-in-open2-different-alike).
 
-## Direct IO
+## Direct I/O
 Direct I/O is a feature of the file system whereby file reads and writes go directly from the applications to the storage device, **bypassing** the operating system read and write caches. Direct I/O is used only by applications (such as databases) that manage their own caches.
 
 ## O_DIRECT
