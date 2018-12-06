@@ -56,7 +56,7 @@ mysql/help_topic                576         2
 
 ### space-page-type-regions
 
-Tablespace의 모든 페이지를 순회하고, 같은 유형의 페이지를 `영역(regions)`으로 묶어, 전체 페이지의 유형을 요약해 출력하는 모드다.
+Tablespace의 모든 페이지를 순회하고, 같은 유형의 페이지를 `영역(regions)`으로 묶어, 전체 페이지의 유형을 요약해 출력하는 모드다. 즉, tablespace의 시작부터 끝까지 순회하며, 주어진 페이지 유형의 연속된(contiguous) 블록을 한 줄씩 출력하는 모드다.
 file-per-table tablespace에 대해 `space-page-type-regions` 모드를 사용한 결과는 다음과 같다:
 
 ```bash
@@ -99,6 +99,40 @@ id          name                            root        fseg        used        
 
 모든 index는 non-leaf 페이지에 사용되는 `internal` 파일 세그먼트(file segment)와 leaf 페이지에 사용되는 `leaf` 파일 세그멘트를 갖는다. 페이지는 하나의 파일 세그먼트에 할당될 수 있지만, 현재 미사용 중일 수 있다(**type FREE (ALLOCATED)**). 따라서 `fill_factor`는 `사용 중인 페이지 / 할당된 전체 페이지`의 비율을 나타낸다(index 페이지가 *얼마나 꽉 찼는지* 와는 관련이 없으며, 이는 다른 문제).
 
+### space-index-pages-summary
+
+모든 index 페이지에 대해 space-consumption 관련 데이터를 보여주는 모드다. 이 모드를 사용해 데이터와 여유(free) 공간의 크기 및 테이블에 대한 레코드 개수를 쉽게 확인할 수 있다.
+file-per-table tablespace에 대해 `space-index-pages-summary` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd space-index-pages-summary
+page        index   level   data    free    records
+3           78      1       8260    7700    590     
+4           78      0       7517    8693    85      
+5           78      0       15127   1043    171     
+6           78      0       15099   1071    170     
+...
+```
+
+### space-index-pages-free-plot
+
+`gnuplot`과 `Ruby gnuplot gem`이 설치되어 있으면, index의 space-consumption 정보를 scatter plot으로 그릴 수 있는 모드다.
+2개의 file-per-table tablespace에 대해 각각 `space-index-pages-free-plot` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd space-index-pages-free-plot
+Wrote tpcc57_100_item_free.png
+```
+![tpcc57_100_item_free](https://i.imgur.com/o3dFqrr.png)
+
+```bash
+$ innodb_space -f tpcc57_100/orders.ibd space-index-pages-free-plot
+Wrote tpcc57_100_orders_free.png
+```
+![tpcc57_100_orders_free](https://i.imgur.com/HKj4YPw.png)
+
+y축은 각 페이지의 여유 공간을 나타내며, x축은 페이지 번호이자 파일 오프셋이다.
+
 ### space-extents-illustrate
 
 Tablespace에 속한 모든 extent의 페이지들을 보여주는 모드다. 블록은 페이지의 데이터 양에 따라 크기가 지정되고, index/목적 별로 색깔이 지정된다.
@@ -109,7 +143,6 @@ $ innodb_space -f tpcc57_100/item.ibd space-extents-illustrate
 ```
 ![space-extents-illustrate-result](https://i.imgur.com/R0L4P09.png)
 
-
 ### space-lsn-age-illustrate
 
 Tablespace에 속한 모든 extent의 페이지를 색칠된 블록으로 보여주는 모드다. 블록은 페이지의 수정 LSN의 age에 따라 색깔이 지정된다.
@@ -119,7 +152,6 @@ file-per-table tablespace에 대해 `space-lsn-age-illustrate` 모드를 사용�
 $ innodb_space -f tpcc57_100/item.ibd space-lsn-age-illustrate
 ```
 ![space-lsn-age-illustrate-result](https://i.imgur.com/g95WCPw.png)
-
 
 ## Page Structure
 
