@@ -155,4 +155,124 @@ $ innodb_space -f tpcc57_100/item.ibd space-lsn-age-illustrate
 
 ## Page Structure
 
-작성 중..
+### page-account
+
+페이지 번호가 주어졌을 때, 해당 페이지에 대해 설명하는 모드다.
+System tablespace의 3번 페이지에 대해 `page-account` 모드를 사용한 결과는 다음과 같다:
+
+```
+$ innodb_space -s ibdata1 -p 3 page-account
+Accounting for page 3:
+  Page type is SYS (System internal, used for various purposes in the system tablespace).
+  Extent descriptor for pages 0-63 is at page 0, offset 158.
+  Extent is not fully allocated to an fseg; may be a fragment extent.
+  Page is marked as used in extent descriptor.
+  Extent is in full_frag list of space.
+  Page is in fragment array of fseg 1.
+```
+
+file-per-table tablespace의 100번 페이지에 대해 `page-account` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 page-account
+Accounting for page 100:
+  Page type is INDEX (B+Tree index, table and index data stored in B+Tree structure).
+  Extent descriptor for pages 64-127 is at page 0, offset 198.
+  Extent is fully allocated to fseg 2.
+  Page is marked as used in extent descriptor.
+  Extent is in full list of fseg 2.
+  Fseg is in leaf fseg of index 78.
+  Index root is page 3.
+```
+
+### page-dump
+
+페이지 번호가 주어졌을 때, 해당 페이지에 대해 `innodb_ruby`가 이해하는 모든 정보를 intelligently dump하는 모드다.
+file-per-table tablespace의 100번 페이지에 대해 `page-dump` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 page-dump
+#<Innodb::Page::Index:0x000000024a0fb8>:
+
+fil header:
+{:checksum=>451784286,
+ :offset=>100,
+ :prev=>99,
+ :next=>101,
+ :lsn=>247858850703,
+ :type=>:INDEX,
+ :flush_lsn=>0,
+ :space_id=>50}
+
+fil trailer:
+{:checksum=>451784286, :lsn_low32=>3045714831}
+
+page header:
+{:n_dir_slots=>43,
+ :heap_top=>15187,
+ :garbage_offset=>0,
+ :garbage_size=>0,
+...
+
+fseg header:
+{:leaf=>nil, :internal=>nil}
+
+sizes:
+  header           120
+  trailer            8
+  directory         86
+...
+```
+
+첫 번째 행은 해당 페이지를 핸들링하는 클래스를 나타낸다. 그리고 `fil header`와 `fil trailer`는 모든 페이지가 공통적으로 갖는 필드이며, 페이지 자체에 대한 정보를 주로 포함한다. FIL header 다음에 오는 정보들은 페이지 유형에 따라 결정된다. 위와 같은 index 페이지를 dump 했을 때는 아래와 같은 정보가 출력된다.
+
+- page header: index 페이지에 대한 정보
+- fseg header: index에서 사용되는 파일 세그먼트(extent의 그룹)의 space management와 관련된 정보
+- size: 페이지의 다양한 구성 요소들(free space, data space, record size 등)의 크기를 byte 단위로 요약
+- system records, infimum and supremum
+- record 검색을 보다 효율적으로 수행하는 데 사용되는 page directory의 내용
+- 사용자가 저장한 실제 데이터인 user record (record describer가 로드되지 않은 경우, 해당 필드는 파싱되지 않음)
+
+### page-records
+
+페이지 번호가 주어졌을 때, 해당 페이지 내의 모든 레코드를 요약하는 모드다.
+file-per-table tablespace의 100번 페이지에 대해 `page-records` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 page-records
+Record 128: () → ()
+
+Record 213: () → ()
+
+Record 303: () → ()
+
+Record 382: () → ()
+
+Record 468: () → ()
+...
+```
+
+### page-directory-summary
+
+페이지 번호가 주어졌을 때, 해당 페이지의 page directory 내용을 dump하는 모드다.
+file-per-table tablespace의 100번 페이지에 대해 `page-directory-summary` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 page-directory-summary
+slot    offset  type          owned   key
+0       99      infimum       1       
+1       382     conventional  4       ()
+2       737     conventional  4       ()
+3       1098    conventional  4       ()
+4       1459    conventional  4       ()
+5       1811    conventional  4       ()
+6       2149    conventional  4       ()
+7       2476    conventional  4       ()
+8       2807    conventional  4       ()
+...
+```
+
+### page-illustrate
+
+페이지 번호가 주어졌을 때, 해당 페이지의 내용을 `region type`을 기준으로 그리는 모드다.
+> record data가 free로 나타남. 코드 확인 필요
