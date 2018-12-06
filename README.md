@@ -71,6 +71,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Monitoring InnoDB mutex and lock waits](mysql/monitoring-innodb-mutex-and-lock-waits.md)
 - [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md)
 - [InnoDB adaptive flushing](mysql/adaptive-flushing.md)
+- [innodb_ruby](mysql/innodb-ruby.md)
 
 ### Percona
 
