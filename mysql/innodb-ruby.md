@@ -106,8 +106,9 @@ file-per-table tablespace에 대해 `space-extents-illustrate` 모드를 사용�
 
 ```bash
 $ innodb_space -f tpcc57_100/item.ibd space-extents-illustrate
-![space-extents-illustrate-result](https://i.imgur.com/R0L4P09.png)
 ```
+![space-extents-illustrate-result](https://i.imgur.com/R0L4P09.png)
+
 
 ### space-lsn-age-illustrate
 
@@ -116,8 +117,9 @@ file-per-table tablespace에 대해 `space-lsn-age-illustrate` 모드를 사용�
 
 ```bash
 $ innodb_space -f tpcc57_100/item.ibd space-lsn-age-illustrate
-![space-lsn-age-illustrate-result](https://i.imgur.com/g95WCPw.png)
 ```
+![space-lsn-age-illustrate-result](https://i.imgur.com/g95WCPw.png)
+
 
 ## Page Structure
 
