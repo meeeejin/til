@@ -1,7 +1,3 @@
-# InnoDB adaptive flushing
-
-> 수정 중..
-
 # InnoDB adaptive flushing in MySQL 5.6: checkpoint age and io capacity
 
 > [원문(2013/10/30)](https://www.percona.com/blog/2013/10/30/innodb-adaptive-flushing-in-mysql-5-6-checkpoint-age-and-io-capacity/)
