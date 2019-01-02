@@ -5,7 +5,7 @@
 
 ## Transparent Page Compression
 
-InnoDB는 [file-per-table](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_file_per_table) 테이블스페이스에 존재하는 테이블에 대해 페이지 레벨 압축을 지원한다. 이는 *Transparent Page Compression* 라 불린다. 페이지 압축은 `CREATE TABLE` 또는 `ALTER TABLE` 문에 `COMPRESSION` attribute를 명시하여 사용할 수 있으며, `Zlib`과 `LZ4` 압축 알고리즘을 지원한다. 예를 들어, 아래와 같이 사용할 수 있다:
+InnoDB는 [file-per-table](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_file_per_table) 테이블스페이스에 존재하는 테이블에 대해 페이지 레벨 압축을 지원한다. 이는 *Transparent Page Compression* 라 불린다. 페이지 압축은 `CREATE TABLE` 또는 `ALTER TABLE` 문에 `COMPRESSION` attribute를 명시하여 사용할 수 있으며, *Zlib*과 *LZ4* 압축 알고리즘을 지원한다. 예를 들어, 아래와 같이 사용할 수 있다:
 
 ```bash
 CREATE TABLE t1 (c1 INT) COMPRESSION="zlib";
@@ -31,7 +31,9 @@ MySQL 5.7에는 여러 개의 페이지 플러싱 전용 thread가 존재한다.
 
 > Sparse file은 0이 아닌 영역에만 물리적인 디스크 공간을 할당하는 파일 유형으로써, 파일 자체가 부분적으로 비어 있는 경우 파일 시스템 공간을 보다 효율적으로 사용할 수 있음
 
-![sparse file](https://en.wikipedia.org/wiki/Sparse_file#/media/File:Sparse_file_(en).svg)
+<p align="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Sparse_file_%28en%29.svg/1024px-Sparse_file_%28en%29.svg.png" alt="sparse file" width="400" />
+</p>
 
 ## Linux 상에서의 Hole Punch 크기
 
