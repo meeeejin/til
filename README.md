@@ -72,6 +72,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md)
 - [InnoDB adaptive flushing](mysql/adaptive-flushing.md)
 - [innodb_ruby](mysql/innodb-ruby.md)
+- [Punch hole](mysql/punch-hole.md)
 
 ### Percona
 
