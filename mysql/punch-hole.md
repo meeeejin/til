@@ -60,8 +60,40 @@ mysql> select * from information_schema.INNODB_SYS_TABLESPACES WHERE name like '
 | SPACE | NAME                   | FLAG | FILE_FORMAT | ROW_FORMAT           | PAGE_SIZE | ZIP_PAGE_SIZE | SPACE_TYPE | FS_BLOCK_SIZE | FILE_SIZE   | ALLOCATED_SIZE | COMPRESSION |
 +-------+------------------------+------+-------------+----------------------+-----------+---------------+------------+---------------+-------------+----------------+-------------+
 |    23 | linkdb/linktable#P#p0  |    0 | Antelope    | Compact or Redundant |     16384 |             0 | Single     |           512 |  4861198336 |     2376154112 | LZ4         |
+```
 
-...
+```bash
+mysql> select name, ((file_size-allocated_size)*100)/file_size as compressed_pct from information_schema.INNODB_SYS_TABLESPACES WHERE name like 'linkdb%';
++------------------------+----------------+
+| name                   | compressed_pct |
++------------------------+----------------+
+| linkdb/linktable#P#p0  |        51.1323 |
+| linkdb/linktable#P#p1  |        51.1794 |
+| linkdb/linktable#P#p2  |        51.5254 |
+| linkdb/linktable#P#p3  |        50.9341 |
+| linkdb/linktable#P#p4  |        51.6542 |
+| linkdb/linktable#P#p5  |        51.2027 |
+| linkdb/linktable#P#p6  |        51.3837 |
+| linkdb/linktable#P#p7  |        51.6309 |
+| linkdb/linktable#P#p8  |        51.8193 |
+| linkdb/linktable#P#p9  |        50.6776 |
+| linkdb/linktable#P#p10 |        51.2959 |
+| linkdb/linktable#P#p11 |        51.7169 |
+| linkdb/linktable#P#p12 |        51.0571 |
+| linkdb/linktable#P#p13 |        51.4743 |
+| linkdb/linktable#P#p14 |        51.4895 |
+| linkdb/linktable#P#p15 |        51.2749 |
+| linkdb/counttable      |        50.1664 |
+| linkdb/nodetable       |        31.2724 |
++------------------------+----------------+
+18 rows in set (0.00 sec)
 ```
 
 ## Limitations
+
+### File system fragmentation
+
+블록을 파일 시스템의 free list로 다시 내보내는 hole punching으로 인해 파일 시스템에서 fragmentation이 일어날 수 있다. 여기에는 두 가지 파급 효과가 있다:
+
+1. Sequential 스캔이 실제로는 Random I/O로 끝날 수 있다. 이는 특히 HDD의 경우 문제가 된다.
+2. FS free list 관리 오버 헤드가 증가할 수 있다.
