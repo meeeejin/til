@@ -153,6 +153,9 @@ $ innodb_space -f tpcc57_100/item.ibd space-lsn-age-illustrate
 ```
 ![space-lsn-age-illustrate-result](https://i.imgur.com/g95WCPw.png)
 
+256 color를 사용해(`tmux -2`) 같은 tablespace 다시 그린 결과는 다음과 같다:
+![space-lsn-age-illustrate-result-256](https://i.imgur.com/iq1NxBW.png)
+
 ## Page Structure
 
 ### page-account
