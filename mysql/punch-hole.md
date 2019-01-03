@@ -51,3 +51,15 @@ Hole punching에서 `ls -l`로 보여지는 파일 크기는 블록 디바이스
 - `COMPRESSION`: 현재 압축 알고리즘 설정(있는 경우)
 
 Note: 앞서 언급했듯이, `COMPRESSION` 값은 현재 테이블스페이스의 설정이며 현재 테이블스페이스에 있는 모든 페이지가 해당 형식을 갖는 것을 보장하지는 않는다.
+
+다음은 간단한 예시다:
+
+```bash
+mysql> select * from information_schema.INNODB_SYS_TABLESPACES WHERE name like 'linkdb%';
++-------+------------------------+------+-------------+----------------------+-----------+---------------+------------+---------------+-------------+----------------+-------------+
+| SPACE | NAME                   | FLAG | FILE_FORMAT | ROW_FORMAT           | PAGE_SIZE | ZIP_PAGE_SIZE | SPACE_TYPE | FS_BLOCK_SIZE | FILE_SIZE   | ALLOCATED_SIZE | COMPRESSION |
++-------+------------------------+------+-------------+----------------------+-----------+---------------+------------+---------------+-------------+----------------+-------------+
+|    23 | linkdb/linktable#P#p0  |    0 | Antelope    | Compact or Redundant |     16384 |             0 | Single     |           512 |  4861198336 |     2376154112 | LZ4         |
+
+...
+```
