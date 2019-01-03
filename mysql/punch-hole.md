@@ -63,3 +63,5 @@ mysql> select * from information_schema.INNODB_SYS_TABLESPACES WHERE name like '
 
 ...
 ```
+
+## Limitations
