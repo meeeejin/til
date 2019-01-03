@@ -1,11 +1,12 @@
 # Punch hole
 
-[포스트](https://mysqlserverteam.com/innodb-transparent-page-compression/)
-[메뉴얼](https://dev.mysql.com/doc/refman/5.7/en/innodb-page-compression.html)
+아래 두 자료 참고해서 정리
+- [InnoDB Transparent Page Compression](https://mysqlserverteam.com/innodb-transparent-page-compression/)
+- [MySQL 5.7 Manual](https://dev.mysql.com/doc/refman/5.7/en/innodb-page-compression.html)
 
 ## Transparent Page Compression
 
-InnoDB는 [file-per-table](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_file_per_table) 테이블스페이스에 존재하는 테이블에 대해 페이지 레벨 압축을 지원한다. 이는 *Transparent Page Compression* 라 불린다. 페이지 압축은 `CREATE TABLE` 또는 `ALTER TABLE` 문에 `COMPRESSION` attribute를 명시하여 사용할 수 있으며, *Zlib*과 *LZ4* 압축 알고리즘을 지원한다. 예를 들어, 아래와 같이 사용할 수 있다:
+InnoDB는 [file-per-table](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_file_per_table) 테이블스페이스에 존재하는 테이블에 대해 **페이지 레벨** 압축을 지원한다. 이는 *Transparent Page Compression* 라 불린다. 페이지 압축은 `CREATE TABLE` 또는 `ALTER TABLE` 문에 `COMPRESSION` attribute를 명시하여 사용할 수 있으며, *Zlib*과 *LZ4* 압축 알고리즘을 지원한다. 예를 들어, 아래와 같이 사용할 수 있다:
 
 ```bash
 CREATE TABLE t1 (c1 INT) COMPRESSION="zlib";
@@ -41,7 +42,7 @@ Linux 시스템에서 파일 시스템의 블록 크기는 hole punching에 사�
 
 ## Monitoring
 
-Hole punching에서 `ls -l`로 보여지는 파일 크기는 블록 디바이스의 실제 할당 크기가 아닌 논리적 파일 크기를 표시한다. 이는 sparse file의 일반적인 이슈며, 논리적 크기와 실제 할당 크기는 INNODB_SYS_TABLESPACES information schema 테이블에 쿼리를 수행하여 얻을 수 있다.
+Hole punching에서 `ls -l`로 보여지는 파일 크기는 블록 디바이스의 실제 할당 크기가 아닌 논리적 파일 크기를 표시한다. 이는 sparse file의 일반적인 이슈며, 논리적 크기와 실제 할당 크기는 [INNODB_SYS_TABLESPACES](https://dev.mysql.com/doc/refman/5.7/en/innodb-sys-tablespaces-table.html)의 information schema 테이블에 쿼리를 수행하여 얻을 수 있다.
 
 다음과 같은 추가적인 열이 information schema 뷰에 추가되었다: `FS_BLOCK_SIZE`, `FILE_SIZE`, `ALLOCATED_SIZE` 및 `COMPRESSION`
 
@@ -50,7 +51,7 @@ Hole punching에서 `ls -l`로 보여지는 파일 크기는 블록 디바이스
 - `ALLOCATED_SIZE`: 파일 시스템의 블록 디바이스에 실제로 할당된 크기
 - `COMPRESSION`: 현재 압축 알고리즘 설정(있는 경우)
 
-Note: 앞서 언급했듯이, `COMPRESSION` 값은 현재 테이블스페이스의 설정이며 현재 테이블스페이스에 있는 모든 페이지가 해당 형식을 갖는 것을 보장하지는 않는다.
+> 앞서 언급했듯이, `COMPRESSION` 값은 현재 테이블스페이스의 설정이며 현재 테이블스페이스에 있는 모든 페이지가 해당 형식을 갖는 것을 보장하지는 않는다.
 
 다음은 간단한 예시다:
 
