@@ -36,7 +36,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 
 ### IPL
-- [Basic concept](ipl/basic-concept.md)
+- [Basic concept](ipl/basic-concept.md) :kr:
 - [Merge operation](ipl/merge-operation.md)
 
 ### Linux
@@ -69,10 +69,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Useful MySQL performance tuning tips](mysql/useful-mysql-performance-tuning-tips.md)
 - [Curated contents about flushing mechanisms](mysql/curated-contents-about-flushing-mechanisms.md)
 - [Monitoring InnoDB mutex and lock waits](mysql/monitoring-innodb-mutex-and-lock-waits.md)
-- [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md)
-- [InnoDB adaptive flushing](mysql/adaptive-flushing.md)
-- [innodb_ruby](mysql/innodb-ruby.md)
-- [Punch hole](mysql/punch-hole.md)
+- [How InnoDB performs a checkpoint](mysql/how-innodb-performs-a-checkpoint.md) :kr:
+- [InnoDB adaptive flushing](mysql/adaptive-flushing.md) :kr:
+- [innodb_ruby](mysql/innodb-ruby.md) :kr:
+- [Punch hole](mysql/punch-hole.md) :kr:
 
 ### Percona
 
@@ -81,12 +81,12 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Predix
 
-- [Predix overview](predix/predix-overview.md)
+- [Predix overview](predix/predix-overview.md) :kr:
 
 ### RocksDB
 
 - [How to use db_bench](rocksdb/how-to-use-db_bench.md)
-- [Write stalls](rocksdb/write-stalls.md)
+- [Write stalls](rocksdb/write-stalls.md) :kr:
 
 ### SSD
 
