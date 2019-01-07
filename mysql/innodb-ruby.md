@@ -258,6 +258,7 @@ Record 468: () → ()
 ### page-directory-summary
 
 페이지 번호가 주어졌을 때, 해당 페이지의 page directory 내용을 dump하는 모드다.
+Record describer를 사용 가능한 경우, 각 레코드의 key가 출력된다.
 file-per-table tablespace의 100번 페이지에 대해 `page-directory-summary` 모드를 사용한 결과는 다음과 같다:
 
 ```bash
@@ -278,4 +279,34 @@ slot    offset  type          owned   key
 ### page-illustrate
 
 페이지 번호가 주어졌을 때, 해당 페이지의 내용을 `region type`을 기준으로 그리는 모드다.
+
 > record data가 free로 나타남. 코드 확인 필요
+
+file-per-table tablespace의 100번 페이지에 대해 `page-illustrate` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 page-illustrate
+```
+
+## Record Structure
+
+> 에러 수정 후 아래 테스트 필요
+
+### record-dump
+
+레코드 offset이 주어졌을 때, 해당 레코드 및 레코드의 데이터에 대한 내용을 dump하는 모드다.
+file-per-table tablespace의 100번 페이지의 100번 레코드에 대해 `record-dump` 모드를 사용한 결과는 다음과 같다:
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 -R 100 record-dump
+```
+
+### record-history
+
+## Index Structure
+
+### index-recurse
+
+### index-record-offsets
+
+### index-level-summary
