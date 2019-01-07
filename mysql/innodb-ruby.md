@@ -282,15 +282,22 @@ slot    offset  type          owned   key
 
 > record data가 free로 나타남. 코드 확인 필요
 
-file-per-table tablespace의 100번 페이지에 대해 `page-illustrate` 모드를 사용한 결과는 다음과 같다:
-
 ```bash
 $ innodb_space -f tpcc57_100/item.ibd -p 100 page-illustrate
 ```
 
 ## Record Structure
 
-> 에러 수정 후 아래 테스트 필요
+> -R 또는 --record 이용
+> Record describer가 있어야 레코드의 내용을 파싱할 수 있음. 레코드 내용에 맞게 Ruby class를 작성한 후, `innodb_space`에 argument로 넘겨 주어야 로드 가능. Ruby class 예시:
+
+```bash
+class SimpleTBTreeDescriber < Innodb::RecordDescriber
+  type :clustered
+  key "i", :INT, :NOT_NULL
+  row "s", "CHAR(10)", :NOT_NULL
+end
+```
 
 ### record-dump
 
@@ -298,10 +305,39 @@ $ innodb_space -f tpcc57_100/item.ibd -p 100 page-illustrate
 file-per-table tablespace의 100번 페이지의 100번 레코드에 대해 `record-dump` 모드를 사용한 결과는 다음과 같다:
 
 ```bash
-$ innodb_space -f tpcc57_100/item.ibd -p 100 -R 100 record-dump
+$ innodb_space -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -f tpcc57_100/item.ibd -p 100 -R 100 record-dump
+Record at offset 100
+
+Header:
+  Next record offset  : 7629
+  Heap number         : 64
+  Type                : conventional
+  Deleted             : false
+  Length              : 5
+
+System fields:
+  Transaction ID: 129111012278283
+  Roll Pointer:
+    Undo Log: page 7566704, offset 29285
+    Rollback Segment ID: 0
+    Insert: false
+
+Key fields:
+  i: 123456789
+
+Non-key fields:
+  s: "mum%\x10\x00\x00\x00\x10\x00"
 ```
 
+Record describer의 형식에 따라 파싱 결과가 달라진다.
+
 ### record-history
+
+레코드의 history를 요약하는 모드다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -p 100 -R 100 record-history
+```
 
 ## Index Structure
 
