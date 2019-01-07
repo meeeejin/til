@@ -288,15 +288,18 @@ $ innodb_space -f tpcc57_100/item.ibd -p 100 page-illustrate
 
 ## Record Structure
 
-> -R 또는 --record 이용
-> Record describer가 있어야 레코드의 내용을 파싱할 수 있음. 레코드 내용에 맞게 Ruby class를 작성한 후, `innodb_space`에 argument로 넘겨 주어야 로드 가능. Ruby class 예시:
-
+- `-R` 또는 `--record` 이용
+- Record describer가 있어야 레코드의 내용을 파싱할 수 있음. Ruby class 예시:
 ```bash
 class SimpleTBTreeDescriber < Innodb::RecordDescriber
   type :clustered
   key "i", :INT, :NOT_NULL
   row "s", "CHAR(10)", :NOT_NULL
 end
+```
+- 레코드 내용에 맞게 Ruby class를 작성한 후, `innodb_space`에 argument로 넘겨 주어야 로드 가능
+```bash
+innodb_space -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber ...
 ```
 
 ### record-dump
