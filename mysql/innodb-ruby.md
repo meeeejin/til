@@ -301,6 +301,7 @@ end
 ```bash
 innodb_space -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber ...
 ```
+- 아래의 모든 예시는 임의로 key, row 형식을 정해 출력한 결과임
 
 ### record-dump
 
@@ -346,6 +347,143 @@ $ innodb_space -f tpcc57_100/item.ibd -p 100 -R 100 record-history
 
 ### index-recurse
 
+전체 B+Tree(recursion을 이용해 모든 페이지 스캔)를 따라 인덱스를 재귀(full index scan 수행)하는 모드다. Root에서 시작하여 node 페이지, node 포인터(링크), leaf 페이지를 출력한다(이 때, 루트 페이지를 `--page/-p`의 argument로 제공해야 함). Record describer로는 `--describer/-d` argument가 제공되어야 한다(노드 페이지를 파싱하기 위해).
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-recurse
+ROOT NODE #3: 590 records, 8260 bytes
+  NODE POINTER RECORD ≥ (i=1) → #4
+  LEAF NODE #4: 85 records, 7517 bytes
+    RECORD: (i=1) → (s="\x80\x00\x16\x8FjzQZ0B")
+    RECORD: (i=2) → (s="\x80\x00\e rHPtQm")
+    RECORD: (i=3) → (s="\x80\x00\x17xYO6rTt")
+    RECORD: (i=4) → (s="\x80\x00\x1F\x9ArLhmfk")
+    RECORD: (i=5) → (s="\x80\x00\x03\xC8y9RJly")
+    RECORD: (i=6) → (s="\x80\x00\x18\xEEi8ZHoz")
+    RECORD: (i=7) → (s="\x80\x00\x047jjwUH0")
+...
+```
+
 ### index-record-offsets
 
+index-recurse 모드처럼 인덱스를 재귀하지만, 인덱스 페이지 내의 각 레코드의 오프셋을 출력하는 모드다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-record-offsets
+page_offset         record_offset       
+4                   128                 
+4                   204                 
+4                   300                 
+4                   382                 
+4                   466                 
+4                   555                 
+4                   652                 
+4                   729                 
+4                   825
+...
+```
+
+### index-digraph
+
+index-recurse 모드처럼 인덱스를 재귀하지만, 사람이 읽을 수 있는 요약 정보 대신 dot-compatible digraph를 출력하는 모드다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-digraph
+digraph btree {
+  rankdir = LR;
+  ranksep = 2.0;
+  page_3 [ shape ...
+  ...
+  page_619 [ shape = "record"; label = "<page>Page 619|(169 records)"; ];
+  page_3:dir_620 → page_620:page:nw;
+  page_620 [ shape = "record"; label = "<page>Page 620|(170 records)"; ];
+  page_3:dir_621 → page_621:page:nw;
+  page_621 [ shape = "record"; label = "<page>Page 621|(146 records)"; ];
+}
+```
+
 ### index-level-summary
+
+주어진 레벨의 모든 인덱스 페이지를 요약해 출력하는 모드다(`--level/-l` 사용).
+> `-p`가 주어지지 않으면 에러 발생
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 -l 0 index-level-summary
+page    index   level   data    free    records min_key
+4       78      0       7517    8693    85      i=1
+5       78      0       15127   1043    171     i=86
+6       78      0       15099   1071    170     i=257
+7       78      0       15116   1054    170     i=427
+8       78      0       15136   1034    171     i=597
+9       78      0       15115   1053    172     i=768
+10      78      0       15087   1083    170     i=940
+11      78      0       15086   1084    170     i=1110
+12      78      0       15136   1034    171     i=1280
+...
+
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 -l 1 index-level-summary
+page    index   level   data    free    records min_key
+3       78      1       8260    7700    590     i=1
+```
+
+### index-fseg-*-lists
+
+인덱스 파일 세그먼트 안의 모든 리스트의 요약을 출력하는 모드다. `--page/-p`의 argument로 인덱스 root 페이지가 주어져야 한다. index-fseg-internal-lists 및 index-fseg-leaf-lists의 2가지 모드가 존재한다.
+
+> 본 예시의 item table은 B+tree 레벨이 2이므로 internal page가 존재하지 않는다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-fseg-internal-lists
+name                length      f_page      f_offset    l_page      l_offset    
+free                0           0           0           0           0           
+not_full            0           0           0           0           0           
+full                0           0           0           0           0
+```
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-fseg-leaf-lists
+name                length      f_page      f_offset    l_page      l_offset    
+free                0           0           0           0           0           
+not_full            1           0           518         0           518         
+full                8           0           198         0           478
+```
+
+### index-fseg-*-list-iterate
+
+인덱스가 주어졌을 때, internal 또는 leaf 페이지에 대해 파일 세그먼트 목록(이름은 첫 번째 `--list/-L` argument에 제공됨)을 iterate하는 모드다. 각 인덱스에 사용된 목록은 "full", "not_full" 및 "free"다. index-fseg-internal-list-iterate 및 index-fseg-leaf-list-iterate의 2가지 모드가 존재한다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 -L "full" index-fseg-leaf-list-iterate
+start_page  page_used_bitmap                                                
+64          ################################################################
+128         ################################################################
+192         ################################################################
+256         ################################################################
+320         ################################################################
+384         ################################################################
+448         ################################################################
+512         ################################################################
+
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 -L "not_full" index-fseg-leaf-list-iterate
+start_page  page_used_bitmap                                                
+576         ##############################################..................
+```
+
+### index-fseg-*-frag-pages
+
+인덱스 파일 세그먼트의 모든 fragment 페이지를 요약해 출력하는 모드다. `--page/-p`의 argument로 인덱스 root 페이지가 주어져야 한다. index-fseg-internal-frag-pages 및 index-fseg-leaf-frag-pages의 2가지 모드가 존재한다.
+
+```bash
+$ innodb_space -f tpcc57_100/item.ibd -r ./simple_t_btree_describer.rb -d SimpleTBTreeDescriber -p 3 index-fseg-leaf-frag-pages
+page        index   level   data    free    records
+4           78      0       7517    8693    85      
+5           78      0       15127   1043    171     
+6           78      0       15099   1071    170     
+7           78      0       15116   1054    170     
+8           78      0       15136   1034    171     
+9           78      0       15115   1053    172     
+10          78      0       15087   1083    170     
+11          78      0       15086   1084    170     
+12          78      0       15136   1034    171
+...
+```
