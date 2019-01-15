@@ -51,7 +51,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### MySQL
 
-- [Build and install the source code (5.6)](mysql/build-and-install-the-source-code.md)
+- [Build and install the source code (5.6)](mysql/build-and-install-the-source-code-5.6.md)
 - [Run MySQL](mysql/run-mysql.md)
 - [The InnoDB recovery process](mysql/the-innodb-recovery-process.md)
 - [Types of shutdown](mysql/types-of-shutdown.md)
