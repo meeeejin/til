@@ -53,6 +53,8 @@ TPC-E 데이터베이스에서 중개소는 고객, 브로커, 금융 시장에 
 
 ### Hard Disk trace를 사용한 비교
 
+> SQL Server 이용
+
 #### 실험 환경
 
 | TPC-C           | TPC-E           |
@@ -162,7 +164,7 @@ TPC-E 데이터베이스에서 중개소는 고객, 브로커, 금융 시장에 
 
 #### Understanding the Buffer Pool Behavior
 
-> :warning: 논문 리뷰 때 지적받은 내용과 반대로 write-after-read를 정의함
+> :warning: 논문 리뷰 때 지적받은 내용과 약간 다른 의미로 write-after-read를 정의함
 
 - 이전의 read I/O R과 같은 블록 주소에 Write I/O W가 요청되고, R과 W 사이에 해당 블록에 대한 다른 I/O가 없는 경우를 *write-after-read* 라고 정의함
 - 그래프의 *read to write distance* 는 R을 이슈하고 W를 이슈하기까지 걸린 시간을 의미함
@@ -211,7 +213,7 @@ TPC-E 데이터베이스에서 중개소는 고객, 브로커, 금융 시장에 
 
 > :bulb: 다른 configuration으로 replay 필요
 
-TPC-E도 TPC-C만큼 랜덤한 I/O 패턴을 만들어낼 수 있음을 위에서 보였는데, 이는 TPC-E도 SSD를 사용할 경우 성능 향상의 가능성이 있다는 것을 암시한다. 
+TPC-E도 TPC-C만큼 랜덤한 I/O 패턴을 만들어낼 수 있음을 위에서 보였는데, 이는 TPC-E도 SSD를 사용할 경우 성능 향상의 가능성이 있다는 것을 암시한다.
 
 #### 실험 환경
 
