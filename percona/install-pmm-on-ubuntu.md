@@ -174,7 +174,7 @@ $ sudo apt-get install pmm-client
 
 ## Connect the PMM client to the PMM Server
 
-To connect a PMM Client, enter the IP address of the PMM Server as the value of the `--server` parameter to the `pmm-admin` config command:
+To connect a PMM Client, enter the IP address of the PMM Server as the value of the `--server` parameter to the `pmm-admin config` command:
 
 ```bash
 $ sudo pmm-admin config --server 123.456.789.111
@@ -187,7 +187,7 @@ Client Address  | 123.456.789.112
 
 ## Start data collection services on the PMM client
 
-To start [collecting data on each PMM Client connected to a PMM server](https://www.percona.com/doc/percona-monitoring-and-management/deploy/index.html#deploy-pmm-data-collecting), run the `pmm-admin` add command along with the name of the selected monitoring service.
+To start [collecting data on each PMM Client connected to a PMM server](https://www.percona.com/doc/percona-monitoring-and-management/deploy/index.html#deploy-pmm-data-collecting), run the `pmm-admin add` command along with the name of the selected monitoring service.
 For example, if you want to monitor MySQL server, the user is root, and the password is 1234, run the command as follows:
 
 ```bash
@@ -197,7 +197,7 @@ $ sudo pmm-admin add mysql --user root --password 1234 --query-source perfschema
 [mysql:queries] OK, now monitoring MySQL queries from perfschema using DSN root:***@unix(/tmp/mysql.sock)
 ```
 
-To see what is being monitored, run `pmm-admin` list:
+To see what is being monitored, run `pmm-admin list`:
 
 ```bash
 $ sudo pmm-admin list
