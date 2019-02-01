@@ -4,7 +4,7 @@ Jeremy Cole의 [블로그 포스트](https://blog.jcole.us/2013/01/03/a-quick-in
 
 ## Install
 
-RubyGems를 사용해 root 권한으로 innodb_ruby 설치한다.
+RubyGems를 사용해 root 권한으로 innodb_ruby를 설치한다.
 
 ```bash
 $ sudo gem install innodb_ruby

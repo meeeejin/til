@@ -80,6 +80,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Multi-threaded LRU flushing](percona/multi-threaded-LRU-flushing.md)
 - [innodb_empty_free_list_algorithm](percona/innodb_empty_free_list_algorithm.md)
 - [Build and install the source code (5.6)](percona/build-and-install-the-source-code-5.6.md)
+- [Installing Percona Monitoring and Management (PMM) on Ubuntu](percona\install-pmm-on-ubuntu.md)
 
 ### Predix
 
