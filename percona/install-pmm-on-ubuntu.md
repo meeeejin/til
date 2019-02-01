@@ -215,3 +215,11 @@ mysql:queries  mijin  -           YES      root:***@unix(/tmp/mysql.sock)  query
 linux:metrics  mijin  42000       YES      -                                                                            
 mysql:metrics  mijin  42002       YES      root:***@unix(/tmp/mysql.sock)
 ```
+
+## Obtaining Diagnostics Data for Support
+
+You can retrieve collected data from your PMM Server in a single zip archive using this URL:
+
+```bash
+https://<address-of-your-pmm-server>/managed/logs.zip
+```
