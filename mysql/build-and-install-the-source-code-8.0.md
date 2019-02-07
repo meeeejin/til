@@ -69,7 +69,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
 Then, start the MySQL server with the special `--init-file` option:
 
 ```bash
-$ ./bin/mysqld --init-file=/home/mijin/mysql-init
+$ ./bin/mysqld --datadir=/path/to/datadir --init-file=/home/mijin/mysql-init
 ```
 
 The server executes the contents of the file named by the `--init-file` option at startup, changing the 'root'@'localhost' account password. After the server has started successfully, shut down the server and delete `/home/mijin/mysql-init`.
