@@ -34,7 +34,7 @@ If you have MySQL headers and libraries in non-standard locations (and no mysql_
 ./configure --with-mysql-includes=/home/mijin/mysql-5.6.26/include --with-mysql-libs=/home/mijin/mysql-5.6.26/lib
 ```
 
-4. Now you can run SysBench 0.5 using `./sysbench` command.
+4. Now you can run SysBench 0.5 using `sysbench` command.
 
 # Usage
 
