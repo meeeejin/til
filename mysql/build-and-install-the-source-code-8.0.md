@@ -31,16 +31,25 @@ $ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison
 
 ## Build and install
 
+First, extract the tar file and make a directory for building the source code.
+
+```bash
+$ tar zxvf mysql-VERSION.tar.gz
+$ cd mysql-VERSION
+$ mkdir bld
+$ cd bld
+```
+
 In MySQL 8.0, the Boost library is required to build MySQL. Therefore, download it first.
 
 ```bash
-$ cmake -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir
+$ cmake .. -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
 ```
 
 If you already have the Boost library, change the default installation directory.
 
 ```bash
-$ cmake -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir
+$ cmake -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
 ```
 
 Then build and install the source code.
