@@ -68,3 +68,15 @@ $ make
 ```bash
 $ sudo make install
 ```
+
+## DAX - Direct Access
+
+The DAX (direct access) extensions to the filesystem creates PM-aware environment. Install filesystem with DAX (available today for ext4 and xfs):
+
+```bash
+$ sudo mkdir /mnt/pmem
+$ sudo mkfs.ext4 /dev/pmem0
+$ sudo mount -o dax /dev/pmem0 /mnt/pmem
+```
+
+[Details](https://pmem.io/2016/02/22/pm-emulation.html)
