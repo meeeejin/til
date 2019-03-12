@@ -85,7 +85,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### PMDK
 
-- [Building PMDK on Ubuntu](pmdk\building-pmdk-on-ubuntu.md)
+- [Building PMDK on Ubuntu](pmdk/building-pmdk-on-ubuntu.md)
 
 ### Predix
 
