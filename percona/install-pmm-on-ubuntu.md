@@ -216,10 +216,31 @@ linux:metrics  mijin  42000       YES      -
 mysql:metrics  mijin  42002       YES      root:***@unix(/tmp/mysql.sock)
 ```
 
-## Obtaining Diagnostics Data for Support
+## Obtaining diagnostics data for support
 
 You can retrieve collected data from your PMM Server in a single zip archive using this URL:
 
 ```bash
 https://<address-of-your-pmm-server>/managed/logs.zip
+```
+## Stopping monitoring services
+
+You can stop all services managed by PMM client using `pmm-admin stop`:
+
+```bash
+$ sudo pmm-admin stop --all
+```
+
+You can specify a monitoring service alias that you want to stop. To see which services are available, run `pmm-admin list`.
+
+For example, to stop all services related to MySQL:
+
+```bash
+$ sudo pmm-admin stop mysql
+```
+
+You can also stop services of the PMM server using below command:
+
+```bash
+$ sudo docker stop pmm-server
 ```
