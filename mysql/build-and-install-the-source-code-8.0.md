@@ -90,5 +90,5 @@ $ ./bin/mysqladmin -uroot -pMyNewPass shutdown
 Run the MySQL server.
 
 ```bash
-$ ./bin/mysqld_safe
+$ ./bin/mysqld
 ```
