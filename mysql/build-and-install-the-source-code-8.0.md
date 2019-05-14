@@ -49,7 +49,7 @@ $ cmake .. -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INST
 If you already have the Boost library, change the default installation directory.
 
 ```bash
-$ cmake -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
+$ cmake .. -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
 ```
 
 Then build and install the source code.
