@@ -79,7 +79,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Oracle
 
-- [Istall Oracle 12c on Ubuntu]()
+- [Install Oracle 12c on Ubuntu](oracle/install-oracle-12c-on-ubuntu.md)
 - [How to clean UNDO tablespaces](oracle/how-to-clean-undo-tablespaces.md)
 - [Solution to ORA-03113](oracle/solution-to-ora-03113.md)
 
