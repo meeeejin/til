@@ -81,6 +81,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Istall Oracle 12c on Ubuntu]()
 - [How to clean UNDO tablespaces](oracle/how-to-clean-undo-tablespaces.md)
+- [Solution to ORA-03113](oracle/solution-to-ora-03113.md)
 
 ### Percona
 
