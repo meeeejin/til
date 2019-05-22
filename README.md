@@ -28,6 +28,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [How to install SysBench 0.5 on Ubuntu](benchmark/how-to-install-sysbench-0.5-on-ubuntu.md)
 - [TPC-E vs. TPC-C](benchmark/tpc-e-versus-tpc-c.md) :kr:
+- [How to install BenchmarkSQL for Oracle](benchmark/how-to-install-benchmarksql-for-oracle.md)
 
 ### Git
 
