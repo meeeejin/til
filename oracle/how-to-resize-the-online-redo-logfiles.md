@@ -1,4 +1,4 @@
-# How To Resize the Online Redo Logfiles
+# How to resize the online redo log files
 
 1. First, check the size and location of the current logs:
 
