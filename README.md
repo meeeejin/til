@@ -85,6 +85,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Solution to ORA-03113](oracle/solution-to-ora-03113.md)
 - [How to use Statspack](oracle/how-to-use-statspack.md)
 - [How to resize the online redo log files](oracle/how-to-resize-the-online-redo-logfiles.md)
+- [Free Buffer Waits in Oracle](oracle/free-buffer-waits-in-oracle.md)
 
 ### Percona
 
