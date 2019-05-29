@@ -71,7 +71,7 @@ CURRENT               41552202 28-MAY-19   1.8447E+19                    0
 UNUSED                       0                      0                    0
 ```
 
-4. Switch until we are into log group 1 or 3, so we can drop **CURRENT** log groups 2:
+4. Switch until we are into log group 1 or 3, so we can drop **CURRENT** log group 2:
 
 ```bash
 SQL> alter system switch logfile; 
@@ -92,9 +92,9 @@ ACTIVE                41552202 28-MAY-19     41556266 28-MAY-19          0
 UNUSED                       0                      0                    0
 ```
 
-Redo log group 2 becomes **ACTIVE** after `alter system switch log file` which means could not be dropped. In this case, just wait a moment or use `alter system checkpoint` to make redo log group 2 **INACTIVE**.
+Redo log group 2 becomes **ACTIVE** after `alter system switch logfile;` which means could not be dropped. In this case, just wait a moment or use `alter system checkpoint;` to make redo log group 2 **INACTIVE**.
 
-5. If the redo log group becomes **INACTIVE**, drop it:
+5. If the redo log group becomes **INACTIVE**, drop it. Then, create a new redo log group 2 with 1GB size:
 
 ```bash
 SQL> select * from v$log;
