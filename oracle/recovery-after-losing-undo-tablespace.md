@@ -2,7 +2,7 @@
 
 - [Reference](https://asktom.oracle.com/pls/apex/f?p=100:11:0::::P11_QUESTION_ID:5669213349582)
 
-If you get the error `ORA-01012: not logged on`, remove the orphaned shared memory segments using `sysresv`.
+If you get the error `ORA-01012: not logged on`, remove the orphaned shared memory segments using `sysresv`. You can remove the shared memory segment using `ipcrm -m`.
 
 ```bash
 $ sysresv
