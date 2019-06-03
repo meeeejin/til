@@ -10,6 +10,7 @@
   - Rollback or UNDO segment 읽기
   - Control file 재구성
   - 데이터 파일 header dump 또는 읽기
+- *Wait Time: 실제 I/O 시간*
 
 ## db file parallel read
 
@@ -17,10 +18,12 @@
 - 버퍼 prefetching 시에도 발생
 - 모든 read 요청이 끝날 때까지 대기하는 이벤트
 - 이름과는 달리, parallel query나 parallel DML을 통해서는 발생하지 않음 (이 경우엔 `PX`가 붙은 이벤트가 발생)
+- *Wait Time: 모든 I/O 끝날 때까지 대기한 시간*
 
 ## db file parallel write
 
 - **DBWR**가 dirty block write I/O가 끝나기를 대기하는 이벤트
+- *Wait Time: While there are outstanding I/Os, DBWR waits for some of the writes to complete. DBWR does not wait for all of the outstanding I/Os to complete.*
 
 ## CPU time
 
@@ -51,6 +54,7 @@ Response Time = Service Time   +   Wait Time
 - DBWR의 작업량이 너무 많은 경우 발생 가능:
   - 잦은 체크포인트
   - Redo log file 크기가 작은 경우 등
+- *Wait Time: 1 second*
 
 ## buffer busy waits
 
