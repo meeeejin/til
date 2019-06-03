@@ -1,0 +1,1 @@
+# How to resize the SGA
