@@ -88,6 +88,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Free Buffer Waits in Oracle](oracle/free-buffer-waits-in-oracle.md)
 - [Recovery after losing UNDO tablespace](oracle/recovery-after-losing-undo-tablespace.md)
 - [How to resize the SGA](oracle/how-to-resize-the-sga.md)
+- [Understanding Oracle wait events](oracle/understanding-oracle-wait-events.md) :kr:
 
 ### Percona
 
