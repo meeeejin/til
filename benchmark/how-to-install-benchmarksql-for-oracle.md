@@ -82,16 +82,21 @@ Change each parameter for your preference. Please change **host name** or **port
 $ ./runSQL.sh myprops.ora ./sql.common/tableCreates.sql 
 ```
 
+> You can skip step 11~13 by just executing the `runDatabaseBuild.sh` script with your configuration file.
+
 12. Generate test data with 200 warehouse.
 
 ```bash
 $ ./runLoader.sh myprops.ora numWarehouses 200
 ```
 
-13. Create indices.
+13. Create indices and finish build.
 
 ```bash
-$ ./runSQL.sh myprops.ora ./sql.common/indexCreates.sql 
+$ ./runSQL.sh myprops.ora ./sql.common/indexCreates.sql
+$ ./runSQL.sh myprops.ora ./sql.common/foreignKeys.sql
+$ ./runSQL.sh myprops.ora ./sql.oracle/extraHistID.sql
+$ ./runSQL.sh myprops.ora ./sql.common/buildFinish.sql
 ```
 
 14. Start running.
