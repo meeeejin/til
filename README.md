@@ -101,6 +101,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Building PMDK on Ubuntu](pmdk/building-pmdk-on-ubuntu.md)
 
+### PostgreSQL
+
+- [PostgreSQL installation from source code](postgresql/installation-from-source-code.md)
+
 ### Predix
 
 - [Predix overview](predix/predix-overview.md) :kr:
