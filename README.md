@@ -15,6 +15,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [MySQL](#mysql)
 * [Oracle](#oracle)
 * [Percona](#percona)
+* [PostgreSQL](#postgresql)
 * [PMDK](#pmdk)
 * [Predix](#predix)
 * [RocksDB](#rocksdb)
@@ -52,6 +53,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to control cores via bash command](linux/how-to-control-cores-via-bash-command.md)
 - [Copy and paste in tmux](linux/copy-and-paste-in-tmux.md)
 - [Extract multiple lines from a file](linux/extract-multiple-lines-from-a-file.md)
+- [How to add a kernel boot parameter](linux/how-to-add-a-kernel-boot-parameter.md)
 
 ### MySQL
 
