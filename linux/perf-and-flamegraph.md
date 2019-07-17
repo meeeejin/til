@@ -1,0 +1,28 @@
+# perf and FlameGraph
+
+## perf
+
+- [perf(1) - Linux manual page](http://man7.org/linux/man-pages/man1/perf.1.html)
+- [Linux perf Examples](http://www.brendangregg.com/perf.html)
+
+## [FlameGraph](http://www.brendangregg.com/FlameGraphs)
+
+- X축은 스택 프로파일 모집단을 보여줌 (시간 순 아님)
+- Y축은 스택 깊이를 보여줌
+- 프레임이 넓을수록 스택에 더 자주 존재함
+- hottest code-path일수록 더 넓게 나타남
+- 각 스택 사각형의 너비는 해당 함수가 CPU에 있었던 총 시간을 나타냄 (샘플 카운트 기반)
+    - 넓은 사각형을 보이는 함수는 좁은 사각형을 보이는 함수보다 excution 당 CPU를 더 많이 소비한 것일 수도 있고, 또는 단순히 더 자주 호출된 것일 수도 있음
+    - 호출 횟수는 표시되지 않음
+
+# 분석 방법
+
+```bash
+$ sudo perf record -F 99 -p xxx -g -- sleep 1200
+$ sudo perf script > out.perf
+$ ./stackcollapse-perf.pl out.perf > out.folded
+$ ./flamegraph.pl out.folded > test.svg
+```
+
+- 20분간 TPC-C를 돌리면서 perf로 call stack을 수집함
+- perf data를 파싱해서 flamegraph로 그려봄

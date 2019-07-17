@@ -56,6 +56,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Copy and paste in tmux](linux/copy-and-paste-in-tmux.md)
 - [Extract multiple lines from a file](linux/extract-multiple-lines-from-a-file.md)
 - [How to add a kernel boot parameter](linux/how-to-add-a-kernel-boot-parameter.md)
+- [perf and FlameGraph](linux/perf-and-flamegraph.md)
 
 ### MySQL
 
