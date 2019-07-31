@@ -5,6 +5,12 @@
 - [perf(1) - Linux manual page](http://man7.org/linux/man-pages/man1/perf.1.html)
 - [Linux perf Examples](http://www.brendangregg.com/perf.html)
 
+아래의 커맨드로 설치 가능:
+
+```bash
+$ sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`
+```
+
 ## [FlameGraph](http://www.brendangregg.com/FlameGraphs)
 
 - X축은 스택 프로파일 모집단을 보여줌 (시간 순 아님)
