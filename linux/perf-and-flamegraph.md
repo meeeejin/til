@@ -31,4 +31,28 @@ $ ./flamegraph.pl out.folded > test.svg
 ```
 
 - perf로 call stack 수집함
-- perf data를 파싱해서 flamegraph로 그림
+- perf data를 파싱해서 FlameGraph로 그림
+
+### PostgreSQL perf 사용 방법
+
+`src/Makefile.global` 파일에서 `enable_debug = yes`로 변경하고 `CFLAGS`에 `-g` 옵션 추가한 후 다시 build:
+
+```bash
+$ vi src/Makefile.global
+...
+enable_debug  = yes
+...
+CFLAGS = -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Wendif-labels -Wmissing-format-attribute -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -g -O2
+...
+
+$ make -j8 install
+``` 
+
+아래의 perf 명령어로 call stack 수집 및 FlameGraph 그림:
+
+```bash
+$ sudo perf record -F 99 -p XXX --call-graph dwarf sleep XXX
+$ sudo perf script > out.perf
+$ ./stackcollapse-perf.pl out.perf > out.folded
+$ ./flamegraph.pl out.folded > test.svg
+```
