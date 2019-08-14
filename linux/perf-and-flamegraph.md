@@ -18,7 +18,7 @@ $ sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname
 - 프레임이 넓을수록 스택에 더 자주 존재함
 - hottest code-path일수록 더 넓게 나타남
 - 각 스택 사각형의 너비는 해당 함수가 CPU에 있었던 총 시간을 나타냄 (샘플 카운트 기반)
-    - 넓은 사각형을 보이는 함수는 좁은 사각형을 보이는 함수보다 excution 당 CPU를 더 많이 소비한 것일 수도 있고, 또는 단순히 더 자주 호출된 것일 수도 있음
+    - 넓은 사각형을 보이는 함수는 좁은 사각형을 보이는 함수보다 execution 당 CPU를 더 많이 소비한 것일 수도 있고, 또는 단순히 더 자주 호출된 것일 수도 있음
     - 호출 횟수는 표시되지 않음
 
 ## 분석 방법
@@ -48,7 +48,7 @@ CFLAGS = -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statemen
 $ make -j8 install
 ``` 
 
-아래의 perf 명령어로 call stack 수집 및 FlameGraph 그림:
+아래의 perf 명령어로 call stack 수집 및 [FlameGraph](https://www.dropbox.com/sh/fgyevvo7tnyuk0q/AAB7i4ncA7sBJtWMY2SbHy9Ua?dl=0) 그림:
 
 ```bash
 $ sudo perf record -F 99 -p XXX --call-graph dwarf sleep XXX
