@@ -48,7 +48,7 @@ CFLAGS = -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statemen
 $ make -j8 install
 ``` 
 
-아래의 perf 명령어로 call stack 수집 및 [FlameGraph](https://www.dropbox.com/sh/fgyevvo7tnyuk0q/AAB7i4ncA7sBJtWMY2SbHy9Ua?dl=0) 그림:
+아래의 perf 명령어로 call stack 수집 및 [FlameGraph](https://www.dropbox.com/s/k7kvingw77gofqt/without-fprintf.svg?dl=0) 그림:
 
 ```bash
 $ sudo perf record -F 99 -p XXX --call-graph dwarf sleep XXX
