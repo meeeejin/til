@@ -33,6 +33,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to install BenchmarkSQL for PostgreSQL](benchmark/how-to-install-benchmarksql-for-postgresql.md)
 - [How to install TPC-E on Ubuntu (for MySQL)](benchmark/how-to-install-tpce-on-ubuntu.md)
 
+### DBMS
+
+- [A Comparison of Buffer Management Algorithms between Three DBMSs](dbms/a-comparison-of-buffer-management-algorithms.md) :kr:
+
 ### Git
 
 - [Rename folders with git](git/rename-folders-with-git.md)
