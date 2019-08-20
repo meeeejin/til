@@ -11,17 +11,17 @@
 
 ### Page Read
 
-클라이언트 프로세스가 버퍼를 요청하면, 서버 프로세스는 버퍼 캐시에서 해당 버퍼를 검색합니다. 해당 버퍼를 찾으면 **cache hit**가 발생합니다.
+클라이언트 프로세스가 버퍼를 요청하면, 서버 프로세스는 버퍼 캐시에서 해당 버퍼를 검색합니다:
 
-1. 서버 프로세스는 버퍼 캐시에서 전체 버퍼를 탐색합니다. 프로세스가 버퍼를 찾으면, 데이터베이스는 이 버퍼에 대해 **logical read**를 수행합니다.
+1. 서버 프로세스가 버퍼 캐시의 전체 버퍼를 탐색합니다. 원하는 버퍼를 찾으면, 이 버퍼에 대해 **logical read**를 수행합니다 (**cache hit**).
 
-2. 프로세스가 메모리에서 버퍼를 찾지 못하면 (**cache miss**), 서버 프로세스는 다음 단계를 수행합니다:
-    1. 데이터 파일에서 메모리로 해당 블록을 복사합니다 (**physical read**).
-    2. 메모리로 읽어들인 버퍼에 대해 **logical read**를 수행합니다.
+2. 원하는 버퍼를 찾지 못하면 (**cache miss**), 서버 프로세스는 다음 단계를 수행합니다:
+    1. 디스크의 데이터 파일에서 메모리로 해당 블록을 읽어옵니다 (**physical read**).
+    2. 메모리 (버퍼 캐시)로 읽어들인 버퍼에 대해 **logical read**를 수행합니다.
 
 ### 버퍼 매니저 동작 방식
 
-#### Free buffer를 찾는 과정
+#### Free 버퍼를 찾는 과정
 
 1. Oracle 프로세스는 LRU 리스트에 lock을 걸고, LRU의 tail부터 free 버퍼를 찾습니다. 이를 찾는 중에 dirty 버퍼를 만나면, 이 dirty 버퍼를 LRUW 리스트로 옮깁니다.
 
@@ -49,15 +49,17 @@ Dirty list, dirty queue라고도 불리며, DBWR는 이 리스트의 버퍼들�
 
 #### Touch Count
 
+![touch-count-based](http://wiki.gurubee.net/download/attachments/6259339/Cache_Buffer-009.png)
+
 오라클은 개별 버퍼마다 touch count를 관리하며, 프로세스에 의해서 스캔이 이루어질 때마다 touch count를 1씩 증가시킵니다.
 
 - Cold end의 tail에 있으면서 touch count가 1 이하인 버퍼가 free 버퍼로 사용됩니다.
 
 - Cold end의 tail에 있으면서 touch count가 2 이상인 버퍼를 만나면, hot end의 head 부분으로 옮기고 touch count를 0으로 초기화합니다.
 
-- Hot end로 옮기는 기준은 `_DB_AGING_HOT_CRITERIA` 파라미터에 의해 결정되며, 디폴트로 2입니다.
+- Hot end로 옮기는 기준은 `_DB_AGING_HOT_CRITERIA` 파라미터에 의해 결정되며, default로 2입니다.
 
-- Single block I/O에 의해 읽어온 블록은 mid-point에 삽입되며, touch count는 1입니다.
+- Single block I/O를 통해 읽어온 블록은 mid-point에 삽입되며, 이 블록의 touch count는 1입니다.
 
 - Full table scan이나 index full scan으로 읽혀진 데이터들은 mid-point에 삽입되었다가 바로 cold end의 tail로 옮겨져서 버퍼 캐시에 머무를 확률이 낮아집니다.
 
