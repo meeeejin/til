@@ -80,19 +80,21 @@
 1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_M`), 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
 
 2. **Clock-sweep** 알고리즘을 사용하여 victim 버퍼 풀 슬롯을 선택하고, 버퍼 테이블에서 victim 슬롯의 `buffer_id`를 포함하는 이전 항목을 가져 와서 buffer descriptor 레이어에 victim 슬롯을 pin 합니다. 이 예제에서 victim 슬롯의 `buffer_id`는 5이고, 이전 항목은 `Tag_F, id=5` 입니다. Clock-sweep은 다음 섹션에서 설명합니다.
-    - `StrategyGetBuffer()`: victim 버퍼 선택
-        - `LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);`
-        - `if (bgwriterLatch)`
-            - `LWLockRelease(BufFreelistLock);`
-            - `bgwriterLatch`를 기다리고 있는 애를 깨움
-            - `LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);`
-        - `freelist`에서 buffer 가져옴
-            - 있으면, `return buf`
-        - 없으면, for문 돌면서 **Clock-sweep** 알고리즘 수행
-            - unpin && usable count == 0 → usable buffer
-            - usable buffer가 있으면, `return buf`
-    - `PinBuffer_Locked()`: victim 버퍼 pinning
-    - `LWLockRelease(BufFreelistLock);`
+```bash
+StrategyGetBuffer() // victim 버퍼 선택
+    LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);
+    if (bgwriterLatch)
+        LWLockRelease(BufFreelistLock);
+        bgwriterLatch를 기다리고 있는 프로세스를 깨움
+        LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);
+    freelist에서 buffer 가져옴
+        있으면, return buf
+    없으면, for문 돌면서 Clock-sweep 알고리즘 수행
+        unpin && usable count == 0 → usable buffer
+        usable buffer가 있으면, return buf
+PinBuffer_Locked() // victim 버퍼 pinning
+LWLockRelease(BufFreelistLock);
+```
 
 3. Victim 페이지 데이터가 dirty면, flush (write and fsync) 합니다. 그렇지 않으면 4단계로 넘어갑니다.
     1. `buffer_id` 5를 사용하여, descriptor의 shared `content_lock` 및 exclusive `io_in_progress` lock을 획득합니다.
