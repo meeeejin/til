@@ -8,7 +8,7 @@
 
 ## PostgreSQL
 
-- [원문](http://www.interdb.jp/pg/pgsql08.html)
+- [참고 자료](http://www.interdb.jp/pg/pgsql08.html)
 
 ### Page Read
 
@@ -80,6 +80,19 @@
 1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_M`), 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
 
 2. **Clock-sweep** 알고리즘을 사용하여 victim 버퍼 풀 슬롯을 선택하고, 버퍼 테이블에서 victim 슬롯의 `buffer_id`를 포함하는 이전 항목을 가져 와서 buffer descriptor 레이어에 victim 슬롯을 pin 합니다. 이 예제에서 victim 슬롯의 `buffer_id`는 5이고, 이전 항목은 `Tag_F, id=5` 입니다. Clock-sweep은 다음 섹션에서 설명합니다.
+    - `StrategyGetBuffer()`: victim 버퍼 선택
+        - `LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);`
+        - `if (bgwriterLatch)`
+            - `LWLockRelease(BufFreelistLock);`
+            - `bgwriterLatch`를 기다리고 있는 애를 깨움
+            - `LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);`
+        - `freelist`에서 buffer 가져옴
+            - 있으면, `return buf`
+        - 없으면, for문 돌면서 **Clock-sweep** 알고리즘 수행
+            - unpin && usable count == 0 → usable buffer
+            - usable buffer가 있으면, `return buf`
+    - `PinBuffer_Locked()`: victim 버퍼 pinning
+    - `LWLockRelease(BufFreelistLock);`
 
 3. Victim 페이지 데이터가 dirty면, flush (write and fsync) 합니다. 그렇지 않으면 4단계로 넘어갑니다.
     1. `buffer_id` 5를 사용하여, descriptor의 shared `content_lock` 및 exclusive `io_in_progress` lock을 획득합니다.
@@ -116,9 +129,9 @@
 
 1. `nextVictimBuffer`는 첫 번째 descriptor (`buffer_id` 1)를 가리킵니다. 하지만, 이 descriptor는 pin 되어 있으므로 건너 뜁니다.
 
-2. `nextVictimBuffer`는 두 번째 descriptor (`buffer_id` 2)를 가리킵니다. 이 descriptor는 pin 되어 있진 않지만, `usage_count`는 2입니다. 따라서 `usage_count`는 1 감소하고, `nextVictimBuffer`는 세 번째 victim으로 넘어갑니다.
+2. `nextVictimBuffer`는 두 번째 descriptor (`buffer_id` 2)를 가리킵니다. 이 descriptor는 pin 되어 있진 않지만, `usage_count`는 2입니다. 따라서 `usage_count`를 1만큼 감소시키고, `nextVictimBuffer`는 세 번째 victim으로 넘어갑니다.
 
 3. `nextVictimBuffer`는 세 번째 descriptor (`buffer_id` 3)를 가리킵니다. 이 descriptor는 unpin 상태이며 `usage_count`는 0입니다. 따라서 이 descriptor가 이번 라운드의 victim이 됩니다.
 
-`nextVictimBuffer`가 unpin 상태의 descriptor를 sweep 할 때마다 `usage_count`가 1씩 감소합니다. 따라서 unpin 상태의 descriptor가 버퍼 풀에 존재하면 이 알고리즘은 `nextVictimBuffer` 회전하여 `usage_count`가 0인 victim을 항상 찾을 수 있습니다.
+`nextVictimBuffer`가 unpin 상태의 descriptor를 sweep 할 때마다 `usage_count`가 1씩 감소합니다. 따라서 unpin 상태의 descriptor가 버퍼 풀에 존재하면 이 알고리즘은 `nextVictimBuffer`을 회전시키면서 `usage_count`가 0인 victim을 항상 찾을 수 있습니다.
 
