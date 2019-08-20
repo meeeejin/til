@@ -6,6 +6,61 @@
 
 ## Oracle
 
+- [참고 자료](https://docs.oracle.com/cd/E25178_01/server.1111/e25789/memory.htm)
+- [참고 포스트](https://otsteam.tistory.com/164)
+
+### Page Read
+
+클라이언트 프로세스가 버퍼를 요청하면, 서버 프로세스는 버퍼 캐시에서 해당 버퍼를 검색합니다. 해당 버퍼를 찾으면 **cache hit**가 발생합니다.
+
+1. 서버 프로세스는 버퍼 캐시에서 전체 버퍼를 탐색합니다. 프로세스가 버퍼를 찾으면, 데이터베이스는 이 버퍼에 대해 **logical read**를 수행합니다.
+
+2. 프로세스가 메모리에서 버퍼를 찾지 못하면 (**cache miss**), 서버 프로세스는 다음 단계를 수행합니다:
+    1. 데이터 파일에서 메모리로 해당 블록을 복사합니다 (**physical read**).
+    2. 메모리로 읽어들인 버퍼에 대해 **logical read**를 수행합니다.
+
+### 버퍼 매니저 동작 방식
+
+#### Free buffer를 찾는 과정
+
+1. Oracle 프로세스는 LRU 리스트에 lock을 걸고, LRU의 tail부터 free 버퍼를 찾습니다. 이를 찾는 중에 dirty 버퍼를 만나면, 이 dirty 버퍼를 LRUW 리스트로 옮깁니다.
+
+2. Scan depth만큼 LRU 리스트를 탐색했는데도 free 버퍼를 찾지 못하면, 서버 프로세스는 스캔을 중단하고 DBWR에게 dirty 버퍼를 모으라는 신호를 보내고 lock을 해제합니다 ([free buffer wait](https://github.com/meeeejin/til/blob/master/oracle/understanding-oracle-wait-events.md#free-buffer-waits)).
+
+3. 신호를 받은 DBWR는 LRU 리스트에 lock을 걸고, LRU의 tail부터 `DBWR lru scans` (default: 8) 만큼의 디스크에 쓰여야 할 dirty 버퍼를 모읍니다.
+
+4. LRUW에 모인 dirty 버퍼는 DBWR에 의해 디스크로 쓰여지고, 이렇게 쓰여진 버퍼는 free 버퍼가 되어 다시 사용될 수 있도록 LRU의 tail에 위치하게 됩니다.
+
+### 페이지 교체 알고리즘: LRU 기반의 블록 레벨 교체 알고리즘
+
+Oracle은 dirty 버퍼와 non-dirty 버퍼에 대한 포인터를 포함하는 LRU  (Least Recently Used) 리스트를 사용합니다. LRU 리스트에는 hot end와 cold end가 있습니다. Cold 버퍼는 최근에 사용되지 않은 버퍼이며, hot 버퍼는 자주 접근되고 최근에 사용된 버퍼입니다. LRU는 크게 두 개의 리스트로 구성되며, 버퍼 캐시 상의 버퍼 블록은 반드시 이 둘 중 하나의 리스트에만 속합니다:
+
+![lru](https://www.relationaldbdesign.com/database-creation-architecture/module5/images/buffercache_mo.gif)
+
+#### LRU List
+
+- Free buffer: 사용되지 않은 버퍼
+- Pinned buffer: 현재 다른 유저에 의해 사용 중이어서 재사용될 수 없는 상태의 버퍼
+- Dirty buffer: 유저가 사용하여 내용이 변경된 버퍼로 LRUW 리스트로 옮겨질 수 있고, 결국엔 디스크로 flush 될 버퍼
+
+#### LRUW (LRU Write) List
+
+Dirty list, dirty queue라고도 불리며, DBWR는 이 리스트의 버퍼들을 디스크에 flush 하여 free 버퍼로 만듭니다.
+
+#### Touch Count
+
+오라클은 개별 버퍼마다 touch count를 관리하며, 프로세스에 의해서 스캔이 이루어질 때마다 touch count를 1씩 증가시킵니다.
+
+- Cold end의 tail에 있으면서 touch count가 1 이하인 버퍼가 free 버퍼로 사용됩니다.
+
+- Cold end의 tail에 있으면서 touch count가 2 이상인 버퍼를 만나면, hot end의 head 부분으로 옮기고 touch count를 0으로 초기화합니다.
+
+- Hot end로 옮기는 기준은 `_DB_AGING_HOT_CRITERIA` 파라미터에 의해 결정되며, 디폴트로 2입니다.
+
+- Single block I/O에 의해 읽어온 블록은 mid-point에 삽입되며, touch count는 1입니다.
+
+- Full table scan이나 index full scan으로 읽혀진 데이터들은 mid-point에 삽입되었다가 바로 cold end의 tail로 옮겨져서 버퍼 캐시에 머무를 확률이 낮아집니다.
+
 ## PostgreSQL
 
 - [참고 자료](http://www.interdb.jp/pg/pgsql08.html)
