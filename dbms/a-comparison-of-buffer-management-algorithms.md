@@ -36,7 +36,7 @@
 
 3. 태그가 `Tag_C`인 항목을 찾고, 해당 항목에서 `buffer_id`를 얻습니다. 이 예제에서 `buffer_id`는 2입니다.
 
-4. `buffer_id` 2에 대한 buffer descriptor를 고정합니다. 즉, descriptor의 `refcount` 및 `usage_count`가 1씩 증가합니다.
+4. `buffer_id` 2에 대한 buffer descriptor를 pin 합니다. 즉, descriptor의 `refcount` 및 `usage_count`가 1씩 증가합니다.
 
 5. `BufMappingLock`을 해제합니다.
 
@@ -49,10 +49,10 @@
 두 번째는 원하는 페이지가 버퍼 풀에 없고, `freelist`가 비어 있지 않은 경우입니다.
 
 1. 버퍼 테이블을 검색합니다:
-  1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_E`), hash bucket 슬롯을 계산합니다.
-  2. `BufMappingLock` 파티션을 shared 모드로 획득합니다.
-  3. 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
-  4. `BufMappingLock`을 해제합니다.
+    1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_E`), hash bucket 슬롯을 계산합니다.
+    2. `BufMappingLock` 파티션을 shared 모드로 획득합니다.
+    3. 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
+    4. `BufMappingLock`을 해제합니다.
 
 2. `freelist`에서 *비어 있는 buffer descriptor*를 확보하여 pin 합니다. 이 예제에서 획득한 descriptor의 `buffer_id`는 4입니다.
 
@@ -61,11 +61,11 @@
 4. `buffer_tag`가 `Tag_E`이고 `buffer_id`가 4인 새 데이터 항목을 생성합니다. 생성한 항목을 버퍼 테이블에 삽입합니다.
 
 5. 다음과 같이 `buffer_id` 4를 사용하여 스토리지에서 버퍼 풀 슬롯으로 원하는 페이지 데이터를 읽어옵니다:
-  1. `io_in_progress_lock`을 exclusive 모드로 획득합니다.
-  2. 다른 프로세스의 접근을 방지하기 위해 해당 descriptor의 `io_in_progress` 비트를 1로 설정합니다.
-  3. 스토리지에서 버퍼 풀 슬롯으로 원하는 페이지 데이터를 읽어옵니다.
-  4. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **0**으로 설정되고, 유효한 비트는 **1**로 설정됩니다.
-  5. `io_in_progress_lock`을 해제합니다.
+    1. `io_in_progress_lock`을 exclusive 모드로 획득합니다.
+    2. 다른 프로세스의 접근을 방지하기 위해 해당 descriptor의 `io_in_progress` 비트를 1로 설정합니다.
+    3. 스토리지에서 버퍼 풀 슬롯으로 원하는 페이지 데이터를 읽어옵니다.
+    4. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **0**으로 설정되고, 유효한 비트는 **1**로 설정됩니다.
+    5. `io_in_progress_lock`을 해제합니다.
 
 6. `BufMappingLock`을 해제합니다.
 
@@ -79,22 +79,22 @@
 
 1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_M`), 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
 
-2. **Clock-sweep** 알고리즘을 사용하여 victim 버퍼 풀 슬롯을 선택하고, 버퍼 테이블에서 victim 슬롯의 `buffer_id`를 포함하는 이전 항목을 가져 와서 buffer descriptor 레이어에 victim 슬롯을 고정합니다. 이 예제에서 victim 슬롯의 `buffer_id`는 5이고, 이전 항목은 `Tag_F, id=5` 입니다. Clock-sweep은 다음 섹션에서 설명합니다.
+2. **Clock-sweep** 알고리즘을 사용하여 victim 버퍼 풀 슬롯을 선택하고, 버퍼 테이블에서 victim 슬롯의 `buffer_id`를 포함하는 이전 항목을 가져 와서 buffer descriptor 레이어에 victim 슬롯을 pin 합니다. 이 예제에서 victim 슬롯의 `buffer_id`는 5이고, 이전 항목은 `Tag_F, id=5` 입니다. Clock-sweep은 다음 섹션에서 설명합니다.
 
 3. Victim 페이지 데이터가 dirty면, flush (write and fsync) 합니다. 그렇지 않으면 4단계로 넘어갑니다.
-  1. `buffer_id` 5를 사용하여, descriptor의 shared `content_lock` 및 exclusive `io_in_progress` lock을 획득합니다.
-  2. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **1**로 설정하고, `just_dirtied` 비트는 **0**으로 설정합니다.
-  3. 상황에 따라, WAL 버퍼의 WAL 데이터를 현재 WAL 세그먼트 파일에 기록하기 위해 `XLogFlush()` 함수가 호출됩니다.
-  4. Victim 페이지 데이터를 스토리지로 flush 합니다.
-  5. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **0**으로 설정되고, 유효한 비트는 **1**로 설정됩니다.
-  6. `io_in_progress` 및 `content_lock` lock을 해제합니다.
+    1. `buffer_id` 5를 사용하여, descriptor의 shared `content_lock` 및 exclusive `io_in_progress` lock을 획득합니다.
+    2. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **1**로 설정하고, `just_dirtied` 비트는 **0**으로 설정합니다.
+    3. 상황에 따라, WAL 버퍼의 WAL 데이터를 현재 WAL 세그먼트 파일에 기록하기 위해 `XLogFlush()` 함수가 호출됩니다.
+    4. Victim 페이지 데이터를 스토리지로 flush 합니다.
+    5. 해당 descriptor의 상태를 변경합니다. `io_in_progress` 비트는 **0**으로 설정되고, 유효한 비트는 **1**로 설정됩니다.
+    6. `io_in_progress` 및 `content_lock` lock을 해제합니다.
 
 4. 이전 항목을 포함하는 슬롯을 커버하는 old `BufMappingLock` 파티션을 exclusive 모드로 획득합니다.
 
 5. New `BufMappingLock` 파티션을 획득하고, 새 항목을 버퍼 테이블에 삽입합니다.
-  1. 새로운 `buffer_tag`인 `Tag_M`과 victim의 `buffer_id`로 구성된 새 항목을 만듭니다.
-  2. 새 항목을 포함하는 슬롯을 커버하는 new `BufMappingLock` 파티션을 exclusive 모드로 획득합니다.
-  3. 새 항목을 버퍼 테이블에 삽입합니다.
+    1. 새로운 `buffer_tag`인 `Tag_M`과 victim의 `buffer_id`로 구성된 새 항목을 만듭니다.
+    2. 새 항목을 포함하는 슬롯을 커버하는 new `BufMappingLock` 파티션을 exclusive 모드로 획득합니다.
+    3. 새 항목을 버퍼 테이블에 삽입합니다.
 
 ![third-case-2](http://www.interdb.jp/pg/img/fig-8-11.png)
 
