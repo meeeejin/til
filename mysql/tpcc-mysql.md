@@ -2,9 +2,9 @@
 
 ## Mounting devices
 
-Before installing and loading the database, you should mount the devices to store the database files. We will **separate data and log files on separate devices**. Placing both data and (transaction) log files on the same device can cause contention for that device, resulting in poor performance. Also, by placing the log files on the separate device, it ensures full recovery when the data device crashes.
+Before installing and loading the database, you should mount the devices to store the database files. We will *separate data and log files on separate devices*. Placing both DATA AND (transaction) LOG files on the same device can cause contention for that device, resulting in poor performance. Also, by placing the log files on the separate device, it ensures full recovery when the data device crashes.
 
-1. First, list the partitions on your system. And check the device names (e.g., `/dev/nvme0n1` for data files, and `/dev/sda` for log files) to mount:
+1. First, list the partitions on your system. And check the device names (e.g., `/dev/nvme0n1`, `/dev/sda`) to mount:
 
 ```bash
 $ sudo fdisk -l
@@ -96,7 +96,7 @@ $ sudo mount /dev/nvme0n1p1 test_data
 $ sudo chown -R yourUsername:yourUsername test_data
 ```
 
-Yon need to change `/dev/nvme0n1p1` to the partition name of your data device and `yourUsername` to your user name.
+You need to change `/dev/nvme0n1p1` to the partition name of your data device and `yourUsername` to your user name.
 
 7. Then, mount the log device:
 
@@ -106,12 +106,21 @@ $ sudo mount /dev/sda1 -o nobarrier test_log
 $ sudo chown -R yourUsername:yourUsername test_log
 ```
 
-Likewise, yon need to change `/dev/sda1` to the partition name of your log device and `yourUsername` to your user name.
+Likewise, you need to change `/dev/sda1` to the partition name of your log device and `yourUsername` to your user name. In the case of the log device, we turned off the *write barrier* option to mitigate the overhead of `fsync()`. The detailed reasons are as follows:
 
-> A write barrier is a kernel mechanism used to ensure that file system metadata is correctly written and ordered on persistent storage, even when storage devices with volatile write caches lose power. File systems with write barriers enabled also ensure that data transmitted via `fsync()` is persistent throughout a power loss.
-However, enabling write barriers incurs a substantial performance penalty for some applications. Specifically, applications that use `fsync()` heavily or create and delete many small files will likely run much slower.
-For devices with non-volatile, battery-backed write caches and those with write-caching disabled, you can safely disable write barriers at mount time using the `-o nobarrier` option for mount.
+> A **write barrier** is a kernel mechanism used to ensure that file system metadata is correctly written and ordered on persistent storage, even when storage devices with volatile write caches lose power. File systems with write barriers enabled also ensure that data transmitted via `fsync()` is persistent throughout a power loss.
+> However, enabling write barriers incurs a substantial performance penalty for some applications. Specifically, applications that use `fsync()` heavily or create and delete many small files will likely run much slower.
+> For devices with non-volatile, battery-backed write caches and those with write-caching disabled, you can safely disable write barriers at mount time using the `-o nobarrier` option for mount.
 
+8. You can check the mounted device with the below command:
+
+```bash
+$ mount
+...
+/dev/nvme0n1p1 on /home/mijin/test_data type ext4 (rw,relatime,data=ordered)
+/dev/sda1 on /home/mijin/test_log type ext4 (rw,relatime,nobarrier,data=ordered)
+...
+```
 
 ## How to install MySQL 5.7
 
