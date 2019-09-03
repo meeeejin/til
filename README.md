@@ -87,6 +87,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [InnoDB adaptive flushing](mysql/adaptive-flushing.md) :kr:
 - [innodb_ruby](mysql/innodb-ruby.md) :kr:
 - [Punch hole](mysql/punch-hole.md) :kr:
+- [tpcc-mysql: Quick Start Guide](mysql/tpcc-mysql.md)
 
 ### Oracle
 

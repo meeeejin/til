@@ -1,6 +1,6 @@
 # How to install SysBench 0.5 on Ubuntu
 
-# Prerequisite
+## Prerequisite
 
 ```bash
 sudo apt-get install automake
@@ -9,9 +9,9 @@ sudo apt-get install libmysqlclient-dev
 sudo apt-get install libssl1.0.0 libssl-dev
 ```
 
-# Installation
+## Installation
 
-1. Downloads SysBench 0.5(i.e. sysbench_0.5.orig.tar.gz) from [Percona repositories](http://repo.percona.com/apt/pool/main/s/sysbench/).
+1. Downloads SysBench 0.5 (i.e. sysbench_0.5.orig.tar.gz) from [Percona repositories](http://repo.percona.com/apt/pool/main/s/sysbench/).
 
 2. Untar the sysbench tar file.
 
@@ -36,7 +36,7 @@ If you have MySQL headers and libraries in non-standard locations (and no mysql_
 
 4. Now you can run SysBench 0.5 using `sysbench` command.
 
-# Usage
+## Usage
 
 1. Before running the benchmark, you should create a database for SysBench test. For example:
 
@@ -71,7 +71,7 @@ sysbench --test=/home/mijin/sysbench-0.5/sysbench/tests/db/oltp.lua \
 
 You can get more information from [SysBench manual](http://imysql.com/wp-content/uploads/2014/10/sysbench-manual.pdf) and [SysBench Github repository](https://github.com/akopytov/sysbench).
 
-# Error
+## Error
 
 If you get an error message as follows:
 

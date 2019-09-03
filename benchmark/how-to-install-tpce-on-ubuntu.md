@@ -1,10 +1,12 @@
 # How to install TPC-E on Ubuntu (for MySQL)
 
-# Prerequisite
+## Prerequisite
 
 ```bash
 sudo apt-get install unixodbc unixodbc-dev
 ```
+
+## Installation
 
 1. If you don't have `bzr` package in your Ubuntu, download it first.
 
