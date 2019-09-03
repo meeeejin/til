@@ -43,15 +43,10 @@ Then build and install the source code.
 $ make -j8 install
 ```
 
-Initialize tasks that must be performed before the MySQL server, mysqld, is ready to use.
+`mysqld --initialize` handles initialization tasks that must be performed before the MySQL server, mysqld, is ready to use:
 - `--datadir` : the path to the MySQL data directory
 - `--basedir` : the path to the MySQL installation directory.
 
-```bash
-$ ./bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
-```
-
-or
 
 ```bash
 $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir

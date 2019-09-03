@@ -148,40 +148,47 @@ $ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison
 
 ### Build and install
 
-1. In MySQL 5.7, the Boost library is required to build MySQL. Therefore, download it first:
+1. Download the source code of [MySQL 5.7 Community Server](https://dev.mysql.com/downloads/mysql/5.7.html#downloads) using `wget`:
+
+```bash
+$ wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.27.tar.gz
+```
+
+2. Extract the `mysql-5.7.27.tar.gz` file:
+
+```bash
+$ tar -xvzf mysql-5.7.27.tar.gz
+$ cd mysql-5.7.27
+```
+
+3. In MySQL 5.7, the Boost library is required to build MySQL. Therefore, download it first:
 
 ```bash
 $ cmake -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir
 ```
 
-2. If you already have the Boost library, change the default installation directory:
+If you already have the Boost library, change the default installation directory:
 
 ```bash
 $ cmake -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir
 ```
 
-3. Then build and install the source code:
+4. Then build and install the source code:
 (8: # of cores in your machine)
 
 ```bash
 $ make -j8 install
 ```
 
-4. Initialize tasks that must be performed before the MySQL server, mysqld, is ready to use:
+5. `mysqld --initialize` handles initialization tasks that must be performed before the MySQL server, mysqld, is ready to use:
 - `--datadir` : the path to the MySQL data directory
 - `--basedir` : the path to the MySQL installation directory.
-
-```bash
-$ ./bin/mysql_install_db --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
-```
-
-or
 
 ```bash
 $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
 ```
 
-5. Reset the root password:
+6. Reset the root password:
 
 ```bash
 $ ./bin/mysqld_safe --skip-grant-tables
@@ -190,17 +197,17 @@ $ ./bin/mysql -uroot
 
 root:(none)> use mysql;
 
-root:mysql> update user set authentication_string=password('abc') where user='root';
+root:mysql> update user set authentication_string=password('yourPassword') where user='root';
 root:mysql> flush privileges;
 root:mysql> quit;
 
 $ ./bin/mysql -uroot -p
 
-root:mysql> set password = password('abc');
+root:mysql> set password = password('yourPassword');
 root:mysql> quit;
 ```
 
-6. Open `.bashrc` and add MySQL to your path:
+7. Open `.bashrc` and add MySQL to your path:
 
 ```bash
 $ vi .bashrc
@@ -209,7 +216,7 @@ export PATH=/path/to/basedir/bin:$PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/basedir/lib/
 ```
 
-7. Modify the configuration file (`my.cnf` in your `/path/to/datadir`) for your purpose. For example, create or modify the contents of the configuration file as follows:
+8. Modify the configuration file (`my.cnf` in your `/path/to/datadir`) for your purpose. For example, create or modify the contents of the configuration file as follows:
 
 ```bash
 $ vi my.cnf
@@ -241,7 +248,7 @@ log-error       = /path/to/datadir/mysql_error.log
 # Innodb settings
 #
 # Page size
-innodb_page_size=4KB
+innodb_page_size=16KB
 
 # file-per-table ON
 innodb_file_per_table=1
@@ -272,10 +279,16 @@ innodb_doublewrite=ON
 innodb_use_native_aio=true
 ```
 
-8. Run the MySQL server:
+9. Run the MySQL server:
 
 ```bash
 $ ./bin/mysqld_safe --defaults-file=/path/to/my.cnf
+```
+
+10. You can shut down the server using the below command:
+
+```bash
+./bin/mysqladmin -uroot -pyourPassword shutdown
 ```
 
 ## How to install tpcc-mysql
@@ -303,7 +316,7 @@ $ ./bin/mysql -u root -p tpcc100 < /path/to/tpcc-mysql/create_table.sql
 $ ./bin/mysql -u root -p tpcc100 < /path/to/tpcc-mysql/add_fkey_idx.sql
 ```
 
-4. Then go back to the tpcc-mysql directory and load data. Before running the script, change `LD_LIBRARY_PATH` and enter the password in the `load.sh` file for your settings:
+4. Then go back to the tpcc-mysql directory and load data. Before running the script, change `LD_LIBRARY_PATH` and enter `yourPassword` in the `load.sh` file:
 
 ```bash
 $ cd tpcc-mysql
@@ -319,7 +332,7 @@ export LD_LIBRARY_PATH=/path/to/basedir/lib
 ...
 ```
 
-Load data:
+5. Load data:
 
 ```bash
 $ ./load.sh tpcc100 100
@@ -327,7 +340,7 @@ $ ./load.sh tpcc100 100
 
 In this case, database size is about 10 GB (= 100 warehouses).
 
-5. After loading, run tpcc-mysql test:
+6. After loading, run tpcc-mysql test:
 
 ```bash
 $ ./tpcc_start -h127.0.0.1 -S/tmp/mysql.sock -dtpcc100 -uroot -pyourPassword -w100 -c32 -r10 -l1200
@@ -345,7 +358,10 @@ It means:
 - Rampup time: 10 (sec)
 - Measure: 1200 (sec)
 
-And with the defined interval (`-i` option), the tool will produce the following output:
+
+### Output
+
+With the defined interval (`-i` option), the tool will produce the following output:
 
 ```bash
 10, trx: 12920, 95%: 9.483, 99%: 18.738, max_rt: 213.169, 12919|98.778, 1292|101.096, 1293|443.955, 1293|670.842
