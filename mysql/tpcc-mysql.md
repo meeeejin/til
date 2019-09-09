@@ -1,5 +1,7 @@
 # tpcc-mysql: Quick Start Guide
 
+**:warning: This post is based on Ubuntu 16.04.**
+
 ## Mounting devices
 
 Before installing and loading the database, you should mount the devices to store the database files. We will *separate data and log files on separate devices*. Placing both DATA AND (transaction) LOG files on the same device can cause contention for that device, resulting in poor performance. Also, by placing the log files on the separate device, it ensures full recovery when the data device crashes.
@@ -288,7 +290,7 @@ $ ./bin/mysqld_safe --defaults-file=/path/to/my.cnf
 10. You can shut down the server using the below command:
 
 ```bash
-./bin/mysqladmin -uroot -pyourPassword shutdown
+$ ./bin/mysqladmin -uroot -pyourPassword shutdown
 ```
 
 ## How to install tpcc-mysql
