@@ -193,7 +193,7 @@ $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/p
 6. Reset the root password:
 
 ```bash
-$ ./bin/mysqld_safe --skip-grant-tables
+$ ./bin/mysqld_safe --skip-grant-tables --datadir=/path/to/datadir
 
 $ ./bin/mysql -uroot
 
@@ -212,10 +212,12 @@ root:mysql> quit;
 7. Open `.bashrc` and add MySQL to your path:
 
 ```bash
-$ vi .bashrc
+$ vi ~/.bashrc
 
 export PATH=/path/to/basedir/bin:$PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/basedir/lib/
+
+$ source ~/.bashrc
 ```
 
 8. Modify the configuration file (`my.cnf` in your `/path/to/datadir`) for your purpose. For example, create or modify the contents of the configuration file as follows:
@@ -281,9 +283,10 @@ innodb_doublewrite=ON
 innodb_use_native_aio=true
 ```
 
-9. Run the MySQL server:
+9. Shut down and restart the MySQL server:
 
 ```bash
+$ ./bin/mysqladmin -uroot -pyourPassword shutdown
 $ ./bin/mysqld_safe --defaults-file=/path/to/my.cnf
 ```
 
