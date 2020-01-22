@@ -62,6 +62,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Extract multiple lines from a file](linux/extract-multiple-lines-from-a-file.md)
 - [How to add a kernel boot parameter](linux/how-to-add-a-kernel-boot-parameter.md)
 - [perf and FlameGraph](linux/perf-and-flamegraph.md) :kr:
+- [How to create software RAID 0 with mdadm](linux/how-to-create-software-raid0-with-mdadm.md)
 
 ### MySQL
 
