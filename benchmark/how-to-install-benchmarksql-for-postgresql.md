@@ -2,14 +2,14 @@
 
 1. Install [JDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
-2. Decompression the downloaded file.
+2. Decompress the downloaded file.
 
 ```bash
 $ cd Downloads
 $ tar -zxvf jdk-8u212-linux-x64.tar.gz
 ```
 
-3. Added the two lines below (for setting the environment variables) to `~/.bashrc` file.
+3. Add the two lines below (for setting the environment variables) to `~/.bashrc` file.
 
 ```bash
 export JAVA_HOME=/home/mijin/Downloads/jdk1.8.0_211

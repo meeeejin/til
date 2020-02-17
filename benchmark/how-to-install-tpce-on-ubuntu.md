@@ -3,7 +3,7 @@
 ## Prerequisite
 
 ```bash
-sudo apt-get install unixodbc unixodbc-dev
+$ sudo apt-get install unixodbc unixodbc-dev
 ```
 
 ## Installation
