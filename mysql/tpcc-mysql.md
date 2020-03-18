@@ -183,11 +183,18 @@ $ make -j8 install
 ```
 
 5. `mysqld --initialize` handles initialization tasks that must be performed before the MySQL server, mysqld, is ready to use:
-- `--datadir` : the path to the MySQL data directory
-- `--basedir` : the path to the MySQL installation directory.
+
+- `--datadir` : the path to the MySQL data directory (e.g., `/home/mijin/test_data`)
+- `--basedir` : the path to the MySQL installation directory (e.g., `/home/mijin/mysql-5.7.24`)
 
 ```bash
 $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
+```
+
+If you want to change the page size to 4K (default: 16K), add the `innodb_page_size` parameter. For example:
+
+```bash
+$ ./bin/mysqld --initialize --innodb_page_size=4k --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
 ```
 
 6. Reset the root password:
@@ -316,6 +323,10 @@ $ make
 3. Before running the benchmark, you should create a database for TPC-C test. Go to the MySQL base directory and run following commands:
 
 ```bash
+[session 1]
+$./bin/mysqld_safe --defaults-file=/path/to/my.cnf
+
+[session 2]
 $ ./bin/mysql -u root -p -e "CREATE DATABASE tpcc100;"
 $ ./bin/mysql -u root -p tpcc100 < /path/to/tpcc-mysql/create_table.sql
 $ ./bin/mysql -u root -p tpcc100 < /path/to/tpcc-mysql/add_fkey_idx.sql

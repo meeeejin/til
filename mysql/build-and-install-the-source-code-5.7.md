@@ -43,6 +43,7 @@ $ make -j8 install
 ```
 
 3. `mysqld --initialize` handles initialization tasks that must be performed before the MySQL server, mysqld, is ready to use:
+
 - `--datadir` : the path to the MySQL data directory (e.g., `/home/mijin/test_data`)
 - `--basedir` : the path to the MySQL installation directory (e.g., `/home/mijin/mysql-5.7.24`)
 
