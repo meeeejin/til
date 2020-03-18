@@ -49,6 +49,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 
 ### IPL
+
 - [Basic concept](ipl/basic-concept.md) :kr:
 - [Merge operation](ipl/merge-operation.md)
 
@@ -64,6 +65,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to add a kernel boot parameter](linux/how-to-add-a-kernel-boot-parameter.md)
 - [perf and FlameGraph](linux/perf-and-flamegraph.md) :kr:
 - [How to create software RAID 0 with mdadm](linux/how-to-create-software-raid0-with-mdadm.md)
+- [How to upgrade NVMe SSD firmware on Linux](linux/how-to-upgrade-nvme-ssd-firmware-on-linux.md)
 
 ### MySQL
 
