@@ -186,7 +186,7 @@ innodb_cleaner_lsn_age_factor (Percona server only, default high_checkpoint)
 이 모든 걸 종합하면, flush 될 실제 페이지 수는 다음과 같습니다:
 
 <p align="center">
-<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/finalPagesToFlush.png" alt="equation-final" width="600"/>
+<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/finalPagesToFlush.png" alt="equation-final" width="650"/>
 </p>
 
 이 값은 *ioCapMax*로 제한됩니다. 보시다시피 *pctOfIoCapToUse* 에는 *ioCap* 이 곱해집니다. *pctOfIoCapToUse* 를 계산하는 식을 되돌아보면 분모에 *ioCap* 이 있습니다. 따라서 *ioCap* 을 다시 곱했고, 이러한 adaptive flushing 알고리즘은 `innodb_io_capacity_max`만 중요하므로 `innodb_io_capacity`와 **독립적**입니다.
