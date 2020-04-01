@@ -93,6 +93,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Punch hole](mysql/punch-hole.md) :kr:
 - [tpcc-mysql: Quick Start Guide](mysql/tpcc-mysql.md)
 - [Mid-Point Insertion Strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
+- [All about InnoDB Flushing](mysql/all-abount-innodb-flushing.md) :kr:
 
 ### Oracle
 
