@@ -122,7 +122,7 @@ InnoDB는 보통 16KB 페이지에 row를 저장합니다. 이 페이지는 디�
 이제 InnoDB Redo Log의 구조를 살펴보겠습니다. 
 
 <p align="center">
-<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/ring_buffer_v2.png" alt="redo" width="600"/>
+<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/ring_buffer_v2.png" alt="redo" width="400"/>
 </p>
 
 > The InnoDB redo log files form a ring buffer
@@ -150,7 +150,7 @@ innodb_cleaner_lsn_age_factor (Percona server only, default high_checkpoint)
 *Legacy* 알고리즘은 다음과 같습니다. Age factor의 3/2의 제곱과 분모 7.5를 기억하세요:
 
 <p align="center">
-<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/legacy_equation.png" alt="leagcy-algo" width="600"/>
+<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/legacy_equation.png" alt="leagcy-algo" width="450"/>
 </p>
 
 > Legacy age factor
@@ -158,7 +158,7 @@ innodb_cleaner_lsn_age_factor (Percona server only, default high_checkpoint)
 *High Checkpoint* 알고리즘은 다음과 같습니다:
 
 <p align="center">
-<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/high_checkpoint_equation.png" alt="hc-algo" width="600"/>
+<img src="https://www.percona.com/blog/wp-content/uploads/2020/01/high_checkpoint_equation.png" alt="hc-algo" width="450"/>
 </p>
 
 > Percona High-checkpoint age factor
