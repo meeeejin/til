@@ -155,6 +155,8 @@ bool Fil_shard::space_extend(fil_space_t *space, page_no_t size) {
 
 ## ftruncate()
 
+### Session Temporary Tablespaces
+
 The `ftruncate()` is used to truncate a file to a specified size in bytes. The system call is mainly called indirectly using the below function: `os_file_truncate_posix()`. 
 
 > storage/innobase/os/os0file.cc: 3533
@@ -183,4 +185,245 @@ static bool os_file_truncate_posix(const char *pathname, pfs_os_file_t file,
 }
 ```
 
-As walking up the call stack, `os_file_truncate_posix()` eventually is called by `space_truncate()`.
+As walking up the call stack, `os_file_truncate_posix()` eventually is called by `fil_truncate_tablespace()`. `fil_truncate_tablespace()` is called by `truncate()` function for session temporary tablespaces.
+
+> storage/innobase/srv/srv0tmp.cc: 142
+```cpp
+bool Tablespace::truncate() {
+  if (!m_inited) {
+    return (false);
+  }
+
+  bool success = fil_truncate_tablespace(m_space_id, FIL_IBT_FILE_INITIAL_SIZE);
+  if (!success) {
+    return (success);
+  }
+  mtr_t mtr;
+  mtr_start(&mtr);
+  mtr_set_log_mode(&mtr, MTR_LOG_NO_REDO);
+  fsp_header_init(m_space_id, FIL_IBT_FILE_INITIAL_SIZE, &mtr, false);
+  mtr_commit(&mtr);
+  return (true);
+}
+```
+
+And it is used to truncate and release the session temporary tablespace back to the pool:
+
+> storage/innobase/srv/srv0tmp.cc: 229
+```cpp
+void Tablespace_pool::free_ts(Tablespace *ts) {
+  space_id_t space_id = ts->space_id();
+  fil_space_t *space = fil_space_get(space_id);
+  ut_ad(space != nullptr);
+
+  if (space->size != FIL_IBT_FILE_INITIAL_SIZE) {
+    ts->truncate();
+  }
+
+  acquire();
+
+  Pool::iterator it = std::find(m_active->begin(), m_active->end(), ts);
+  if (it != m_active->end()) {
+    m_active->erase(it);
+  } else {
+    ut_ad(0);
+  }
+  
+  m_free->push_back(ts);
+
+  release();
+}
+```
+
+### Temporary File
+
+`ftruncate()` is used to truncates temporary files at its current position using the below function.
+
+> storage/innobase/os/os0file.cc: 3551
+```cpp
+/** Truncates a file at its current position.
+@return true if success */
+bool os_file_set_eof(FILE *file) /*!< in: file to be truncated */
+{
+  return (!ftruncate(fileno(file), ftell(file)));
+}
+```
+
+Using `os_file_set_eof()`, InnoDB truncates a temporary file for *InnoDB monitor output*.
+
+> storage/innobase/handler/ha_innodb.cc: 17576
+```cpp
+  /* We let the InnoDB Monitor to output at most MAX_STATUS_SIZE
+  bytes of text. */
+
+  char *str;
+  ssize_t flen;
+
+  mutex_enter(&srv_monitor_file_mutex);
+  rewind(srv_monitor_file);
+
+  srv_printf_innodb_monitor(srv_monitor_file, FALSE, &trx_list_start,
+                            &trx_list_end);
+    
+  os_file_set_eof(srv_monitor_file);
+    
+  if ((flen = ftell(srv_monitor_file)) < 0) {
+    flen = 0;
+  }
+
+  ssize_t usable_len;
+  
+  if (flen > MAX_STATUS_SIZE) {
+    usable_len = MAX_STATUS_SIZE;
+    srv_truncated_status_writes++;
+  } else {
+    usable_len = flen;
+  }
+```
+
+> storage/innobase/srv/srv0srv.cc: 1651
+```cpp
+...
+    if (!srv_read_only_mode && srv_innodb_status) {
+      mutex_enter(&srv_monitor_file_mutex);
+      rewind(srv_monitor_file);
+      if (!srv_printf_innodb_monitor(srv_monitor_file,
+                                     MUTEX_NOWAIT(mutex_skipped), NULL, NULL)) {
+        mutex_skipped++;
+      } else {
+        mutex_skipped = 0;
+      }
+
+      os_file_set_eof(srv_monitor_file);
+      mutex_exit(&srv_monitor_file_mutex);
+    }
+...
+```
+
+Also, InnoDB truncates a temporary file for *miscellanous diagnostic output*.
+
+> storage/innobase/row/row0ins.cc: 678
+```cpp
+/** Set detailed error message associated with foreign key errors for
+ the given transaction. */
+static void row_ins_set_detailed(
+    trx_t *trx,              /*!< in: transaction */
+    dict_foreign_t *foreign) /*!< in: foreign key constraint */
+{
+  ut_ad(!srv_read_only_mode);
+
+  mutex_enter(&srv_misc_tmpfile_mutex);
+  rewind(srv_misc_tmpfile);
+
+  if (os_file_set_eof(srv_misc_tmpfile)) {
+    ut_print_name(srv_misc_tmpfile, trx, foreign->foreign_table_name);
+    dict_print_info_on_foreign_key_in_create_format(srv_misc_tmpfile, trx,
+                                                    foreign, FALSE);
+    trx_set_detailed_error_from_file(trx, srv_misc_tmpfile);
+  } else {
+    trx_set_detailed_error(trx, "temp file operation failed");
+  }
+
+  mutex_exit(&srv_misc_tmpfile_mutex);
+}
+```
+
+## Rebuilt Table
+
+`ftruncate()` is used when executing `inplace_alter_table()`. Check the [detailed explanation](https://dev.mysql.com/worklog/task/?id=9559).
+
+> storage/innobase/row/row0log.cc: 2560
+```cpp
+/** Applies operations to a table was rebuilt.
+@param[in]  thr query graph
+@param[in,out]  dup for reporting duplicate key errors
+@param[in,out]  stage   performance schema accounting object, used by
+ALTER TABLE. If not NULL, then stage->inc() will be called for each block
+of log that is applied.
+@return DB_SUCCESS, or error code on failure */
+static MY_ATTRIBUTE((warn_unused_result)) dberr_t
+    row_log_table_apply_ops(que_thr_t *thr, row_merge_dup_t *dup,
+                            ut_stage_alter_t *stage) {
+...
+  if (index->online_log->head.blocks == index->online_log->tail.blocks) {
+    if (index->online_log->head.blocks) {
+#ifdef HAVE_FTRUNCATE
+      /* Truncate the file in order to save space. */
+      if (index->online_log->fd > 0 &&
+          ftruncate(index->online_log->fd, 0) == -1) {
+        perror("ftruncate");
+      }
+#endif /* HAVE_FTRUNCATE */
+      index->online_log->head.blocks = index->online_log->tail.blocks = 0;
+    }
+...
+```
+
+> storage/innobase/row/row0log.cc: 3330
+```cpp
+/** Applies operations to a secondary index that was being created.
+@param[in]  trx transaction (for checking if the operation was
+interrupted)
+@param[in,out]  index   index
+@param[in,out]  dup for reporting duplicate key errors
+@param[in,out]  stage   performance schema accounting object, used by
+ALTER TABLE. If not NULL, then stage->inc() will be called for each block
+of log that is applied.
+@return DB_SUCCESS, or error code on failure */
+static dberr_t row_log_apply_ops(const trx_t *trx, dict_index_t *index,
+                                 row_merge_dup_t *dup,
+                                 ut_stage_alter_t *stage) {
+...
+  if (index->online_log->head.blocks == index->online_log->tail.blocks) {
+    if (index->online_log->head.blocks) {
+#ifdef HAVE_FTRUNCATE
+      /* Truncate the file in order to save space. */
+      if (index->online_log->fd > 0 &&
+          ftruncate(index->online_log->fd, 0) == -1) {
+        perror("ftruncate");
+      }
+#endif /* HAVE_FTRUNCATE */
+      index->online_log->head.blocks = index->online_log->tail.blocks = 0;
+    }
+...
+```
+
+The above two functions are eventually called in `inplace_alter_table_impl()` function.
+
+> storage/innobase/handler0alter.cc: 5907, 5919
+```cpp
+/** Implementation of inplace_alter_table()
+@tparam     Table       dd::Table or dd::Partition
+@param[in]  altered_table   TABLE object for new version of table.
+@param[in,out]  ha_alter_info   Structure describing changes to be done
+                                by ALTER TABLE and holding data used
+                                during in-place alter.
+@param[in]  old_dd_tab  dd::Table object describing old version
+                                of the table.
+@param[in,out]  new_dd_tab  dd::Table object for the new version of the
+                                table. Can be adjusted by this call.
+                                Changes to the table definition will be
+                                persisted in the data-dictionary at statement
+                                commit time.
+@retval true Failure
+@retval false Success
+*/
+template <typename Table>
+bool ha_innobase::inplace_alter_table_impl(TABLE *altered_table,
+                                           Alter_inplace_info *ha_alter_info,
+                                           const Table *old_dd_tab,
+                                           Table *new_dd_tab) {
+...
+  error = row_merge_build_indexes(
+      m_prebuilt->trx, m_prebuilt->table, ctx->new_table, ctx->online,
+      ctx->add_index, ctx->add_key_numbers, ctx->num_to_add_index,
+      altered_table, ctx->add_cols, ctx->col_map, ctx->add_autoinc,
+      ctx->sequence, ctx->skip_pk_sort, ctx->m_stage, add_v, eval_table);
+...
+  if (error == DB_SUCCESS && ctx->online && ctx->need_rebuild()) {
+    DEBUG_SYNC_C("row_log_table_apply1_before");
+    error = row_log_table_apply(ctx->thr, m_prebuilt->table, altered_table,
+                                ctx->m_stage);
+  }
+...
+```
