@@ -4,9 +4,13 @@ This document summarizes where `fallocate()` and `ftruncate()` are used. The cod
 
 ## fallocate()
 
+1. [File Creation](#File-Creation)
+2. [Punch Hole](#Punch-Hole)
+3. [File Extension](#File-Extension)
+
 ### File Creation
 
-If the file system supports `fallocate()` and FusionIO atomic writes are enabled, InnoDB uses `fallocate()` to create a tablespace. 
+If the file system supports `fallocate()` and **FusionIO atomic writes** are enabled, InnoDB uses `fallocate()` to create a tablespace. 
 
 > storage/innobase/fil/fil0fil.cc: 5013
 ```cpp
@@ -56,7 +60,7 @@ static dberr_t fil_create_tablespace(space_id_t space_id, const char *name,
 
 ### Punch Hole
 
-If the file system supports sparse files and punch hole, InnoDB uses `fallocate()` to create a tablespace file. The code below is carried out after the [above code](#File-Creation).
+If the file system supports **sparse files** and **punch hole**, InnoDB uses `fallocate()` to create a tablespace file. The code below is carried out *after* the [above code](#File-Creation).
 
 > storage/innobase/fil/fil0fil.cc: 5053
 ```cpp
@@ -155,6 +159,10 @@ bool Fil_shard::space_extend(fil_space_t *space, page_no_t size) {
 
 ## ftruncate()
 
+1. [Session Temporary Tablespaces](#Session-Temporary-Tablespaces)
+2. [Temporary Files](#Temporary-Files)
+3. [Rebuilt Table](#Rebuilt-Table)
+
 ### Session Temporary Tablespaces
 
 The `ftruncate()` is used to truncate a file to a specified size in bytes. The system call is mainly called indirectly using the below function: `os_file_truncate_posix()`. 
@@ -207,7 +215,7 @@ bool Tablespace::truncate() {
 }
 ```
 
-And it is used to truncate and release the session temporary tablespace back to the pool:
+And it is used to truncate and release the session temporary tablespace back to the pool.
 
 > storage/innobase/srv/srv0tmp.cc: 229
 ```cpp
@@ -235,7 +243,7 @@ void Tablespace_pool::free_ts(Tablespace *ts) {
 }
 ```
 
-### Temporary File
+### Temporary Files
 
 `ftruncate()` is used to truncates temporary files at its current position using the below function.
 
@@ -328,7 +336,7 @@ static void row_ins_set_detailed(
 }
 ```
 
-## Rebuilt Table
+### Rebuilt Table
 
 `ftruncate()` is used when executing `inplace_alter_table()`. Check the [detailed explanation](https://dev.mysql.com/worklog/task/?id=9559).
 
