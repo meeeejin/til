@@ -109,15 +109,13 @@ Start a MySQL instance is simple:
 $ sudo docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=pw -d mysql:5.7
 ```
 
-- `some-mysql` is the name you want to assign to your container
-- `pw` is the password to be set for the MySQL root user
-- `mysql:5.7` is the tag specifying the MySQL version you want. See the [manual](https://hub.docker.com/_/mysql) for relevant tags.
+- `some-mysql`: The name you want to assign to your container
+- `pw`: The password to be set for the MySQL root user
+- `mysql:5.7`: The tag specifying the MySQL version you want. See the [manual](https://hub.docker.com/_/mysql) for relevant tags.
 
 ### Via `docker-compose`
 
-You can use `docker-compose` to run a MySQL container. Define the services that make up your app in `docker-compose.yml` so they can be run together in an isolated environment.
-
-My `dockers-compose.yml` looks like this:
+You can use `docker-compose` to run a MySQL container. Define the services that make up your app in `docker-compose.yml` so they can be run together in an isolated environment. For example, my `dockers-compose.yml` looks like this:
 
 ```bash
 version: '3.1'
@@ -135,7 +133,7 @@ services:
       MYSQL_ROOT_PASSWORD: "pw"
 ```
 
-Running `docker-compose up` makes *Compose* start and run the entire app:
+Running `docker-compose up` makes *Compose* start and run the MySQL app:
 
 ```bash
 $ sudo docker-compose up -d
@@ -144,7 +142,7 @@ Creating vldb-mysql ... done
 
 ### Use a Directory of Host System as a Volume
 
-The mounted directory in the host system can be used as a data directory on MySQL in Docker. Add `volumes` in the yaml file (`dockers-compose.yml`):
+The mounted directory in the host system can be used as a data directory on MySQL in Docker. Add `volumes` in the *yaml* file (`dockers-compose.yml`):
 
 ```bash
   db:
@@ -155,8 +153,8 @@ The mounted directory in the host system can be used as a data directory on MySQ
     ...
 ```
 
-- `/home/mijin/test_data`: SSD-mounted directory in the host system
-- `/var/lib/mysql`: Directory for MySQL data in Docker 
+- `/home/mijin/test_data`: The SSD-mounted directory in host system
+- `/var/lib/mysql`: The data directory for MySQL in Docker 
 
 ### Add Custom my.cnf to MySQL Container
 
@@ -169,14 +167,14 @@ $ vim /home/mijin/mysql-conf/my.cnf
 ...
 ```
 
-2. Modify `dockers-compose.yml` to map `mysql-conf` directory of host system into `conf.d` directory of Docker:
+2. Modify `dockers-compose.yml` to map `mysql-conf` directory in host system into `conf.d` directory in Docker:
 
 ```bash
   db:
     image: mysql:5.7
     ...
     volumes:
-      - /home/mijin/cnf:/etc/mysql/conf.d
+      - /home/mijin/mysql-conf:/etc/mysql/conf.d
     ...
 ```
 
@@ -187,13 +185,13 @@ $ sudo docker-compose up -d
 Creating vldb-mysql ... done
 ```
 
-4. Run the below command to connect to the container's bash:
+4. Run the below command to connect to the created container's bash:
 
 ```bash
 $ sudo docker exec -it vldb-mysql bash
 ```
 
-5. Check the modified server variables in MySQL:
+5. Check the modified server variable in MySQL:
 
 ```bash
 root@89bb80313ac4:/# mysql -uroot -p -e "show variables like '%log_files%'"
@@ -204,4 +202,4 @@ root@89bb80313ac4:/# mysql -uroot -p -e "show variables like '%log_files%'"
 +---------------------------+-------+
 ```
 
-The value of `innodb_log_files_in_group` was changed from 2 (default) to 3.
+The value of `innodb_log_files_in_group` was changed from 2 (default value) to 3 (the value set in `mysql-conf/my.cnf`).
