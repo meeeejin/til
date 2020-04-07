@@ -2,7 +2,6 @@
 
 TIL is a collection of the things that I learned today. The contents can be anything.
 
-
 ---
 
 ### Categories
@@ -25,7 +24,6 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Vim](#vim)
 
 ---
-
 
 ### Benchmark
 
