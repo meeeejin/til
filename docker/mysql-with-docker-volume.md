@@ -115,7 +115,19 @@ $ sudo docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=pw -d mysql:5.7
 
 ### Via `docker-compose`
 
-You can use `docker-compose` to run a MySQL container. Define the services that make up your app in `docker-compose.yml` so they can be run together in an isolated environment. For example, my `dockers-compose.yml` looks like this:
+You can use `docker-compose` to run a MySQL container. 
+
+1. Download and install the desired version of `docker-compose`. You can check all the released versions in the [GitHub](https://github.com/docker/compose/releases):
+
+```bash
+$ sudo curl -L https://github.com/docker/compose/releases/download/1.26.0-rc3/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+$ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+$ sudo docker-compose --version
+docker-compose version 1.26.0-rc3, build 46118bc5
+```
+
+2. Define the services that make up your app in `docker-compose.yml` so they can be run together in an isolated environment. For example, my `dockers-compose.yml` looks like this:
 
 ```bash
 version: '3.1'
@@ -133,7 +145,7 @@ services:
       MYSQL_ROOT_PASSWORD: "pw"
 ```
 
-Running `docker-compose up` makes *Compose* start and run the MySQL app:
+3. Run `docker-compose up`. Then *Compose* starts and runs the MySQL app:
 
 ```bash
 $ sudo docker-compose up -d
