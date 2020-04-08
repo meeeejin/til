@@ -1,7 +1,5 @@
 # How to use lb-mysql on IOD SSD
 
-> The content below is currently being edited, please do not follow it yet.
-
 1. Pull the image:
 
 ```bash
