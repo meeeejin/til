@@ -140,7 +140,7 @@ services:
       - 3306:3306
     volumes:
       - /home/mijin/test_data:/var/lib/mysql
-      - /home/mijin/cnf:/etc/mysql/conf.d
+      - /home/mijin/mysql-conf:/etc/mysql/conf.d
     environment:
       MYSQL_ROOT_PASSWORD: "pw"
 ```
