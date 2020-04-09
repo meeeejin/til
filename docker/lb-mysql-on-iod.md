@@ -1,6 +1,6 @@
 # How to use lb-mysql on IOD SSD
 
-1. Pull the image:
+1. Pull the [lb-mysql](https://hub.docker.com/r/meeeejin/lb-mysql) image:
 
 ```bash
 $ sudo docker pull meeeejin/lb-mysql:latest
