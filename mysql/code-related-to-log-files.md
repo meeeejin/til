@@ -64,7 +64,7 @@ static MY_ATTRIBUTE((warn_unused_result)) dberr_t
     ...
 ```
 
-`os_file_create()` eventually is called by `os_file_create_func()`. In `os_file_create_func()`, InnoDB creates a new file with `open()` function.
+`os_file_create()` eventually calls `os_file_create_func()`. In `os_file_create_func()`, InnoDB creates a new file with `open()` function.
 
 > storage/innobase/os/os0file.cc: 3201
 ```cpp
@@ -113,7 +113,7 @@ pfs_os_file_t os_file_create_func(const char *name, ulint create_mode,
     } while (retry);
 ``` 
 
-After creating a log file, InnoDB calls `os_file_set_size` function, and **it writes the specified number (`srv_log_file_size`) of zeros to the file specific offset (`0`) aligning page sizes.**
+After creating a log file, InnoDB calls `os_file_set_size` function, and **it writes the specified number (`srv_log_file_size`) of zeros to the file specific offset (`0`)**.
 
 > storage/innobase/srv/srv0start.cc: 299
 ```cpp
@@ -137,6 +137,8 @@ static MY_ATTRIBUTE((warn_unused_result)) dberr_t
 
     return (DB_SUCCESS);
 ```
+
+At this time, the buffer to write is aligned for possible raw I/O.
 
 > storage/innobase/os/os0file.cc: 5346
 ```cpp
