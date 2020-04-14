@@ -1,6 +1,6 @@
 # Code related to log files
 
-This document summarizes the codes used when creating and reusing log files.
+This document summarizes the codes used when creating and reusing log files. The code below is based on MySQL 8.0.15.
 
 ## Log File Creation
 
