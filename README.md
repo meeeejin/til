@@ -101,7 +101,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Mid-Point Insertion Strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
 - [All about InnoDB Flushing](mysql/all-abount-innodb-flushing.md) :kr:
 - [fallocate() and ftruncate() in MySQL/InnoDB](mysql/falloc-and-ftrunc-in-innodb.md)
- - [Code related to log files](mysql/code-related-to-log-files.md)
+- [Code related to log files](mysql/code-related-to-log-files.md)
+- [InnoDB Page Splits](mysql/page-split.md)
 
 ### Oracle
 
