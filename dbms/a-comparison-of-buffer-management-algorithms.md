@@ -139,8 +139,10 @@ Dirty list, dirty queue라고도 불리며, DBWR는 이 리스트의 버퍼들�
 1. 원하는 페이지의 `buffer_tag`를 생성하고 (이 예제에서 `buffer_tag`는 `Tag_M`), 버퍼 테이블을 검색합니다. 하지만 원하는 페이지를 찾지 못했습니다.
 
 2. **Clock-sweep** 알고리즘을 사용하여 victim 버퍼 풀 슬롯을 선택하고, 버퍼 테이블에서 victim 슬롯의 `buffer_id`를 포함하는 이전 항목을 가져 와서 buffer descriptor 레이어에 victim 슬롯을 pin 합니다. 이 예제에서 victim 슬롯의 `buffer_id`는 5이고, 이전 항목은 `Tag_F, id=5` 입니다. Clock-sweep은 다음 섹션에서 설명합니다.
-```c
-StrategyGetBuffer() // victim 버퍼 선택
+
+> 아래 수정 필요
+```cpp
+buf = StrategyGetBuffer(strategy, &buf_state); // victim 버퍼 선택
     LWLockAcquire(BufFreelistLock, LW_EXCLUSIVE);
     if (bgwriterLatch)
         LWLockRelease(BufFreelistLock);
@@ -151,7 +153,7 @@ StrategyGetBuffer() // victim 버퍼 선택
     없으면, for문 돌면서 Clock-sweep 알고리즘 수행
         unpin && usable count == 0 → usable buffer
         usable buffer가 있으면, return buf
-PinBuffer_Locked() // victim 버퍼 pinning
+PinBuffer_Locked(buf); // victim 버퍼 pinning
 LWLockRelease(BufFreelistLock);
 ```
 
