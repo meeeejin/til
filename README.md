@@ -130,6 +130,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### PostgreSQL
 
 - [PostgreSQL installation from source code](postgresql/installation-from-source-code.md)
+- [Buffer Management of PostgreSQL](postgresql/pgsql-buffer-mgmt.md) :kr:
 
 ### Predix
 
