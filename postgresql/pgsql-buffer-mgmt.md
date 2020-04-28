@@ -16,7 +16,13 @@ PostgreSQL 12.2 기준으로 작성됨.
 
 3. 백엔드 프로세스는 `buffer_ID` 슬롯에 접근하여 원하는 페이지를 읽습니다.
 
-## 버퍼 매니저 동작 방식
+## Read 관련 버퍼 매니저 동작 방식
+
+- 주요 함수
+    - `ReadBuffer_common()`: 읽기 요청 처리 (버퍼에 요청 페이지 있는 경우/없는 경우 모두 다룸)
+    - `BufferAlloc()`: 요청 페이지를 버퍼에서 탐색; 버퍼에 없는 경우 victim 설정해 비우고 원하는 페이지 읽어 옴
+    - `StrategyGetBuffer()`: free buffer 반환; 없는 경우, Clock-sweep 사용해 victim 버퍼 선택해서 반환
+    - `StartBufferIO()`: I/O 관련 파라미터 설정 및 시작 알림
 
 백엔드 프로세스가 원하는 페이지에 접근하려고 할 때, `ReadBuffer_common()`를 호출합니다. 이때, `ReadBuffer_common()`의 동작은 크게 3가지로 나뉩니다.
 
@@ -819,3 +825,363 @@ StrategyGetBuffer(BufferAccessStrategy strategy, uint32 *buf_state)
 
 `nextVictimBuffer`가 unpin 상태의 descriptor를 sweep 할 때마다 `usage_count`가 1씩 감소합니다. 따라서 unpin 상태의 descriptor가 버퍼 풀에 존재하면 이 알고리즘은 `nextVictimBuffer`을 회전시키면서 `usage_count`가 0인 victim을 항상 찾을 수 있습니다.
 
+## Page Write
+
+- 주요 함수
+    - `BgBufferSync()`: Background writer process가 주기적으로 dirty buffer를 flush 함
+    - `BufferSync()`: Checkpoint 시에 dirty buffer flush 함
+    - `SyncOneBuffer()`: 버퍼 하나를 flush 함
+    - `FlushBuffer()`: 버퍼 하나를 물리적으로 write 함; 실제 write가 disk까지 가는 걸 보장하진 않음 (kernel에 write 요청만 함)
+
+### Background write
+
+PostgreSQL에서는 background writer process가 주기적으로 dirty buffer를 flush 합니다 (`BgBufferSync()`):
+
+```cpp
+/*
+ * BgBufferSync -- Write out some dirty buffers in the pool.
+ *
+ * This is called periodically by the background writer process.
+ *
+ * Returns true if it's appropriate for the bgwriter process to go into
+ * low-power hibernation mode.  (This happens if the strategy clock sweep
+ * has been "lapped" and no buffer allocations have occurred recently,
+ * or if the bgwriter has been effectively disabled by setting
+ * bgwriter_lru_maxpages to 0.)
+ */
+bool
+BgBufferSync(WritebackContext *wb_context)
+{
+```
+
+1. Clock-sweep의 현재 위치 및 최근 할당된 버퍼 개수를 받아옵니다.
+
+```cpp
+	/*
+	 * Find out where the freelist clock sweep currently is, and how many
+	 * buffer allocations have happened since our last call.
+	 */
+	strategy_buf_id = StrategySyncStart(&strategy_passes, &recent_alloc);
+
+	/* Report buffer alloc counts to pgstat */
+	BgWriterStats.m_buf_alloc += recent_alloc;
+```
+
+2. 지난 clock-sweep 때 스캔된 버퍼 개수(`bufs_to_lap`)를 계산합니다.
+
+- `int NBuffers = 1000;`
+
+```cpp
+	/*
+	 * Compute strategy_delta = how many buffers have been scanned by the
+	 * clock sweep since last time.  If first time through, assume none. Then
+	 * see if we are still ahead of the clock sweep, and if so, how many
+	 * buffers we could scan before we'd catch up with it and "lap" it. Note:
+	 * weird-looking coding of xxx_passes comparisons are to avoid bogus
+	 * behavior when the passes counts wrap around.
+	 */
+	if (saved_info_valid)
+	{
+		int32		passes_delta = strategy_passes - prev_strategy_passes;
+
+		strategy_delta = strategy_buf_id - prev_strategy_buf_id;
+		strategy_delta += (long) passes_delta * NBuffers;
+
+		Assert(strategy_delta >= 0);
+
+		if ((int32) (next_passes - strategy_passes) > 0)
+		{
+			/* we're one pass ahead of the strategy point */
+			bufs_to_lap = strategy_buf_id - next_to_clean;
+		}
+		else if (next_passes == strategy_passes &&
+				 next_to_clean >= strategy_buf_id)
+		{
+			/* on same pass, but ahead or at least not behind */
+			bufs_to_lap = NBuffers - (next_to_clean - strategy_buf_id);
+		}
+		else
+		{
+			/*
+			 * We're behind, so skip forward to the strategy point and start
+			 * cleaning from there.
+			 */
+			next_to_clean = strategy_buf_id;
+			next_passes = strategy_passes;
+			bufs_to_lap = NBuffers;
+		}
+	}
+	else
+	{
+		/*
+		 * Initializing at startup or after LRU scanning had been off. Always
+		 * start at the strategy point.
+		 */
+		strategy_delta = 0;
+		next_to_clean = strategy_buf_id;
+		next_passes = strategy_passes;
+		bufs_to_lap = NBuffers;
+	}
+
+	/* Update saved info for next time */
+	prev_strategy_buf_id = strategy_buf_id;
+	prev_strategy_passes = strategy_passes;
+	saved_info_valid = true;
+```
+
+3. 버퍼가 할당될 때마다 얼마나 많은 버퍼가 스캔됐는지 계산하고, reusable 버퍼가 얼마나 있는지 계산합니다.
+
+```cpp
+	/*
+	 * Compute how many buffers had to be scanned for each new allocation, ie,
+	 * 1/density of reusable buffers, and track a moving average of that.
+	 *
+	 * If the strategy point didn't move, we don't update the density estimate
+	 */
+	if (strategy_delta > 0 && recent_alloc > 0)
+	{
+		scans_per_alloc = (float) strategy_delta / (float) recent_alloc;
+		smoothed_density += (scans_per_alloc - smoothed_density) /
+			smoothing_samples;
+	}
+
+	/*
+	 * Estimate how many reusable buffers there are between the current
+	 * strategy point and where we've scanned ahead to, based on the smoothed
+	 * density estimate.
+	 */
+	bufs_ahead = NBuffers - bufs_to_lap;
+	reusable_buffers_est = (float) bufs_ahead / smoothed_density;
+
+	/*
+	 * Track a moving average of recent buffer allocations.  Here, rather than
+	 * a true average we want a fast-attack, slow-decline behavior: we
+	 * immediately follow any increase.
+	 */
+	if (smoothed_alloc <= (float) recent_alloc)
+		smoothed_alloc = recent_alloc;
+	else
+		smoothed_alloc += ((float) recent_alloc - smoothed_alloc) /
+			smoothing_samples;
+```
+
+4. 최근에 할당된 버퍼 개수가 적다면, `upcoming_alloc_est` 값을 낮게 조정합니다.
+
+- `double bgwriter_lru_multiplier = 2.0;`
+- `int BgWriterDelay = 200;`
+
+```cpp
+	/* Scale the estimate by a GUC to allow more aggressive tuning. */
+	upcoming_alloc_est = (int) (smoothed_alloc * bgwriter_lru_multiplier);
+
+	/*
+	 * If recent_alloc remains at zero for many cycles, smoothed_alloc will
+	 * eventually underflow to zero, and the underflows produce annoying
+	 * kernel warnings on some platforms.  Once upcoming_alloc_est has gone to
+	 * zero, there's no point in tracking smaller and smaller values of
+	 * smoothed_alloc, so just reset it to exactly zero to avoid this
+	 * syndrome.  It will pop back up as soon as recent_alloc increases.
+	 */
+	if (upcoming_alloc_est == 0)
+		smoothed_alloc = 0;
+
+	/*
+	 * Even in cases where there's been little or no buffer allocation
+	 * activity, we want to make a small amount of progress through the buffer
+	 * cache so that as many reusable buffers as possible are clean after an
+	 * idle period.
+	 *
+	 * (scan_whole_pool_milliseconds / BgWriterDelay) computes how many times
+	 * the BGW will be called during the scan_whole_pool time; slice the
+	 * buffer pool into that many sections.
+	 */
+	min_scan_buffers = (int) (NBuffers / (scan_whole_pool_milliseconds / BgWriterDelay));
+
+	if (upcoming_alloc_est < (min_scan_buffers + reusable_buffers_est))
+	{
+		upcoming_alloc_est = min_scan_buffers + reusable_buffers_est;
+	}
+```
+
+5. Dirty reusable 버퍼를 flush 합니다.
+    1. `bgwriter_lru_maxpages` 값에 도달할 때까지
+    2. 다음 cycle의 allocation requirements에 대한 예상 값 (`upcoming_alloc_est`)에 도달할 때까지
+
+- `int bgwriter_lru_maxpages = 100;`
+
+```cpp
+	/*
+	 * Now write out dirty reusable buffers, working forward from the
+	 * next_to_clean point, until we have lapped the strategy scan, or cleaned
+	 * enough buffers to match our estimate of the next cycle's allocation
+	 * requirements, or hit the bgwriter_lru_maxpages limit.
+	 */
+
+	/* Make sure we can handle the pin inside SyncOneBuffer */
+	ResourceOwnerEnlargeBuffers(CurrentResourceOwner);
+
+	num_to_scan = bufs_to_lap;
+	num_written = 0;
+	reusable_buffers = reusable_buffers_est;
+
+	/* Execute the LRU scan */
+	while (num_to_scan > 0 && reusable_buffers < upcoming_alloc_est)
+	{
+		int			sync_state = SyncOneBuffer(next_to_clean, true,
+											   wb_context);
+
+		if (++next_to_clean >= NBuffers)
+		{
+			next_to_clean = 0;
+			next_passes++;
+		}
+		num_to_scan--;
+
+		if (sync_state & BUF_WRITTEN)
+		{
+			reusable_buffers++;
+			if (++num_written >= bgwriter_lru_maxpages)
+			{
+				BgWriterStats.m_maxwritten_clean++;
+				break;
+			}
+		}
+		else if (sync_state & BUF_REUSABLE)
+			reusable_buffers++;
+	}
+
+	BgWriterStats.m_buf_written_clean += num_written;
+```
+
+> src/backend/storage/buffer/bufmgr.c: SyncOneBuffer() - 버퍼 하나를 flush 함
+```cpp
+/*
+ * SyncOneBuffer -- process a single buffer during syncing.
+ *
+ * If skip_recently_used is true, we don't write currently-pinned buffers, nor
+ * buffers marked recently used, as these are not replacement candidates.
+ *
+ * Returns a bitmask containing the following flag bits:
+ *	BUF_WRITTEN: we wrote the buffer.
+ *	BUF_REUSABLE: buffer is available for replacement, ie, it has
+ *		pin count 0 and usage count 0.
+ *
+ * (BUF_WRITTEN could be set in error if FlushBuffers finds the buffer clean
+ * after locking it, but we don't care all that much.)
+ *
+ * Note: caller must have done ResourceOwnerEnlargeBuffers.
+ */
+static int
+SyncOneBuffer(int buf_id, bool skip_recently_used, WritebackContext *wb_context)
+{
+    ...
+	/*
+	 * Pin it, share-lock it, write it.  (FlushBuffer will do nothing if the
+	 * buffer is clean by the time we've locked it.)
+	 */
+	PinBuffer_Locked(bufHdr);
+	LWLockAcquire(BufferDescriptorGetContentLock(bufHdr), LW_SHARED);
+
+	FlushBuffer(bufHdr, NULL);
+
+	LWLockRelease(BufferDescriptorGetContentLock(bufHdr));
+
+	tag = bufHdr->tag;
+
+	UnpinBuffer(bufHdr, true);
+
+	ScheduleBufferTagForWriteback(wb_context, &tag);
+
+	return result | BUF_WRITTEN;
+}
+```
+
+> src/backend/storage/buffer/bufmgr.c: FlushBuffer() - 버퍼 하나를 물리적으로 write함; 자세히 봐야함
+```cpp
+/*
+ * FlushBuffer
+ *		Physically write out a shared buffer.
+ *
+ * NOTE: this actually just passes the buffer contents to the kernel; the
+ * real write to disk won't happen until the kernel feels like it.  This
+ * is okay from our point of view since we can redo the changes from WAL.
+ * However, we will need to force the changes to disk via fsync before
+ * we can checkpoint WAL.
+ *
+ * The caller must hold a pin on the buffer and have share-locked the
+ * buffer contents.  (Note: a share-lock does not prevent updates of
+ * hint bits in the buffer, so the page could change while the write
+ * is in progress, but we assume that that will not invalidate the data
+ * written.)
+ *
+ * If the caller has an smgr reference for the buffer's relation, pass it
+ * as the second parameter.  If not, pass NULL.
+ */
+static void
+FlushBuffer(BufferDesc *buf, SMgrRelation reln)
+{
+    ...
+    /*
+	 * Force XLOG flush up to buffer's LSN.  This implements the basic WAL
+	 * rule that log updates must hit disk before any of the data-file changes
+	 * they describe do.
+	 * ...
+	 */
+	if (buf_state & BM_PERMANENT)
+		XLogFlush(recptr);
+    ...
+	/*
+	 * bufToWrite is either the shared buffer or a copy, as appropriate.
+	 */
+	smgrwrite(reln,
+			  buf->tag.forkNum,
+			  buf->tag.blockNum,
+			  bufToWrite,
+			  false);
+    ...
+}
+```
+
+6. 현재 background write 루프의 결과 값들을 다음 루프를 위해 저장합니다.
+
+```cpp
+	/*
+	 * Consider the above scan as being like a new allocation scan.
+	 * Characterize its density and update the smoothed one based on it. This
+	 * effectively halves the moving average period in cases where both the
+	 * strategy and the background writer are doing some useful scanning,
+	 * which is helpful because a long memory isn't as desirable on the
+	 * density estimates.
+	 */
+	new_strategy_delta = bufs_to_lap - num_to_scan;
+	new_recent_alloc = reusable_buffers - reusable_buffers_est;
+	if (new_strategy_delta > 0 && new_recent_alloc > 0)
+	{
+		scans_per_alloc = (float) new_strategy_delta / (float) new_recent_alloc;
+		smoothed_density += (scans_per_alloc - smoothed_density) /
+			smoothing_samples;
+	}
+
+	/* Return true if OK to hibernate */
+	return (bufs_to_lap == 0 && recent_alloc == 0);
+}
+```
+
+### Checkpoint write
+
+PostgreSQL은 shutdown 시 또는 on-the-fly로 checkpoint를 수행합니다 (`BufferSync()`):
+
+```cpp
+/*
+ * BufferSync -- Write out all dirty buffers in the pool.
+ *
+ * This is called at checkpoint time to write out all dirty shared buffers.
+ * The checkpoint request flags should be passed in.  If CHECKPOINT_IMMEDIATE
+ * is set, we disable delays between writes; if CHECKPOINT_IS_SHUTDOWN,
+ * CHECKPOINT_END_OF_RECOVERY or CHECKPOINT_FLUSH_ALL is set, we write even
+ * unlogged buffers, which are otherwise skipped.  The remaining flags
+ * currently have no effect here.
+ */
+static void
+BufferSync(int flags)
+```
