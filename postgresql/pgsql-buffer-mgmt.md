@@ -835,7 +835,7 @@ StrategyGetBuffer(BufferAccessStrategy strategy, uint32 *buf_state)
 
 ### Background write
 
-PostgreSQL에서는 background writer process가 주기적으로 dirty buffer를 flush 합니다 (`BgBufferSync()`):
+PostgreSQL에서는 background writer process가 주기적 (Default: `bgwriter_delay` = 200ms)으로 `bgwriter_lru_maxpages` (Default: 100)개의 dirty buffer를 flush 합니다 (`BgBufferSync()`):
 
 ```cpp
 /*
@@ -853,6 +853,21 @@ bool
 BgBufferSync(WritebackContext *wb_context)
 {
 ```
+
+- 관련 configurations:
+	- `bgwriter_delay`
+		- Background writer가 동작하는 라운드 간 delay 시간
+		- Default = 200ms
+	- `bgwriter_lru_maxpages`
+		- 각 라운드에 background writer가 flush할 수 있는 최대 버퍼 개수
+		- Default = 100
+	- `bgwriter_lru_multiplier`
+		- 각 라운드 별 flush할 dirty 버퍼 개수는 최근 라운드에서 새롭게 할당된 버퍼 개수에 따라 결정됨
+		- 최근 평균 버퍼 요구량에 이 값을 곱해 다음 라운드 동안 필요한 버퍼 수를 예측
+		- Default = 2
+	- `bgwriter_flush_after`
+		- Background writer가 이 값보다 많은 양의 데이터를 쓸 때마다 OS가 이 writes를 storage까지 강제로 flush 함
+		- Default = 512KB, Min = 0, Max = 2MB (8KB page size 및 Linux 기준)
 
 1. Clock-sweep의 현재 위치 및 최근 할당된 버퍼 개수를 받아옵니다.
 
@@ -1169,7 +1184,7 @@ FlushBuffer(BufferDesc *buf, SMgrRelation reln)
 
 ### Checkpoint write
 
-PostgreSQL은 shutdown 시 또는 on-the-fly로 checkpoint를 수행합니다 (`BufferSync()`):
+PostgreSQL은 shutdown 시 또는 on-the-fly로 checkpoint를 수행합니다 (`BufferSync()`). WAL checkpoint는 default로 5분에 한번씩 수행됩니다 (`checkpoint_timeout`):
 
 ```cpp
 /*
