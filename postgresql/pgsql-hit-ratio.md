@@ -1,8 +1,8 @@
-# PostgreSQL Hit Ratio
+# PostgreSQL hit ratio
 
-## Buffer Cache Hit Ratio
+## Buffer cache hit ratio
 
-```sql
+```sql                                                                                                    ...
 SELECT 
   sum(heap_blks_read) as heap_read,
   sum(heap_blks_hit)  as heap_hit,
@@ -11,7 +11,7 @@ FROM
   pg_statio_user_tables;
 ```
 
-## Index Cache Hit Ratio
+## Index cache hit ratio
 
 ```sql
 SELECT 

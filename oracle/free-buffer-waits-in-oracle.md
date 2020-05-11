@@ -1,4 +1,4 @@
-# Free Buffer Waits in Oracle
+# Free buffer waits in Oracle
 
 - LRU scan threshold = 40%
 

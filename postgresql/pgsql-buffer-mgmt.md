@@ -1,4 +1,4 @@
-# Buffer Management of PostgreSQL
+# Buffer management of PostgreSQL
 
 PostgreSQL 12.2 기준으로 작성됨.
 
@@ -6,7 +6,7 @@ PostgreSQL 12.2 기준으로 작성됨.
 
 - [The Internals of PostgreSQL: Chapter 8 Buffer Manager](http://www.interdb.jp/pg/pgsql08.html)
 
-## Page Read
+## Page read
 
 ![page-read](http://www.interdb.jp/pg/img/fig-8-02.png)
 
@@ -825,7 +825,7 @@ StrategyGetBuffer(BufferAccessStrategy strategy, uint32 *buf_state)
 
 `nextVictimBuffer`가 unpin 상태의 descriptor를 sweep 할 때마다 `usage_count`가 1씩 감소합니다. 따라서 unpin 상태의 descriptor가 버퍼 풀에 존재하면 이 알고리즘은 `nextVictimBuffer`을 회전시키면서 `usage_count`가 0인 victim을 항상 찾을 수 있습니다.
 
-## Page Write
+## Page write
 
 - 주요 함수
     - `BgBufferSync()`: Background writer process가 주기적으로 dirty buffer를 flush 함

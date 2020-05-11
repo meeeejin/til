@@ -1,4 +1,4 @@
-# Log Flush at Commit
+# Log flush at commit
 
 `innodb_flush_log_at_trx_commit` variable controls the balance between strict **ACID** compliance for commit operations and higher **performance**. [Detail](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit)
 

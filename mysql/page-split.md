@@ -1,6 +1,6 @@
-# InnoDB Page Splits
+# InnoDB page splits
 
-## Tracking Page Splits
+## Tracking page splits
 
 1. Use `module_index` to enable all counters associated with the `index` subsystem:
 
