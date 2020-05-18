@@ -103,6 +103,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [fallocate() and ftruncate() in MySQL/InnoDB](mysql/falloc-and-ftrunc-in-innodb.md)
 - [Code related to log files](mysql/code-related-to-log-files.md)
 - [InnoDB page splits](mysql/page-split.md)
+- [MySQL/InnoDB Page Checksum](mysql/innodb-page-checksum.md)
 
 ### Oracle
 
