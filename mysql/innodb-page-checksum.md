@@ -1,6 +1,6 @@
 # MySQL/InnoDB Page Checksum
 
-Below code is based on MySQL 5.7.24.
+The below code is based on [MySQL 5.7](https://github.com/mysql/mysql-server/tree/5.7) (Specifically, 5.7.24). 
 
 ## Checksum calculation before writing pages to the storage
 
