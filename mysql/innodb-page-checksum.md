@@ -4,7 +4,7 @@ Below code is based on MySQL 5.7.24.
 
 ## Checksum calculation before writing pages to the storage
 
-1. Before writing the page to the storage, we need to calculate the checksum value of the page and write it in the page frame. The function below writes a page to the storage:
+1. Before writing the page to the storage, InnoDB calculates the checksum value of the page and writes it in the page frame. The function below writes a page to the storage:
 
 > storage/innobase/buf/buf0flu.cc: `buf_flush_write_block_low()`
 ```cpp
@@ -85,26 +85,11 @@ buf_flush_init_for_writing(
         /* no default so the compiler will emit a warning if
         new enum is added and not handled here */
     }
-
-    /* With the InnoDB checksum, we overwrite the first 4 bytes of
-    the end lsn field to store the old formula checksum. Since it
-    depends also on the field FIL_PAGE_SPACE_OR_CHKSUM, it has to
-    be calculated after storing the new formula checksum.
-
-    In other cases we write the same value to both fields.
-    If CRC32 is used then it is faster to use that checksum
-    (calculated above) instead of calculating another one.
-    We can afford to store something other than
-    buf_calc_page_old_checksum() or BUF_NO_CHECKSUM_MAGIC in
-    this field because the file will not be readable by old
-    versions of MySQL/InnoDB anyway (older than MySQL 5.6.3) */
-
-    mach_write_to_4(page + UNIV_PAGE_SIZE - FIL_PAGE_END_LSN_OLD_CHKSUM,
-            checksum);
+    ...
 }
 ```
 
-3. For example, the `CRC32` checksum of the page is calculated in `buf_calc_page_crc32()`. See `storage/innobase/ut/ut0crc32.cc` for more implementation details:
+3. For example, the `CRC32` checksum of the page is calculated in `buf_calc_page_crc32()`. See [`storage/innobase/ut/ut0crc32.cc`](https://github.com/mysql/mysql-server/blob/5.7/storage/innobase/ut/ut0crc32.cc) for more implementation details:
 
 > storage/innobase/buf/buf0checksum.cc: `buf_calc_page_crc32()`
 ```cpp
@@ -199,7 +184,7 @@ ut_crc32_sw(
 }
 ```
 
-In the case of the `INNODB` checksum of the page, the functions below are called. See `storage/innobase/include/ut0rnd.ic` for more implementation details:
+In the case of the `INNODB` checksum of the page, the functions below are called. See [`storage/innobase/include/ut0rnd.ic`](https://github.com/mysql/mysql-server/blob/5.7/storage/innobase/include/ut0rnd.ic) for more implementation details:
 
 > storage/innobase/buf/buf0checksum.cc: `buf_calc_page_new_checksum()`
 ```cpp
@@ -552,4 +537,4 @@ buf_page_is_checksum_valid_innodb(
 }
 ```
 
-Check out `buf_page_is_corrupted()` in `storage/innobase/buf/buf0buf.cc` for more information.
+Check out `buf_page_is_corrupted()` in [`storage/innobase/buf/buf0buf.cc`](https://github.com/mysql/mysql-server/blob/5.7/storage/innobase/buf/buf0buf.cc) for more information.
