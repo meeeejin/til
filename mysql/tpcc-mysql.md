@@ -1,4 +1,4 @@
-# tpcc-mysql: Quick Start Guide
+# tpcc-mysql: Quick start guide
 
 **:warning: This post is based on Ubuntu 16.04.**
 

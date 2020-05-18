@@ -36,7 +36,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### DBMS
 
-- [A Comparison of Buffer Management Algorithms between Three DBMSs](dbms/a-comparison-of-buffer-management-algorithms.md) :kr:
+- [A comparison of buffer management algorithms between three DBMSs](dbms/a-comparison-of-buffer-management-algorithms.md) :kr:
 
 ### Docker
 
@@ -85,7 +85,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [What happens when you UPDATE](mysql/what-happens-when-you-update.md)
 - [Change buffer](mysql/change-buffer.md)
 - [MySQL connection error](mysql/mysql-connection-error.md)
-- [Log Flush at Commit](mysql/log-flush-at-commit.md)
+- [Log flush at commit](mysql/log-flush-at-commit.md)
 - [innodb_flush_method](mysql/innodb-flush-method.md)
 - [Update root password in MySQL 5.7](mysql/update-root-password-in-mysql-5.7.md)
 - [Build and install the source code (5.7)](mysql/build-and-install-the-source-code-5.7.md)
@@ -97,12 +97,12 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [InnoDB adaptive flushing](mysql/adaptive-flushing.md) :kr:
 - [innodb_ruby](mysql/innodb-ruby.md) :kr:
 - [Punch hole](mysql/punch-hole.md) :kr:
-- [tpcc-mysql: Quick Start Guide](mysql/tpcc-mysql.md)
-- [Mid-Point Insertion Strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
+- [tpcc-mysql: Quick start guide](mysql/tpcc-mysql.md)
+- [Mid-point insertion strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
 - [All about InnoDB Flushing](mysql/all-abount-innodb-flushing.md) :kr:
 - [fallocate() and ftruncate() in MySQL/InnoDB](mysql/falloc-and-ftrunc-in-innodb.md)
 - [Code related to log files](mysql/code-related-to-log-files.md)
-- [InnoDB Page Splits](mysql/page-split.md)
+- [InnoDB page splits](mysql/page-split.md)
 
 ### Oracle
 
@@ -111,7 +111,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Solution to ORA-03113](oracle/solution-to-ora-03113.md)
 - [How to use Statspack](oracle/how-to-use-statspack.md)
 - [How to resize the online redo log files](oracle/how-to-resize-the-online-redo-logfiles.md)
-- [Free Buffer Waits in Oracle](oracle/free-buffer-waits-in-oracle.md)
+- [Free buffer waits in Oracle](oracle/free-buffer-waits-in-oracle.md)
 - [Recovery after losing UNDO tablespace](oracle/recovery-after-losing-undo-tablespace.md)
 - [How to resize the SGA](oracle/how-to-resize-the-sga.md)
 - [Understanding Oracle wait events](oracle/understanding-oracle-wait-events.md) :kr:
@@ -130,7 +130,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### PostgreSQL
 
 - [PostgreSQL installation from source code](postgresql/installation-from-source-code.md)
-- [Buffer Management of PostgreSQL](postgresql/pgsql-buffer-mgmt.md) :kr:
+- [Buffer management of PostgreSQL](postgresql/pgsql-buffer-mgmt.md) :kr:
+- [PostgreSQL hit ratio](postgresql/pgsql-hit-ratio.md)
 
 ### Predix
 

@@ -65,7 +65,7 @@ Change each parameter for your preference. Please change **host name** or **port
 10. Build the schema and load initial database.
 
 ```bash
-$ ./runDatabaseBuild.sh my_postgres.propertie
+$ ./runDatabaseBuild.sh my_postgres.properties
 ```
 
 11. Start running.

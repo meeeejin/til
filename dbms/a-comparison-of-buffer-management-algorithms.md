@@ -1,4 +1,4 @@
-# A Comparison of Buffer Management Algorithms between Three DBMSs
+# A comparison of buffer management algorithms between three DBMSs
 
 이 문서에서는 MySQL, Oracle 그리고 PostgreSQL의 버퍼 관리 방식 (페이지를 읽어오는 과정에 초점을 맞춤)에 대해 간단히 정리하고, 세 DBMS의 버퍼 관리 알고리즘을 비교합니다.
 
@@ -9,7 +9,7 @@
 - [참고 자료](https://docs.oracle.com/cd/E25178_01/server.1111/e25789/memory.htm)
 - [참고 포스트](https://otsteam.tistory.com/164)
 
-### Page Read
+### Page read
 
 클라이언트 프로세스가 버퍼를 요청하면, 서버 프로세스는 버퍼 캐시에서 해당 버퍼를 검색합니다:
 
@@ -37,17 +37,17 @@ Oracle은 dirty 버퍼와 non-dirty 버퍼에 대한 포인터를 포함하는 L
 
 ![lru](https://www.relationaldbdesign.com/database-creation-architecture/module5/images/buffercache_mo.gif)
 
-#### LRU List
+#### LRU list
 
 - Free buffer: 사용되지 않은 버퍼
 - Pinned buffer: 현재 다른 유저에 의해 사용 중이어서 재사용될 수 없는 상태의 버퍼
 - Dirty buffer: 유저가 사용하여 내용이 변경된 버퍼로 LRUW 리스트로 옮겨질 수 있고, 결국엔 디스크로 flush 될 버퍼
 
-#### LRUW (LRU Write) List
+#### LRUW (LRU Write) list
 
 Dirty list, dirty queue라고도 불리며, DBWR는 이 리스트의 버퍼들을 디스크에 flush 하여 free 버퍼로 만듭니다.
 
-#### Touch Count
+#### Touch count
 
 ![touch-count-based](http://wiki.gurubee.net/download/attachments/6259339/Cache_Buffer-009.png)
 
@@ -67,7 +67,7 @@ Dirty list, dirty queue라고도 불리며, DBWR는 이 리스트의 버퍼들�
 
 - [참고 자료](http://www.interdb.jp/pg/pgsql08.html)
 
-### Page Read
+### Page read
 
 ![page-read](http://www.interdb.jp/pg/img/fig-8-02.png)
 

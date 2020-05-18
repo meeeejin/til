@@ -1,4 +1,4 @@
-# Mid-Point Insertion Strategy in MySQL/InnoDB
+# Mid-point insertion strategy in MySQL/InnoDB
 
 ## Buffer Pool LRU Algorithm
 
