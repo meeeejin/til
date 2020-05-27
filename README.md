@@ -99,11 +99,11 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Punch hole](mysql/punch-hole.md) :kr:
 - [tpcc-mysql: Quick start guide](mysql/tpcc-mysql.md)
 - [Mid-point insertion strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
-- [All about InnoDB Flushing](mysql/all-abount-innodb-flushing.md) :kr:
+- [All about InnoDB flushing](mysql/all-abount-innodb-flushing.md) :kr:
 - [fallocate() and ftruncate() in MySQL/InnoDB](mysql/falloc-and-ftrunc-in-innodb.md)
 - [Code related to log files](mysql/code-related-to-log-files.md)
 - [InnoDB page splits](mysql/page-split.md)
-- [MySQL/InnoDB Page Checksum](mysql/innodb-page-checksum.md)
+- [MySQL/InnoDB page checksum](mysql/innodb-page-checksum.md)
 
 ### Oracle
 
