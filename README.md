@@ -33,6 +33,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to install BenchmarkSQL for PostgreSQL](benchmark/how-to-install-benchmarksql-for-postgresql.md)
 - [How to install TPC-E on Ubuntu (for MySQL)](benchmark/how-to-install-tpce-on-ubuntu.md)
 - [How to install LinkBench on Ubuntu](benchmark/how-to-install-linkbench-on-ubuntu.md)
+- [How to install TPC-H for Oracle](benchmark/how-to-install-tpch-for-oracle.md)
 
 ### DBMS
 
