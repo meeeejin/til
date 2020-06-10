@@ -524,11 +524,26 @@ ALTER TABLE tpch.lineitem
     ADD CONSTRAINT chk_lineitem_ship_rcpt CHECK(l_shipdate <= l_receiptdate);
 ```
 
-11. Create queries:
+11. Create 22 queries:
 
 ```bash
 $ cd queries
-$ for i in {1..22}; do ./qgen $i > query-$i.sql; done
+$ for i in {1..22}; do ../qgen $i > query-$i.sql; done
+```
+
+If you get an error `Open failed for ./dists.dss at bm_utils.c:308`, just copy the `dists.dss` to the `queries` directory:
+
+```bash
+$ cp ../dists.dss .
+$ for i in {1..22}; do ../qgen $i > query-$i.sql; done
+$ ls
+1.sql   16.sql  22.sql  9.sql         query-14.sql  query-20.sql  query-7.sql
+10.sql  17.sql  3.sql   dists.dss     query-15.sql  query-21.sql  query-8.sql
+11.sql  18.sql  4.sql   query-1.sql   query-16.sql  query-22.sql  query-9.sql
+12.sql  19.sql  5.sql   query-10.sql  query-17.sql  query-3.sql
+13.sql  2.sql   6.sql   query-11.sql  query-18.sql  query-4.sql
+14.sql  20.sql  7.sql   query-12.sql  query-19.sql  query-5.sql
+15.sql  21.sql  8.sql   query-13.sql  query-2.sql   query-6.sql
 ```
 
 12. Execute queries:
