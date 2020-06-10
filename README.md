@@ -117,6 +117,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Recovery after losing UNDO tablespace](oracle/recovery-after-losing-undo-tablespace.md)
 - [How to resize the SGA](oracle/how-to-resize-the-sga.md)
 - [Understanding Oracle wait events](oracle/understanding-oracle-wait-events.md) :kr:
+- [Oracle encoding error](oracle/oracle-encoding-error.md) :kr:
+- [How to relocate files in Oracle](oracle/how-to-relocate-files-in-oracle.md)
 
 ### Percona
 
