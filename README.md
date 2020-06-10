@@ -118,6 +118,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to resize the SGA](oracle/how-to-resize-the-sga.md)
 - [Understanding Oracle wait events](oracle/understanding-oracle-wait-events.md) :kr:
 - [Oracle encoding error](oracle/oracle-encoding-error.md) :kr:
+- [How to add a datafile to a tablespace](oracle/how-to-add-a-datafile-to-a-tablespace.md)
 - [How to relocate files in Oracle](oracle/how-to-relocate-files-in-oracle.md)
 
 ### Percona
