@@ -1,5 +1,6 @@
 # How to install TPC-H for Oracle
 
+## Install and
 1. Download [TPC-H](http://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp) and unzip it.
 
 2. Make a copy of the makefile template and edit it:
@@ -548,4 +549,6 @@ $ ls
 
 12. Execute queries:
 
->> to be updated..
+```bash
+$ for i in {1..22}; do echo exit | sqlplus tpch/vldb1597 @/home/mijin/tpch-2.18.0/dbgen/queries/query-$q.sql > /dev/null; done
+```
