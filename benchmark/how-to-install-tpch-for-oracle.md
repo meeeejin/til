@@ -175,7 +175,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('supplier.tbl'))
+          LOCATION('supplier.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.supplier
@@ -205,7 +205,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('partsupp.tbl'))
+          LOCATION('partsupp.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.partsupp
@@ -236,7 +236,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('customer.tbl'))
+          LOCATION('customer.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.customer
@@ -271,7 +271,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('orders.tbl'))
+          LOCATION('orders.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.orders
@@ -314,7 +314,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('lineitem.tbl'))
+          LOCATION('lineitem.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.lineitem
@@ -352,7 +352,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('nation.tbl'))
+          LOCATION('nation.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.nation
