@@ -377,7 +377,7 @@ ORGANIZATION EXTERNAL
                       TERMINATED BY '|'
                   MISSING FIELD VALUES ARE NULL
               )
-          LOCATION('region.tbl'))
+          LOCATION('region.tbl*'))
     PARALLEL 4;
 
 CREATE TABLE tpch.region
