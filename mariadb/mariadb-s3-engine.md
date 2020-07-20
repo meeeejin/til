@@ -1,11 +1,11 @@
 # MariaDB S3 Engine: Implementation and Benchmarking
 
-# Reference
+## Reference
 
 - [MariaDB S3 Engine: Implementation and Benchmarking - Percona Database Performance Blog](https://www.percona.com/blog/2020/07/17/mariadb-s3-engine-implementation-and-benchmarking/?utm_campaign=Blog%202016%3A%20Subscribers%20To%20Blog%20Weekly%20Recap%20Email%20--%202.15.16&utm_medium=email&_hsmi=91587027&_hsenc=p2ANqtz--lvNYTuI99Xf9uhQNOnF4x1lypdUW2NWySeNQUIZ-3TYSY7siLHTNxc7wqxkpDYNF42s11K4J0xqddaLn6I_lDdD7TUw&utm_content=91587027&utm_source=hs_email)
 - [The S3 storage engine in MariaDB 10.5](https://mariadb.org/wp-content/uploads/2020/02/S3.pdf)
 
-# Overview
+## Overview
 
 - MariaDB 10.5부터 S3 스토리지 엔진 플러그인 제공
 - S3 엔진은 Aria 스토리지 엔진 기반으로 동작
@@ -15,7 +15,7 @@
   - `ALTER`로 로컬 디바이스에 있는 테이블을 AWS로 바로 옮길 수 있음
   - S3 엔진은 전용 페이지 캐시를 따로 가짐
 
-# S3 Engine Implementation
+## S3 Engine Implementation
 
 S3 엔진은 alpha-level maturity이기 때문에 default로는 로드되지 않음. 따라서 conf 파일에 아래와 같이 명시해 S3 엔진을 enable 시킴:
 
@@ -55,7 +55,7 @@ TRANSACTIONS: NO
 1 row in set (0.000 sec)
 ```
 
-# How Do I Move The Table to The S3 Engine?
+## How Do I Move The Table to The S3 Engine?
 
 테스트를 위해, `percona_s3` 테이블 생성:
 
@@ -124,7 +124,7 @@ S3 엔진으로 변환이 끝나면, *.frm* 파일만 남은 것을 확인할 �
 - Data 파일: *s3_bucket/database/table/data/block_number*
   - e.g., *s3://mariabs3plugin/s3_test/percona_s3/data/000001*
 
-# S3 Engine Operation
+## S3 Engine Operation
 
 테스트를 위해, 아래처럼 `percona_s3` 테이블 생성:
 
@@ -143,7 +143,7 @@ PAGER set to 'grep -i engine'
 1 row in set (0.798 sec)
 ```
 
-## S3 Engine with INSERT/UPDATE/DELETE:
+### S3 Engine with INSERT/UPDATE/DELETE:
 
 S3 엔진은 read-only이므로, 이 세개의 statement에 대해 모두 error return:
 
@@ -152,7 +152,7 @@ MariaDB [s3_test]> insert into percona_s3 (name) values ('anti-hercules7sakthi')
 ERROR 1036 (HY000): Table 'percona_s3' is read only
 ```
 
-## S3 Engine with SELECT:
+### S3 Engine with SELECT:
 
 ```sql
 MariaDB [s3_test]> select * from percona_s3;
@@ -164,7 +164,7 @@ MariaDB [s3_test]> select * from percona_s3;
 1 row in set (1.012 sec)
 ```
 
-## Adding Index to S3 Engine Table:
+### Adding Index to S3 Engine Table:
 
 ```sql
 MariaDB [s3_test]> alter table percona_s3 add index idx_name (name);
@@ -172,7 +172,7 @@ Query OK, 1 row affected (8.351 sec)               
 Records: 1  Duplicates: 0  Warnings: 0
 ```
 
-## Modifying the Column on S3 Engine Table:
+### Modifying the Column on S3 Engine Table:
 
 ```sql
 MariaDB [s3_test]> alter table percona_s3 modify column date_y timestamp DEFAULT current_timestamp();
@@ -180,7 +180,7 @@ Query OK, 1 row affected (8.888 sec)               
 Records: 1  Duplicates: 0  Warnings: 0
 ```
 
-## S3 Engine with DROP:
+### S3 Engine with DROP:
 
 ```sql
 MariaDB [s3_test]> drop table percona_s3;
@@ -195,7 +195,7 @@ Query OK, 0 rows affected (2.084 sec)
 
 S3에서 테이블 구조가 변경되고
 
-# Comparing the Query Results on Both S3 and Local
+## Comparing the Query Results on Both S3 and Local
 
 이 섹션에서는 S3 엔진 vs. 로컬에서의 query 결과를 비교함. 아래 4개 조건 하에서 실험 수행:
 
@@ -204,7 +204,7 @@ S3에서 테이블 구조가 변경되고
 - MariaDB 서버와 S3는 같은 zone에 속함
 - MariaDB와 S3 간 ping time은 1.18 ms
 
-## S3 vs. Local (Count(*))
+### S3 vs. Local (Count(*))
 
 S3: 0.16 s 소요
 
@@ -232,7 +232,7 @@ MariaDB [s3_test]> select count(*) from percona_perf_compare;
 
 S3 테이블은 read-only이고 MyISAM처럼 테이블에 row count를 가지고 있기 때문에 `Count(*)`은 S3가 더 빠름.
 
-## S3 vs. Local (Entire Table Data)
+### S3 vs. Local (Entire Table Data)
 
 S3: 16.10 s 소요
 
@@ -254,7 +254,7 @@ PAGER set to 'md5sum'
 
 Delay가 존재해 로컬보다 S3가 조금 더 느림
 
-## S3 vs Local (PRIMARY KEY based lookup)
+### S3 vs Local (PRIMARY KEY based lookup)
 
 S3: 0.22 s 소요
 
@@ -287,7 +287,7 @@ Delay가 존재해 로컬보다 S3가 조금 더 느림
 - Low performance disk + Good network ⇒ favor S3
 - Good performance disk + Poor network ⇒ favor Local
 
-# Conclusion
+## Conclusion
 
 - 복원할 필요 없이 historical data에 쿼리를 수행할 수 있으므로, data archival 시 good solution
 - S3 테이블은 completely read-only

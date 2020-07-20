@@ -13,7 +13,9 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Go](#go)
 * [IPL](#ipl)
 * [Linux](#linux)
+* [MariaDB](#mariadb)
 * [MySQL](#mysql)
+* [NVRAM](#nvram)
 * [Oracle](#oracle)
 * [Percona](#percona)
 * [PostgreSQL](#postgresql)
@@ -111,6 +113,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Code related to log files](mysql/code-related-to-log-files.md)
 - [InnoDB page splits](mysql/page-split.md)
 - [MySQL/InnoDB page checksum](mysql/innodb-page-checksum.md)
+
+### NVRAM
+
+- [Types of NVDIMM](nvram/types-of-nvdimm.md)
 
 ### Oracle
 
