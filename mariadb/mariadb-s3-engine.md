@@ -193,8 +193,6 @@ Query OK, 0 rows affected (2.084 sec)
 2. 데이터 수정
 3. 로컬 테이블을 S3 테이블로 convert (Engine = S3)
 
-S3에서 테이블 구조가 변경되고
-
 ## Comparing the Query Results on Both S3 and Local
 
 이 섹션에서는 S3 엔진 vs. 로컬에서의 query 결과를 비교함. 아래 4개 조건 하에서 실험 수행:
