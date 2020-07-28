@@ -41,6 +41,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### DBMS
 
 - [A comparison of buffer management algorithms between three DBMSs](dbms/a-comparison-of-buffer-management-algorithms.md) :kr:
+- [Database Meets AI: A Survey](dbms/db-meets-ai.md) :kr:
 
 ### Docker
 
