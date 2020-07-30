@@ -131,15 +131,15 @@ start_again:
 }
 ```
 
-The following is a quote from [Jeremy's post](https://blog.jcole.us/2013/05/05/innodb-tidbit-the-doublewrite-buffer-wastes-32-pages-512-kib/).
+The following is quoted from [Jeremy's post](https://blog.jcole.us/2013/05/05/innodb-tidbit-the-doublewrite-buffer-wastes-32-pages-512-kib/).
 
 - The DWB is used as a “scratch area” to write (by default) 128 pages contiguously before flushing them out to their final destinations. But actually, it allocates a total of **160** pages:
     - `FSP_EXTENT_SIZE / 2 = 64 / 2 = 32 pages`
     - `2 * TRX_SYS_DOUBLEWRITE_BLOCK_SIZE = 2 * 64 = 128 pages`
 - The initial 32 pages allocated are there purely just to cause the fragment array to be filled up thus forcing the `fseg_alloc_free_page` calls that follow to start allocating complete extents for the remaining 128 pages (that the DWB actually needs). The code then checks which extents were allocated and adds the initial page numbers for those extents to the `TRX_SYS` header as the DWB allocation. In a typical system, InnoDB would allocate the following pages:
     - Fragment pages 13-44: Perpetually unused fragment pages, but left allocated to the file segment for the DWB
-    - Extent starting at page 64, ending at page 127: Block 1 of the DWB in practice.
-    - Extent starting at page 128, ending at page 191: Block 2 of the DWB in practice
+    - Extent starting at page 64-ending at page 127: Block 1 of the DWB in practice.
+    - Extent starting at page 128-ending at page 191: Block 2 of the DWB in practice
 
 ## Initialize the DWB
 
@@ -170,7 +170,7 @@ buf_dblwr_init(
     ...
 ```
 
-- Initialize **two blocks** of same size in the DWB
+- Initialize **two blocks** of same size for the DWB
     - One for single page writes and the other for batch writes
 - DWB is **2MB** in total (= 2 * 64 * 16K pages)
     - `buf_size = 2 * TRX_SYS_DOUBLEWRITE_BLOCK_SIZE;`
@@ -339,7 +339,7 @@ try_again:
 }
 ```
 
-- Write a page to the DWB buffer in memory first before writing it to disk using (`memcpy()`)
+- Write a page to the DWB buffer in memory first before writing it to disk using `memcpy()`
 - If the DWB is full, flush the buffered writes from the DWB in memory to DWB in the disk. Then, write each page to the datafile in the disk:
 
 > storage/innobase/buf/buf0dblwr.cc: `buf_dblwr_flush_buffered_writes()`
@@ -508,8 +508,8 @@ retry:
     buf_dblwr_write_block_to_datafile(bpage, sync);
 }
 ```
-
-- Writes a page to the DWB on disk, sync it, then write the page to the datafile and sync the datafile
+- Find a empty slot between `srv_doublewrite_batch_size` and `2 * TRX_SYS_DOUBLEWRITE_BLOCK_SIZE` (i.e., `120 <= i < 128`)
+- Then, writes a page to the DWB on disk, sync it, then write the page to the datafile and sync the datafile
 
 ## Update the DWB
 
@@ -578,6 +578,11 @@ buf_dblwr_update(
 ```
 
 - Updates the DWB when an I/O request is completed
+- Batch flushing
+    - If an I/O is completed, decrease the value of `buf_dblwr->b_reserved` by 1
+    - If `buf_dblwr->b_reserved == 0`, it means the batch flushing is finished. So, sync the datafiles to the disk and prepare to reuse the DWB by initializing the related values
+- Single page flushing
+    - If an I/O is completed, find the used slot and initialize the related values for reusing it
 
 ## Reference
 
