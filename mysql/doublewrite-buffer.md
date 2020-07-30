@@ -584,7 +584,53 @@ buf_dblwr_update(
 - Single page flushing
     - If an I/O is completed, find the used slot and initialize the related values for reusing it
 
+## >= MySQL 8.0.20
+
+Prior to MySQL 8.0.20, the DWB storage area is located in the InnoDB system tablespace. As of MySQL 8.0.20, DWB storage area is located in doublewrite files.
+
+The following new variables are provided for DWB configuration:
+
+### `innodb_doublewrite_batch_size`
+
+- Defines the number of doublewrite pages to write in a batch
+- Default = 0
+- Minimin = 0
+- Maximum = 256
+
+### `innodb_doublewrite_dir`
+
+- Defines the directory for doublewrite files. If no directory is specified, doublewrite files are created in the `innodb_data_home_dir` directory
+- Ideally, the doublewrite directory should be placed on the fastest storage media available
+
+### `innodb_doublewrite_files`
+
+- Defines the number of doublewrite files
+- Default = `innodb_buffer_pool_instances * 2`
+    - Two doublewrite files are created for each buffer pool instance: A flush list doublewrite file and an LRU list doublewrite file
+    - The flush list doublewrite file
+        - For pages flushed from the buffer pool flush list
+        - The default size = `InnoDB page size * doublewrite page bytes`
+    - The LRU list doublewrite file
+        - For pages flushed from the buffer pool LRU list + single page flushes
+        - The default size = `InnoDB page size * (doublewrite pages + (512 / the number of buffer pool instances))` where 512 is the total number of slots reserved for single page flushes
+- Minimum = 2
+- Maximum = 256
+- Doublewrite file names have the following format: `#ib_page_size_file_number.dblwr`. For example, 
+
+```bash
+#ib_16384_0.dblwr
+#ib_16384_1.dblwr
+```
+
+### `innodb_doublewrite_pages`
+
+- Defines the maximum number of doublewrite pages per thread for a batch write
+- Default = `innodb_write_io_threads` (Default = 4)
+- Minimum = `innodb_write_io_threads`
+- Maximum = 512
+
 ## Reference
 
-- [MySQL reference manual: InnoDB Disk I/O](https://dev.mysql.com/doc/refman/8.0/en/innodb-disk-io.html)
+- [MySQL 5.7 reference manual: InnoDB Disk I/O](https://dev.mysql.com/doc/refman/8.0/en/innodb-disk-io.html)
 - [InnoDB Tidbit: The doublewrite buffer wastes 32 pages (512 KiB)](https://blog.jcole.us/2013/05/05/innodb-tidbit-the-doublewrite-buffer-wastes-32-pages-512-kib/)
+- [MySQL 8.0 reference manual: InnoDB Startup Options and System Variables](https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_doublewrite)
