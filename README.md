@@ -114,6 +114,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Code related to log files](mysql/code-related-to-log-files.md)
 - [InnoDB page splits](mysql/page-split.md)
 - [MySQL/InnoDB page checksum](mysql/innodb-page-checksum.md)
+- [Doublewrite buffer](mysql/doublewrite-buffer.md)
 
 ### NVRAM
 
