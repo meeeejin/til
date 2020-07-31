@@ -30,6 +30,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Benchmark
 
+- [tpcc-mysql: Quick start guide](mysql/tpcc-mysql.md)
 - [How to install SysBench 0.5 on Ubuntu](benchmark/how-to-install-sysbench-0.5-on-ubuntu.md)
 - [TPC-E vs. TPC-C](benchmark/tpc-e-versus-tpc-c.md) :kr:
 - [How to install BenchmarkSQL for Oracle](benchmark/how-to-install-benchmarksql-for-oracle.md)
@@ -107,7 +108,6 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [InnoDB adaptive flushing](mysql/adaptive-flushing.md) :kr:
 - [innodb_ruby](mysql/innodb-ruby.md) :kr:
 - [Punch hole](mysql/punch-hole.md) :kr:
-- [tpcc-mysql: Quick start guide](mysql/tpcc-mysql.md)
 - [Mid-point insertion strategy in MySQL/InnoDB](mysql/midpoint-insertion.md)
 - [All about InnoDB flushing](mysql/all-abount-innodb-flushing.md) :kr:
 - [fallocate() and ftruncate() in MySQL/InnoDB](mysql/falloc-and-ftrunc-in-innodb.md)
@@ -118,7 +118,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### NVRAM
 
-- [Types of NVDIMM](nvram/types-of-nvdimm.md)
+- [Types of NVDIMM](nvram/types-of-nvdimm.md) :kr:
 
 ### Oracle
 
