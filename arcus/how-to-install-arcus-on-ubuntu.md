@@ -1,4 +1,4 @@
-# How to install Arcus on Ubuntu
+# How to install Arcus on Ubuntu 16.04
 
 Refer the [Arcus repository](https://github.com/naver/arcus) for more details.
 

@@ -31,7 +31,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Arcus
 
-- [How to install Arcus on Ubuntu](arcus/how-to-install-arcus-on-ubuntu.md)
+- [How to install Arcus on Ubuntu 16.04](arcus/how-to-install-arcus-on-ubuntu.md)
 
 ### Benchmark
 
