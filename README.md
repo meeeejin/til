@@ -32,6 +32,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Arcus
 
 - [How to install Arcus on Ubuntu 16.04](arcus/how-to-install-arcus-on-ubuntu.md)
+- [How to install Arcus-memcached on Ubuntu 16.04](arcus/how-to-install-arcus-memcached-on-ubuntu.md)
 
 ### Benchmark
 
@@ -87,7 +88,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### MariaDB
 
-- [MariaDB S3 engine](mariadb/mariadb-s3-engine.md)
+- [MariaDB S3 engine](mariadb/mariadb-s3-engine.md) :kr:
 
 ### MySQL
 
