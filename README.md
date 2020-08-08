@@ -62,6 +62,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Rename folders with git](git/rename-folders-with-git.md)
 - [Modify previous commit messages](git/modify-previous-commit-messages.md)
 - [Remove a file added in an older commit](git/Remove-a-file-added-in-an-older-commit.md)
+- [Clone a Single Branch in Git](git/clone-a-single-branch.md)
 
 ### Go
 

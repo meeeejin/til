@@ -120,4 +120,28 @@ ok 3 - cache_constructor_fail
 ok 4 - cache_destructor
 ok 5 - cache_reuse
 ...
+./t/unixsocket.t .................. ok                                  
+===(  142154;281  1867/2846  1/8 )======================================memcached shutdown by signal(SIGINT)
+Main thread is now terminating from clock handler.
+Initiating arcus memcached shutdown...
+Listen sockets closed.
+Worker thread[0] is now terminating from libevent process.
+Worker thread[1] is now terminating from libevent process.
+Worker thread[2] is now terminating from libevent process.
+Worker thread[3] is now terminating from libevent process.
+Worker threads terminated.
+SNAPSHOT module destroyed.
+ITEM change log module destroyed.
+ITEM module destroyed.
+SLABS module destroyed.
+ASSOC module destroyed.
+PREFIX module destroyed.
+Memcached engine destroyed.
+Arcus memcached terminated.
+./t/verbosity.t ................... ok                                  
+./t/whitespace.t .................. ok                                  
+./t/longkey.t ..................... ok         
+All tests successful.
+Files=91, Tests=143407, 303 wallclock secs (11.67 usr  1.15 sys + 32.73 cusr  4.77 csys = 50.32 CPU)
+Result: PASS
 ```
