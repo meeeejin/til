@@ -20,7 +20,7 @@ $ make install
 
 ## Build and install
 
-> Modify the path below (e.g., `/home/mijin/mysql-5.6`) according to your environment:
+> Modify each path below (e.g., `/home/mijin/mysql-5.6`) according to your environment:
 
 1. Setup the git repository:
 
