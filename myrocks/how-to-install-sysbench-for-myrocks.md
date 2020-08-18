@@ -8,9 +8,13 @@ $ sudo apt-get install make automake libtool pkg-config libaio-dev libmysqlclien
 
 ## Build and install
 
+1. First, download the desired Sysbench version from the [release list](https://github.com/akopytov/sysbench/releases).
+
+2. Extract the tar.gz file.
+
+3. Then, Build and install:
+
 ```bash
-$ git clone https://github.com/akopytov/sysbench
-$ cd sysbench
 $ ./autogen.sh
 $ ./configure --with-mysql-includes=/home/mijin/mysql-5.6/include --with-mysql-libs=/home/mijin/mysql-5.6/lib
 $ make -j8
