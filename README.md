@@ -33,6 +33,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Arcus
 
 - [How to install Arcus on Ubuntu 16.04](arcus/how-to-install-arcus-on-ubuntu.md)
+- [How to install Arcus-memcached on Ubuntu 16.04](arcus/how-to-install-arcus-memcached-on-ubuntu.md)
 
 ### Benchmark
 
@@ -62,6 +63,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Rename folders with git](git/rename-folders-with-git.md)
 - [Modify previous commit messages](git/modify-previous-commit-messages.md)
 - [Remove a file added in an older commit](git/Remove-a-file-added-in-an-older-commit.md)
+- [Clone a Single Branch in Git](git/clone-a-single-branch.md)
 
 ### Go
 
@@ -88,7 +90,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### MariaDB
 
-- [MariaDB S3 engine](mariadb/mariadb-s3-engine.md)
+- [MariaDB S3 engine](mariadb/mariadb-s3-engine.md) :kr:
 
 ### MyRocks
 
