@@ -9,6 +9,8 @@ $ sudo apt-get install make automake libtool pkg-config libaio-dev libmysqlclien
 ## Build and install
 
 ```bash
+$ git clone https://github.com/akopytov/sysbench
+$ cd sysbench
 $ ./autogen.sh
 $ ./configure --with-mysql-includes=/home/mijin/mysql-5.6/include --with-mysql-libs=/home/mijin/mysql-5.6/lib
 $ make -j8
@@ -26,8 +28,8 @@ For more details, please refer the [Sysbench Repo](https://github.com/akopytov/s
 ```bash
 $ mysql -uroot
 
-root:(none)> create database sbtest;
-root:(none)> quit
+mysql> create database sbtest;
+mysql> quit
 ```
 
 2. Then, `prepare` the test. At the `prepare` stage, SysBench performs preparative actions for those tests which need them. (e.g. creating the necessary files on disk for the fileio test, or filling the test database for the oltp test):
