@@ -38,6 +38,8 @@ mysql> quit
 
 2. Then, `prepare` the test. At the `prepare` stage, SysBench performs preparative actions for those tests which need them. (e.g. creating the necessary files on disk for the fileio test, or filling the test database for the oltp test):
 
+> Note that `--threads=1`. Values > 1 resulted in an error.
+
 ```bash
 $ sysbench oltp_insert \
     --mysql-host=localhost --mysql-db=sbtest --mysql-user=root \
