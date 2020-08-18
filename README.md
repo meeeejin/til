@@ -95,6 +95,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### MyRocks
 
 - [Build and install the source code (5.6)](myrocks/build-and-install-the-source-code-5.6.md)
+- [How to install SysBench 1.0 for MyRocks](myrocks/how-to-install-sysbench-for-myrocks.md)
 
 ### MySQL
 
