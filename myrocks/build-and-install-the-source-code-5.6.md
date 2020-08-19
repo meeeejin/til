@@ -98,11 +98,11 @@ $ ./scripts/mysql_install_db --defaults-file=/home/mijin/myrocks.cnf
 6. Start the server:
 
 ```bash
-$ ./mysqld_safe --defaults-file=/home/mijin/myrocks.cnf
+$ ./bin/mysqld_safe --defaults-file=/home/mijin/myrocks.cnf
 ```
 
 7. Shutdown the server:
 
 ```bash
-$ ./mysqldadmin -uroot shutdown
+$ ./bin/mysqldadmin -uroot shutdown
 ```

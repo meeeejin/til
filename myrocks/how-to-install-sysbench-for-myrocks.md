@@ -16,7 +16,7 @@ $ sudo apt-get install make automake libtool pkg-config libaio-dev libmysqlclien
 
 ```bash
 $ ./autogen.sh
-$ ./configure --with-mysql-includes=/home/mijin/mysql-5.6/include --with-mysql-libs=/home/mijin/mysql-5.6/lib
+$ ./configure --with-mysql-includes=/path/to/mysql-5.6/include --with-mysql-libs=/path/to/mysql-5.6/lib
 $ make -j8
 $ make install
 ```
