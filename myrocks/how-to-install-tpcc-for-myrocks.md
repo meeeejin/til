@@ -17,14 +17,14 @@ $ make
 
 ## Load 
 
-1. Change the default engine to `rocksdb` instead of `InnoDB` of `create_table.sql`. Also, MyRocks does not support foreign keys, so modify the SQL file as follows:
+1. Change the default engine from `InnoDB` to `rocksdb` in `create_table.sql`. Also, MyRocks does not support foreign keys, so modify the SQL file as follows:
 
 ```bash
 $ cat create_table.sql | sed -e "s/Engine=InnoDB/Engine=rocksdb DEFAULT COLLATE=latin1_bin/g" > create_table_myrocks.sql
 $ cat add_fkey_idx.sql | grep -v "FOREIGN KEY" > add_fkey_idx_myrocks.sql
 ```
 
-2. Create a database for TPC-C test. Go to the MyRocks base directory and run following commands:
+2. To create a database for TPC-C test, start the MyRocks server, then run following commands:
 
 ```bash
 [session 1]
@@ -43,13 +43,13 @@ $ cd tpcc-mysql
 $ vi load.sh
 
 export LD_LIBRARY_PATH=/path/to/basedir/lib
-./tpcc_load -h $HOST -d $DBNAME -u root -p "" -w $WH >> 1.out &
+./tpcc_load -h $HOST -d $DBNAME -u root -p "yourPassword" -w $WH >> 1.out &
 ```
 
 4. Load data:
 
 ```bash
-$ ./load.sh tpcc100 100
+$ ./load.sh tpcc1000 1000
 ```
 
 In this case, database size is about 100 GB (= 1,000 warehouses).
