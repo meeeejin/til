@@ -66,6 +66,7 @@ rocksdb_max_background_jobs=8
 rocksdb_max_total_wal_size=4G
 rocksdb_block_size=16384
 rocksdb_table_cache_numshardbits=6
+rocksdb_block_cache_size=10G
 
 # rate limiter
 rocksdb_bytes_per_sync=4194304
@@ -81,7 +82,6 @@ rocksdb_default_cf_options=write_buffer_size=128m;target_file_size_base=32m;max_
 
 rocksdb_wal_dir=/home/mijin/test_log
 
-#rocksdb-db-write-buffer-size=5G
 rocksdb_use_direct_io_for_flush_and_compaction=ON
 rocksdb_use_direct_reads=ON
 ```
