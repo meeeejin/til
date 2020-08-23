@@ -34,6 +34,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [How to install Arcus on Ubuntu 16.04](arcus/how-to-install-arcus-on-ubuntu.md)
 - [How to install Arcus-memcached on Ubuntu 16.04](arcus/how-to-install-arcus-memcached-on-ubuntu.md)
+- [Arcus Persistence](arcus/arcus-persistence.md) :kr:
 
 ### Benchmark
 
