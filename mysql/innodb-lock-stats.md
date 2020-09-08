@@ -66,7 +66,7 @@ Mutex spin waits 5870888, rounds 19812448, OS waits 375285
 ```
 
 - `Mutex spin waits`: thread가 mutex를 얻으려고 시도했지만, 실패해서 spin-loop에 빠진 횟수
-- `rounds`: mutex 상태를 확인하며 spin wait cycle에서 thread가 루프를 돈 횟수 (= PAUSE 로직이 실행된 round의 횟수)
+- `rounds`: mutex 상태를 확인하며 spin wait cycle에서 thread가 루프를 돈 횟수
 - `OS waits`: thread가 spin wait을 포기하고 sleep 상태로 빠진 횟수
 
 ## Reference
