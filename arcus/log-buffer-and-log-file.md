@@ -7,24 +7,26 @@
 ```cpp
 /* log global structure */
 struct log_global {
-    log_FILE        log_file;
+    log_FILE        log_file; // file
     log_BUFFER      log_buffer;
     log_FLUSHER     log_flusher;
     LogSN           nxt_write_lsn;
     LogSN           nxt_flush_lsn;
-    LogSN           nxt_fsync_lsn;
-    pthread_mutex_t log_write_lock;
-    pthread_mutex_t log_flush_lock;
-    pthread_mutex_t log_fsync_lock;
+    LogSN           nxt_fsync_lsn; // file
+    pthread_mutex_t log_write_lock; // cmdlog_file_getsize
+    pthread_mutex_t log_flush_lock; // buff+file
+    pthread_mutex_t log_fsync_lock; // file: except buff_init
     pthread_mutex_t flush_lsn_lock;
-    pthread_mutex_t fsync_lsn_lock;
-    pthread_cond_t  log_flush_cond;
-    bool            async_mode;
-    volatile bool   initialized;
+    pthread_mutex_t fsync_lsn_lock; // file: except buff_init
+    pthread_cond_t  log_flush_cond; // file: except buff_init
+    bool            async_mode; // file: except buff_init
+    volatile bool   initialized; // file: except buff_init/cmdlog_buf_flush_thread_start
 };
 
 static struct log_global log_gl;
 ```
+
+- lock 분리..
 
 
 ## Log Buffer
@@ -57,11 +59,13 @@ static uint32_t do_log_buff_flush(bool flush_all)
 static LogSN do_log_buff_write(LogRec *logrec, bool dual_write)
 static void do_log_buff_complete_dual_write(bool success)
 
+static void *log_flush_thread_main(void *arg)
+
 void cmdlog_buff_write(LogRec *logrec, log_waiter_t *waiter, bool dual_write)
 void cmdlog_buff_flush(LogSN *upto_lsn)
 
 void cmdlog_get_flush_lsn(LogSN *lsn)
-void cmdlog_get_fsync_lsn(LogSN *lsn)
+
 void cmdlog_complete_dual_write(bool success)
 
 ENGINE_ERROR_CODE cmdlog_buf_init(struct default_engine* engine)
@@ -115,9 +119,8 @@ static void do_log_file_close_waiter_wakeup(log_FILE *file)
 static void do_log_file_write(char *log_ptr, uint32_t log_size, bool dual_write)
 static void do_log_file_complete_dual_write(void)
 
-static void *log_flush_thread_main(void *arg)
-
 void cmdlog_file_sync(void)
+void cmdlog_get_fsync_lsn(LogSN *lsn)
 
 int cmdlog_file_open(char *path)
 void cmdlog_file_close(bool chkpt_success)
