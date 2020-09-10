@@ -34,8 +34,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [How to install Arcus on Ubuntu 16.04](arcus/how-to-install-arcus-on-ubuntu.md)
 - [How to install Arcus-memcached on Ubuntu 16.04](arcus/how-to-install-arcus-memcached-on-ubuntu.md)
-- [Arcus Persistence](arcus/arcus-persistence.md) :kr:
-- [Log Buffer and Log File](arcus/log-buffer-and-log-file.md) :kr:
+- [Arcus persistence](arcus/arcus-persistence.md) :kr:
+- [Separation of cmdlogbuf module into two modules](arcus/log-buffer-and-log-file.md) :kr:
 
 ### Benchmark
 

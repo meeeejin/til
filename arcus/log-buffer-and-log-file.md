@@ -1,11 +1,11 @@
-# Log Buffer and Log File
+# Separation of cmdlogbuf module into two modules
 
 > [수정 중](https://github.com/meeeejin/arcus-memcached/tree/persistence)
 
-**cmdlogbuf** 모듈을 기능에 따라 두 개의 모듈로 분리
-
-1. Log buffer 및 log flusher 모듈: `cmdlogbuf.c`, `cmdlogbuf.h`
-2. Log file 모듈: `cmdlogfile.c`, `cmdlogfile.h`
+- **cmdlogbuf** 모듈을 기능에 따라 두 개의 모듈로 분리
+    1. Log buffer 및 log flusher 모듈: `cmdlogbuf.c`, `cmdlogbuf.h`
+    2. Log file 모듈: `cmdlogfile.c`, `cmdlogfile.h`
+- 기존 `cmdlogbuf.c` 내의 data structure, function 등을 분리해 아래 정리
 
 ## Log Buffer
 

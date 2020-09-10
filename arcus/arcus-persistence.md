@@ -1,4 +1,4 @@
-# Arcus Persistence
+# Arcus persistence
 
 ## Reference
 
