@@ -1,33 +1,11 @@
 # Log Buffer and Log File
 
-> 작성 중
+> [수정 중](https://github.com/meeeejin/arcus-memcached/tree/persistence)
 
-## 분리 필요
+**cmdlogbuf** 모듈을 기능에 따라 두 개의 모듈로 분리
 
-```cpp
-/* log global structure */
-struct log_global {
-    log_FILE        log_file; // file
-    log_BUFFER      log_buffer;
-    log_FLUSHER     log_flusher;
-    LogSN           nxt_write_lsn;
-    LogSN           nxt_flush_lsn;
-    LogSN           nxt_fsync_lsn; // file
-    pthread_mutex_t log_write_lock; // cmdlog_file_getsize
-    pthread_mutex_t log_flush_lock; // buff+file
-    pthread_mutex_t log_fsync_lock; // file: except buff_init
-    pthread_mutex_t flush_lsn_lock;
-    pthread_mutex_t fsync_lsn_lock; // file: except buff_init
-    pthread_cond_t  log_flush_cond; // file: except buff_init
-    bool            async_mode; // file: except buff_init
-    volatile bool   initialized; // file: except buff_init/cmdlog_buf_flush_thread_start
-};
-
-static struct log_global log_gl;
-```
-
-- lock 분리..
-
+1. Log buffer 및 log flusher 모듈: `cmdlogbuf.c`, `cmdlogbuf.h`
+2. Log file 모듈: `cmdlogfile.c`, `cmdlogfile.h`
 
 ## Log Buffer
 
@@ -36,7 +14,16 @@ static struct log_global log_gl;
 #define CMDLOG_BUFFER_SIZE (100 * 1024 * 1024) /* 100 MB */
 #define CMDLOG_FLUSH_AUTO_SIZE (32 * 1024) /* 32 KB : see the nflush data type of log_FREQ */
 #define CMDLOG_RECORD_MIN_SIZE 16          /* 8 bytes header + 8 bytes body */
-#define CMDLOG_MAX_FILEPATH_LENGTH 255
+
+static EXTENSION_LOGGER_DESCRIPTOR* logger = NULL;
+static struct log_global log_gl;
+
+/* flush request structure */
+typedef struct _log_freq {
+    uint16_t  nflush;     /* amount of log buffer to flush */
+    uint8_t   dual_write; /* flag of dual write */
+    uint8_t   unused;
+} log_FREQ;
 
 /* log buffer structure */
 typedef struct _log_buffer {
@@ -55,6 +42,34 @@ typedef struct _log_buffer {
     int32_t     dw_end; /* the queue index to end dual write */
 } log_BUFFER;
 
+/* log flusher structure */
+typedef struct _log_flusher {
+    pthread_mutex_t  lock;
+    pthread_cond_t   cond;
+    bool             sleep;
+    volatile uint8_t running;
+    volatile bool    reqstop;
+} log_FLUSHER;
+
+/* log global structure */
+struct log_global {
+    log_FILE        log_file; // file
+    log_BUFFER      log_buffer;
+    log_FLUSHER     log_flusher;
+    LogSN           nxt_write_lsn;
+    LogSN           nxt_flush_lsn;
+    LogSN           nxt_fsync_lsn; // file
+    pthread_mutex_t log_write_lock; // cmdlog_file_getsize
+    pthread_mutex_t log_flush_lock; // buff+file
+    pthread_mutex_t log_fsync_lock; // file: except buff_init
+    pthread_mutex_t flush_lsn_lock;
+    pthread_mutex_t fsync_lsn_lock; // file: except buff_init
+    pthread_cond_t  log_flush_cond; // file: except buff_init
+    bool            async_mode; // file: except buff_init
+    volatile bool   initialized; // file: except buff_init/cmdlog_buf_flush_thread_start
+};
+
+static void do_log_flusher_wakeup(log_FLUSHER *flusher)
 static uint32_t do_log_buff_flush(bool flush_all)
 static LogSN do_log_buff_write(LogRec *logrec, bool dual_write)
 static void do_log_buff_complete_dual_write(bool success)
@@ -65,6 +80,7 @@ void cmdlog_buff_write(LogRec *logrec, log_waiter_t *waiter, bool dual_write)
 void cmdlog_buff_flush(LogSN *upto_lsn)
 
 void cmdlog_get_flush_lsn(LogSN *lsn)
+void cmdlog_get_fsync_lsn(LogSN *lsn)
 
 void cmdlog_complete_dual_write(bool success)
 
@@ -78,6 +94,8 @@ void cmdlog_buf_flush_thread_stop(void)
 ## Log File
 
 ```cpp
+#define CMDLOG_MAX_FILEPATH_LENGTH 255
+
 /* log file structure */
 typedef struct _log_file {
     char      path[CMDLOG_MAX_FILEPATH_LENGTH+1];
@@ -89,22 +107,6 @@ typedef struct _log_file {
     bool      close_wait;
 } log_FILE;
 
-/* flush request structure */
-typedef struct _log_freq {
-    uint16_t  nflush;     /* amount of log buffer to flush */
-    uint8_t   dual_write; /* flag of dual write */
-    uint8_t   unused;
-} log_FREQ;
-
-/* log flusher structure */
-typedef struct _log_flusher {
-    pthread_mutex_t  lock;
-    pthread_cond_t   cond;
-    bool             sleep;
-    volatile uint8_t running;
-    volatile bool    reqstop;
-} log_FLUSHER;
-
 static EXTENSION_LOGGER_DESCRIPTOR* logger = NULL;
 
 static int disk_open(const char *fname, int flags, int mode)
@@ -114,13 +116,11 @@ static ssize_t disk_write(int fd, void *buf, size_t count)
 static int disk_fsync(int fd)
 static int disk_close(int fd)
 
-static void do_log_flusher_wakeup(log_FLUSHER *flusher)
 static void do_log_file_close_waiter_wakeup(log_FILE *file)
 static void do_log_file_write(char *log_ptr, uint32_t log_size, bool dual_write)
 static void do_log_file_complete_dual_write(void)
 
 void cmdlog_file_sync(void)
-void cmdlog_get_fsync_lsn(LogSN *lsn)
 
 int cmdlog_file_open(char *path)
 void cmdlog_file_close(bool chkpt_success)
