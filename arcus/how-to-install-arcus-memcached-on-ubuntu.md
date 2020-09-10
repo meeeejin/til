@@ -36,7 +36,13 @@ $ make install
 3. Run:
 
 ```bash
-$ ./memcached -E ./.libs/default_engine.so
+$ ./memcached -E .libs/default_engine.so
+```
+
+You can specify the logger module using `-X` and the configuration file using `-e`:
+
+```bash
+$ ./memcached -E .libs/default_engine.so -X .libs/syslog_logger.so -e config_file=engines/default/default_engine.conf
 ```
 
 To see details on arcus-memcached start options, run memcached with `-h` option like below:
