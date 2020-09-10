@@ -45,6 +45,47 @@ You can specify the logger module using `-X` and the configuration file using `-
 $ ./memcached -E .libs/default_engine.so -X .libs/syslog_logger.so -e config_file=engines/default/default_engine.conf
 ```
 
+Also, you can enable the **persistence** option by building the source code of [`persistence`](https://github.com/naver/arcus-memcached/tree/persistence) branch and modifying the below configuration file. Change the value of `use_persistence` from `false` to `true` and update `data_path` and `logs_path` for your environment:
+
+- `data_path`: the path to the ARCUS data directory (e.g., `/home/mijin/arcus-data`)
+- `logs_path`: the path to the ARCUS log directory (e.g., `/home/mijin/arcus-log`)
+
+> `engines/default/default_engine.conf`
+```bash
+# This is a default engine config file
+
+# collection max size (default : 50000)
+# The collection max size limits the maximum number of elements that can be stored
+# in each collection item. Its hard limit is 1000000.
+#max_list_size=50000
+#max_set_size=50000
+#max_map_size=50000
+#max_btree_size=50000
+
+#
+# Persistence configuration
+#
+# use persistence (true or false, default: false)
+use_persistence=true
+#
+# The path of the snapshot file (default: ARCUS-DB)
+data_path=/path/to/arcus-data
+#
+# The path of the command log file (default: ARCUS-DB)
+logs_path=/path/to/arcus-log
+#
+# asynchronous logging
+#async_logging=true
+#
+# checkpoint interval (unit: percentage, default: 100)
+# The ratio of the command log file size to the snapshot file size.
+# 100 means checkpoint if snapshot file size is 10GB, command log file size is 20GB or more
+chkpt_interval_pct_snapshot=100
+#
+# checkpoint interval minimum file size (unit: MB, default: 256)
+chkpt_interval_min_logsize=256
+```
+
 To see details on arcus-memcached start options, run memcached with `-h` option like below:
 
 ```bash
