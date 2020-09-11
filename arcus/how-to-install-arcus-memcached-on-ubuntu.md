@@ -45,7 +45,7 @@ You can specify the logger module using `-X` and the configuration file using `-
 $ ./memcached -E .libs/default_engine.so -X .libs/syslog_logger.so -e config_file=engines/default/default_engine.conf
 ```
 
-Also, you can enable the **persistence** option by building the [persistence](https://github.com/naver/arcus-memcached/tree/persistence) branch and specifying the conf file (`-e config_file=engines/default/default_engine.conf`). Change the value of `use_persistence` to `true` and update `data_path` and `logs_path` for your environment:
+Also, you can enable the **persistence** option by building the [persistence](https://github.com/naver/arcus-memcached/tree/persistence) branch and specifying the conf file (`-e config_file=engines/default/default_engine.conf`). Change the value of `use_persistence` to `true` and update `data_path` and `logs_path` for your environment. See [Persistence Guide](https://github.com/naver/arcus-memcached/wiki/Persistence-Guide) for details:
 
 - `data_path`: the path to the ARCUS data directory (e.g., `/home/mijin/arcus-data`)
 - `logs_path`: the path to the ARCUS log directory (e.g., `/home/mijin/arcus-log`)
