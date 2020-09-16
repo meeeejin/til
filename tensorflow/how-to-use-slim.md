@@ -91,6 +91,28 @@ http://mijin:6006
 http://123.123.123.123:6006
 ```
 
+5. Evaluate the model during the training process using the below command.
+
+> Replace the `xxx` value of `model.ckpt-xxx` with the correct value according to the prefix of the checkpoint files in your `--train_dir`. In my case, the prefix was `model.ckpt-7505`: 
+
+```bash
+$ python3 eval_image_classifier.py \
+--alsologtostderr \
+--checkpoint_path=vww_96_grayscale/model.ckpt-7505 \
+--dataset_dir=data/visualwakewords \
+--dataset_name=visualwakewords \
+--dataset_split_name=val \
+--model_name=mobilenet_v1_025 \
+--preprocessing_name=mobilenet_v1 \
+--use_grayscale=True \
+--train_image_size=96
+
+...
+INFO:tensorflow:Evaluation [406/406]
+I0916 21:46:30.437922 140510024853248 evaluation.py:167] Evaluation [406/406]
+eval/Recall_5[1]eval/Accuracy[0.52832514]
+```
+
 ## Reference
 
 - [TensorFlow-Slim](https://github.com/google-research/tf-slim)
