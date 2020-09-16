@@ -73,7 +73,7 @@ $ python3 train_image_classifier.py --clone_on_cpu=True\
     --max_number_of_steps=100000
 ```
 
-4. Monitor the training process using `tensorboard`:
+4. Monitor the training process using *tensorboard*:
 
 ```bash
 $ tensorboard --logdir=vww_96_grayscale
@@ -93,7 +93,7 @@ http://123.123.123.123:6006
 
 5. Evaluate the model during the training process using the below command.
 
-> Replace the `xxx` value of `model.ckpt-xxx` with the correct value according to the prefix of the checkpoint files in your `--train_dir`. In my case, the prefix was `model.ckpt-7505`: 
+> Replace the `model.ckpt-xxx` value of `--checkpoint_path` with the correct value according to the prefix of the checkpoint files in your `--train_dir`. In my case, the prefix was `model.ckpt-7505`: 
 
 ```bash
 $ python3 eval_image_classifier.py \
@@ -112,6 +112,8 @@ INFO:tensorflow:Evaluation [406/406]
 I0916 21:46:30.437922 140510024853248 evaluation.py:167] Evaluation [406/406]
 eval/Recall_5[1]eval/Accuracy[0.52832514]
 ```
+
+In the above case, the accuaracy is about **52.83% (0.52832514)**.
 
 ## Reference
 
