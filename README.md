@@ -25,6 +25,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Predix](#predix)
 * [RocksDB](#rocksdb)
 * [SSD](#ssd)
+* [TensorFlow](#tensorflow)
 * [Vim](#vim)
 * [Zero](#zero)
 
@@ -190,6 +191,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Writes](ssd/writes.md)
 - [Reads](ssd/reads.md)
 - [Concurrent reads and writes](ssd/concurrent-reads-and-writes.md)
+
+### TensorFlow
+
+- [How to use Slim](tensorflow/how-to-use-slim.md)
 
 ### Vim
 
