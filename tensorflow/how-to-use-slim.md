@@ -73,7 +73,7 @@ $ python3 train_image_classifier.py --clone_on_cpu=True\
     --max_number_of_steps=100000
 ```
 
-4. Monitor the training process using *tensorboard*:
+4. Monitor the training process using [tensorboard](https://www.tensorflow.org/tensorboard):
 
 ```bash
 $ tensorboard --logdir=vww_96_grayscale
@@ -114,11 +114,14 @@ $ python3 eval_image_classifier.py \
 
 ...
 INFO:tensorflow:Evaluation [406/406]
-I0916 21:46:30.437922 140510024853248 evaluation.py:167] Evaluation [406/406]
-eval/Recall_5[1]eval/Accuracy[0.52832514]
+I0917 16:16:56.870146 139859572754176 evaluation.py:167] Evaluation [406/406]
+eval/Accuracy[0.795936]
+eval/Recall_5[1]
+INFO:tensorflow:Finished evaluation at 2020-09-17-16:16:57
+I0917 16:16:57.096140 139859572754176 evaluation.py:275] Finished evaluation at 2020-09-17-16:16:57
 ```
 
-In the above case, the accuaracy is about **52.83% (0.52832514)**.
+In the above case, the accuaracy is about **79.59% (0.795936)**.
 
 ## Reference
 
