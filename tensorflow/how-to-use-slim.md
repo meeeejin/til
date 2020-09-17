@@ -91,6 +91,11 @@ http://mijin:6006
 http://123.123.123.123:6006
 ```
 
+For example:
+
+![tensorboard](https://i.imgur.com/dQIOQ4P.png)
+![tensorboard2](https://i.imgur.com/iR757nB.png)
+
 5. Evaluate the model during the training process using the below command.
 
 > Replace the `model.ckpt-xxx` value of `--checkpoint_path` with the correct value according to the prefix of the checkpoint files in your `--train_dir`. In my case, the prefix was `model.ckpt-7505`: 
