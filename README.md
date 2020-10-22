@@ -134,6 +134,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [MySQL/InnoDB page checksum](mysql/innodb-page-checksum.md)
 - [Doublewrite buffer](mysql/doublewrite-buffer.md)
 - [Understanding InnoDB Lock Stats](mysql/innodb-lock-stats.md) :kr:
+- [How to get the LBA of DWB](mysql/how-to-get-lba-of-dwb.md)
 
 ### NVRAM
 
