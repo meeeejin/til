@@ -4,7 +4,7 @@
 
 The below scripts does not contain the wasted pages (`FSP_EXTENT_SIZE / 2`) to cause the fragment array to be filled up.
 
-## < MySQL 8.0.20
+## Prior to MySQL 8.0.20
 
 1. Download the script:
 
@@ -45,7 +45,7 @@ What each means is as follows:
 - `Block2`: LBA where the second block of the DWB area starts (= 43522048)
 - `End`: LBA where the DWB area ends (= 43524095)
 
-## MySQL 8.0.20 <=
+## After MySQL 8.0.20
 
 > To be updated
 
