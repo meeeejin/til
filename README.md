@@ -91,6 +91,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to create software RAID 0 with mdadm](linux/how-to-create-software-raid0-with-mdadm.md)
 - [How to upgrade NVMe SSD firmware on Linux](linux/how-to-upgrade-nvme-ssd-firmware-on-linux.md)
 - [How to replace the string `\n` with an actual newline](linux/replace-the-string-n-with-an-actual-newline.md)
+- [Redirect stderr to stdout](linux/redirect-stderr-to-stdout.md)
 
 ### MariaDB
 
