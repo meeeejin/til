@@ -25,6 +25,38 @@
 ### Learning-based database optimization
 
 1. Cardinality/cost estimation
+    - 다른 columns/tables 간에 상관 관계에 기반한 optimized plan을 제공하기 위해 deep NN를 사용; For cost/cardinality estimiatoin
+    - A. Kipf, T. Kipf, B. Radke, V. Leis, P. A. Boncz, and A. Kemper. Learned cardinalities: Estimating correlated joins with deep learning. In CIDR 2019, 2019.
+    - J. Ortiz, M. Balazinska, J. Gehrke, and S. S. Keerthi. Learning state representations for query optimization with deep reinforcement learning. In DEEM@SIGMOD, pages 4:1–4:4, 2018.
 
+2. Join order selection
+    - Deep reinforcement learning에 기반해 good plan을 자동으로 선택
+
+3. End-to-end optimizer
+    - Deep NN에 기반해 SQL 쿼리를 최적화하는 learning-based optimizer 등장
+    - R. C. Marcus, P. Negi, H. Mao, C. Zhang, M. Alizadeh, T. Kraska, O. Papaemmanouil, and N. Tatbul. Neo: A learned query optimizer. PVLDB, 12(11):1705–1718, 2019
+    - C. Wu, A. Jindal, S. Amizadeh, H. Patel, W. Le, S. Qiao, and S. Rao. Towards a learning optimizer for shared clouds. PVLDB, 12(3):210–222, 2018
+
+### Learning-based database design
+
+1. Learned indexes
+    - Index 크기 감소; Indexing 성능 향상
+    - T. Kraska, A. Beutel, and E. H. C. et al. The case for learned index structures. In SIGMOD, pages 489–504, 2018.
+
+2. Learned data structure design
+    - 실험 환경 (HW 종류, 어플리케이션의 RW 비율 등)에 따라 적절한 data structure가 다름; 매 환경에 맞춰 설계하는 건 어려움
+    - 적절한 data structure를 추천해주는 data inference engine 제안
+    - S. Idreos, N. Dayan, W. Qin, M. Akmanalp, S. Hilgard, A. Ross, J. Lennon, V. Jain, H. Gupta, D. Li, and Z. Zhu. Design continuums and the path toward self-designing key-value stores that
+know and learn. In CIDR, 2019.
+
+3. Learning-based transaction management
+    - Transaction을 예측하고 스케줄링하는 기술 등장
+    - 기존 데이터 패턴을 학습하고 미래 워크로드를 예측해 conflict rates <=> concurrency 간 밸런스를 맞춤
+    - L. Ma, D. V. Aken, and A. H. et al. Query-based workload forecasting for self-driving database management systems. In SIGMOD 2018, pages 631–645, 2018.
+    - Y. Sheng, A. Tomasic, T. Sheng, and A. Pavlo. Scheduling OLTP transactions via machine learning. CoRR, abs/1903.02990, 2019
+
+### Learning-based database monitoring
+
+### Learning-based database security
 
 ## DB for AI
