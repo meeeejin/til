@@ -57,6 +57,26 @@ know and learn. In CIDR, 2019.
 
 ### Learning-based database monitoring
 
+- To determine when and how to monitor which database metrics
+- H. Kaneko and K. Funatsu. Automatic database monitoring for process control systems. In IEA/AIE 2014, pages 410–419, 2014.
+- H. Grushka-Cohen, O. Biller, O. Sofer, L. Rokach, and B. Shapira. Diversifying database activity monitoring with bandits. CoRR, abs/1910.10777, 2019.
+
 ### Learning-based database security
+
+1. Sensitive data discovery
+    - ML을 사용해 자동으로 sesitive data 탐지
+
+2. Anomaly detection
+    - DB activity를 감시하고 취약점 탐지
+    - Z. Lin, X. Li, and X. Kuang. Machine learning in vulnerability databases. In ISCID 2017, pages 108–113, 2017.
+
+3. Accesss control
+    - 다양한 data access action을 자동으로 예측하여 data leak 방지
+    - M. L. Goyal and G. V. Singh. Access control in distributed heterogeneous database management systems. Computers & Security, 10(7):661–669, 1991.
+
+4. SQL injection attacks
+    - 유저의 행동을 파악해 SQL injection attack 식별
+    - P. Tang, W. Qiu, Z. Huang, H. Lian, and G. Liu. SQL injection behavior mining based deep learning. In ADMA 2018, pages 445–454, 2018.
+    - H. Zhang, B. Zhao, H. Yuan, J. Zhao, X. Yan, and F. Li. SQL injection detection based on deep belief network. In CSAE 2019, pages 20:1–20:6, 2019.
 
 ## DB for AI
