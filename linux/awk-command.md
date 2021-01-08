@@ -38,7 +38,7 @@ $ cat input
 1241
 43423
 
-$ awk 'NR==1{p=$1;next} { {if ($1 > 0) {print $1-p;} else { print ""}}  p=$ 1} END{}' input
+$ awk 'NR==1 { p = $1; next } { { if ($1 > 0) { print $1-p; } else { print "" }} p=$1 } END {}' input
 
 1027
 42182
