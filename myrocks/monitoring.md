@@ -1,7 +1,10 @@
-# Monitoring
+# How to monitor MyRocks
+
+## `SHOW ENGINE` Statement 
 
 ```bash
 mysql> show engine rocksdb status;
+
 Type    Name    Status
 STATISTICS      rocksdb rocksdb.block.cache.miss COUNT : 2673222
 rocksdb.block.cache.hit COUNT : 85683938
@@ -12,7 +15,9 @@ rocksdb.block.cache.index.hit COUNT : 40084389
 rocksdb.block.cache.index.add COUNT : 1437
 rocksdb.block.cache.index.bytes.insert COUNT : 138105725
 rocksdb.block.cache.index.bytes.evict COUNT : 0
+
 ...
+
 DBSTATS rocksdb
 ** DB Stats **
 Uptime(secs): 1884.3 total, 83.4 interval
@@ -47,7 +52,9 @@ AddFile(Keys): cumulative 0, interval 0
 Cumulative compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.0 seconds
 Interval compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.0 seconds
 Stalls(count): 0 level0_slowdown, 0 level0_slowdown_with_compaction, 0 level0_numfiles, 0 level0_numfiles_with_compaction, 0 stop for pending_compaction_bytes, 0 slowdown for pending_compaction_bytes, 0 memtable_compaction, 0 memtable_slowdown, interval 0 total count
+
 ...
+
 ** Level 6 read latency histogram (micros):
 Count: 2121051 Average: 143.5077  StdDev: 1489.83
 Min: 0  Median: 137.8562  Max: 1264999
@@ -91,6 +98,7 @@ Percentiles: P50: 137.86 P75: 201.15 P99: 252.94 P99.9: 4188.94 P99.99: 91173.22
 ...
 ```
 
+## `SHOW GLOBAL STATUS` Statement
 ```bash
 mysql> show global status like 'rocksdb%';
 +----------------------------------------------------+------------------------------------------+
