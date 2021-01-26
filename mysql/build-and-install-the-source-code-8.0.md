@@ -26,7 +26,7 @@ $ sudo apt-get install libssl-dev
 - etc.
 
 ```bash
-$ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison
+$ sudo apt-get install build-essential cmake libncurses5 libncurses5-dev bison pkg-config
 ```
 
 ## Build and install
