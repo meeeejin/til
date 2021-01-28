@@ -43,13 +43,13 @@ $ cd bld
 2. In MySQL 8.0, the Boost library is required to build MySQL. Therefore, download it first:
 
 ```bash
-$ cmake .. -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
+$ cmake .. -DDOWNLOAD_BOOST=ON -DWITH_BOOST=/path/to/download/boost
 ```
 
 If you already have the Boost library, change the default installation directory.
 
 ```bash
-$ cmake .. -DWITH_BOOST=/path/to/boost -DCMAKE_INSTALL_PREFIX=/path/to/dir/bld
+$ cmake .. -DWITH_BOOST=/path/to/boost
 ```
 
 3. Then build and install the source code (8: # of cores in your machine):
@@ -61,7 +61,7 @@ $ make -j8 install
 4. Initialize tasks that must be performed before the MySQL server, mysqld, is ready to use:
 
 - `--datadir` : the path to the MySQL data directory (e.g., `/home/mijin/test_data`)
-- `--basedir` : the path to the MySQL installation directory (e.g., `/home/mijin/mysql-8.0.15`)
+- `--basedir` : the path to the MySQL installation directory (e.g., `/home/mijin/mysql-8.0.15/bld`)
 
 ```bash
 $ ./bin/mysqld --initialize --user=mysql --datadir=/path/to/datadir --basedir=/path/to/basedir
