@@ -183,6 +183,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to use db_bench](rocksdb/how-to-use-db_bench.md)
 - [Write stalls](rocksdb/write-stalls.md) :kr:
 
+### Rockset
+
+- [Remote Compactions in RocksDB-Cloud](rockset/remote-compaction.md) :kr:
+
 ### SSD
 
 - [Basic operations](ssd/basic-operations.md)
