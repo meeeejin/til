@@ -36,7 +36,9 @@
 
 - 위의 backgound 내용을 활용해, storage와 compaction compute 분리; 자세한 동작 과정은 아래와 같음:
 
-![remote-compaction](https://images.ctfassets.net/1d31s1aajogl/2tltYpodj9YoRoPDBCVqFa/7bc73c6194a29485bd910337801e850f/rocksdb-remote-compaction.png)
+<p align="center">
+<img src="https://images.ctfassets.net/1d31s1aajogl/2tltYpodj9YoRoPDBCVqFa/7bc73c6194a29485bd910337801e850f/rocksdb-remote-compaction.png" alt="remote-compaction" width="700" />
+</p>
 
 ```bash
 서버 A ⇒ Storage
@@ -52,14 +54,14 @@
 
 - RocksDB의 compaction 엔진을 externally pluggable 하게 만들기 위해 기존 RocksDB API에 2개의 method 추가해 확장
 
-> db.h
+> [db.h](https://github.com/rockset/rocksdb-cloud/blob/master/include/rocksdb/db.h#L1506)
 
 ```cpp
 Status RegisterPluggableCompactionService(std::unique_ptr<PluggableCompactionService>);
 ```
 
 - Compaction 서비스 등록하는 API 추가
-- `PluggableCompactionService` 플러그인에 위 두 단계 API 추가:
+- [`PluggableCompactionService`](https://github.com/rockset/rocksdb-cloud/blob/master/include/rocksdb/pluggable_compaction.h#L70) 플러그인에 위 두 단계 API 추가:
 
 ```cpp
 Status Run(const PluggableCompactionParam& job,       PluggableCompactionResult* result)

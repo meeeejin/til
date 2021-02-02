@@ -24,6 +24,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [PMDK](#pmdk)
 * [Predix](#predix)
 * [RocksDB](#rocksdb)
+* [Rockset](#rockset)
 * [SSD](#ssd)
 * [TensorFlow](#tensorflow)
 * [Vim](#vim)
