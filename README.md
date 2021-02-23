@@ -93,6 +93,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to upgrade NVMe SSD firmware on Linux](linux/how-to-upgrade-nvme-ssd-firmware-on-linux.md)
 - [How to replace the string `\n` with an actual newline](linux/replace-the-string-n-with-an-actual-newline.md)
 - [Redirect stderr to stdout](linux/redirect-stderr-to-stdout.md)
+- [How to use ftrace](linux/ftrace.md)
 
 ### MariaDB
 
