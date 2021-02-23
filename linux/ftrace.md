@@ -29,18 +29,23 @@ hwlat blk mmiotrace function_graph wakeup_dl wakeup_rt wakeup function nop
 ```bash
 $ cat current_tracer
 nop
+
 $ echo function_graph > current_tracer
+
 $ cat current_tracer
 function_graph
 ```
 
-3. To extract traces based on specific functions, use the `available_filter_functions` file:
+3. To extract traces based on specific functions, use the `set_ftrace_filter` file:
 
 ```bash
 $ cat available_filter_functions
 ...
+
 $ echo "*pwrite*" > set_ftrace_filter
+
 $ echo "*pread*" > set_ftrace_filter
+
 $ cat set_ftrace_filter
 __ia32_compat_sys_x86_pread
 __x32_compat_sys_x86_pread
@@ -66,10 +71,11 @@ __ia32_sys_preadv
 __ia32_sys_preadv2
 __x64_sys_preadv2
 zpodd_zpready
+
 $ cat trace
 ```
 
-If you want to see all the results, initialize the `available_filter_functions` file:
+If you want to see all the results (not filtered), initialize the `set_ftrace_filter` file:
 
 ```bash
 $ echo " " > set_ftrace_filter
