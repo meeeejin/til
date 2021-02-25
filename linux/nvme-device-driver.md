@@ -1,6 +1,6 @@
 # NVMe Device Driver
 
-## What is NVMe (Non-Volatile Memory Express)?
+## NVMe (Non-Volatile Memory Express)
 
 ![nvme-queues-per-core](https://i0.wp.com/www.osr.com/wp-content/uploads/NVMe_Intro_Fig2.png)
 
@@ -24,7 +24,7 @@
 3. 컨트롤러가 큐의 명령어 fetch
 4. 컨트롤러는 가져온 명령어 처리
 5. 명령어 처리가 끝나면, 컨트롤러는 호스트 메모리의 해당 CQ에 CQ entry 기록
-6. 컨트롤러가 호스트에게 인터럽트 발생 (pin-based, MSI of MSI-X)
+6. 컨트롤러가 호스트에게 인터럽트 발생 (pin-based, MSI or MSI-X)
 7. 호스트는 CQ entry를 꺼내서 확인 및 처리
-8. 호스트는 인터럽트 확인 및 entry 처리를 마쳤다는 의미로, CQ Head Doorbell 레지스터 업데이트
+8. 호스트는 인터럽트 확인 및 CQ entry 처리를 마쳤다는 의미로, CQ Head Doorbell 레지스터 업데이트
 
