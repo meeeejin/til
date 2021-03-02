@@ -5,6 +5,7 @@
 ![nvme-queues-per-core](https://i0.wp.com/www.osr.com/wp-content/uploads/NVMe_Intro_Fig2.png)
 
 - Submission queue 및 completion queue 기반
+    - 큐들은 모두 고정된 크기를 갖는 circular ring 형태
     - **Submission queue (SQ): command 전송**
     - **Completion queue (CQ): ending status 전송**
     - Host 및 controller에서 접근 가능
@@ -12,6 +13,27 @@
     - **I/O 커맨드** 처리를 위해 *1 ~ 64K* 개의 SQ/CQ 사용
     - 각 큐는 *2 ~ 64K* slot을 가질 수 있으며, FIFO 기반으로 동작
 - PCIe 트랜잭션을 통해 데이터 전송
+
+### Submission Queue
+
+- 호스트의 커맨드를 컨트롤러에게 전달
+- SQ는 priority를 가질 수 있음
+    - Round robin, weighted round robin
+- 각 커맨드는 64 bytes 크기
+- 커맨드를 SQ의 head에 삽입하고, 해당 head의 위치 (pointer)를 doorbell 레지스터에 등록
+
+### Completion Queue
+
+- 커맨드 수행 완료시 컨트롤러가 호스트에게 응답하는 용도로 사용
+- CQ의 각 entry는 *Phase Tag* (`P`) bit를 갖고 있음
+    - 레지스터 참조 없이 이 bit를 사용해 entry가 새로 posting 되었는지 여부를 확인
+    - CQ 통과할 때마다 컨트롤러는 `P`를 invert
+
+### Doorbell
+
+- 큐에 업데이트 발생 시 이를 알리는 용도로 사용되는 32 bits 레지스터
+- 호스트에 의해 업데이트 됨
+- SQ/CQ 마다 하나씩 존재
 
 ## NVMe Command Processing
 
@@ -76,9 +98,10 @@ mysqld 21016 65782.742483:     184709 cycles:
     - `vfs_write(f.file, buf, count, &pos);`
 4. `ext4_file_write_iter` => `__generic_file_write_iter` => `generic_file_direct_write` => `ext4_direct_IO` => `__blockdev_direct_IO` => `do_blockdev_direct_IO`
 5. `blk_finish_plug` => `blk_flush_plug_list` => `blk_mq_flush_plug_list` => `blk_mq_sched_insert_requests` => `blk_mq_try_issue_list_directly` => `blk_mq_request_issue_directly` => `__blk_mq_try_issue_directly`
-6. `nvme_queue_rq`
+6. `nvme_queue_rq` => `nvme_setup_rw` => `blk_mq_start_request` => `nvme_submit_cmd` => `nvme_write_sq_db` => `writel` => `__raw_writel` => `IO_CONCAT`
 
 ## Reference
 
 - [Introduction to NVMe Technology](https://www.osr.com/nt-insider/2014-issue4/introduction-nvme-technology)
 - [Linux Kernel Networking](https://docplayer.net/12120292-Linux-kernel-networking-raoul-rivas.html)
+- [NVMe Specification](https://nvmexpress.org/)
