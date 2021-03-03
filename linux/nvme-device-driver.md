@@ -99,6 +99,14 @@ mysqld 21016 65782.742483:     184709 cycles:
 4. `ext4_file_write_iter` => `__generic_file_write_iter` => `generic_file_direct_write` => `ext4_direct_IO` => `__blockdev_direct_IO` => `do_blockdev_direct_IO`
 5. `blk_finish_plug` => `blk_flush_plug_list` => `blk_mq_flush_plug_list` => `blk_mq_sched_insert_requests` => `blk_mq_try_issue_list_directly` => `blk_mq_request_issue_directly` => `__blk_mq_try_issue_directly`
 6. `nvme_queue_rq` => `nvme_setup_rw` => `blk_mq_start_request` => `nvme_submit_cmd` => `nvme_write_sq_db` => `writel` => `__raw_writel` => `IO_CONCAT`
+    - `IO_CONCAT(__IO_PREFIX,writel)(b, addr);` => `IO_CONCAT(generic,writel)(b, addr);` => `_IO_CONCAT(generic,writel)(b, addr);` => `generic_writel(b, addr);`
+
+    ```bash
+    #define IO_CONCAT(a,b)  _IO_CONCAT(a,b)
+    #define _IO_CONCAT(a,b) a ## _ ## b
+
+    #define __IO_PREFIX             generic
+    ```
 
 ## Reference
 
