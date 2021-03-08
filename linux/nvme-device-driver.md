@@ -52,6 +52,10 @@
 
 ## NVMe Queue 요청 과정
 
+> 5.4.0-65-generic 기반
+
+### Write 
+
 > perf results
 
 ```bash
@@ -108,8 +112,54 @@ mysqld 21016 65782.742483:     184709 cycles:
     #define __IO_PREFIX             generic
     ```
 
+### Read
+
+> perf results
+
+```bash
+mysqld 21012 65782.646983:     274429 cycles:
+        ffffffffb363bd81 native_sched_clock+0x11 ([kernel.kallsyms])
+        ffffffffb363c999 sched_clock+0x9 ([kernel.kallsyms])
+        ffffffffb3796369 trace_clock_local+0x9 ([kernel.kallsyms])
+        ffffffffb37b9723 function_graph_enter+0x73 ([kernel.kallsyms])
+        ffffffffb366e26c prepare_ftrace_return+0x5c ([kernel.kallsyms])
+        ffffffffb4201be8 ftrace_graph_caller+0x78 ([kernel.kallsyms])
+        ffffffffb3aecb75 blk_rq_map_sg+0x5 ([kernel.kallsyms])
+        ffffffffc00f9da1 nvme_queue_rq+0x101 ([kernel.kallsyms])
+        ffffffffb3af2a19 __blk_mq_try_issue_directly+0x139 ([kernel.kallsyms])
+        ffffffffb3af3dbb blk_mq_request_issue_directly+0x4b ([kernel.kallsyms])
+        ffffffffb3af3e96 blk_mq_try_issue_list_directly+0x46 ([kernel.kallsyms])
+        ffffffffb3af8617 blk_mq_sched_insert_requests+0xb7 ([kernel.kallsyms])
+        ffffffffb3af3cbb blk_mq_flush_plug_list+0x1eb ([kernel.kallsyms])
+        ffffffffb3ae8d91 blk_flush_plug_list+0xd1 ([kernel.kallsyms])
+        ffffffffb3ae8dec blk_finish_plug+0x2c ([kernel.kallsyms])
+        ffffffffb392b315 do_blockdev_direct_IO+0x1c65 ([kernel.kallsyms])
+        ffffffffb392c4de __blockdev_direct_IO+0x2e ([kernel.kallsyms])
+        ffffffffb39b434d ext4_direct_IO+0x65d ([kernel.kallsyms])
+        ffffffffb382692a generic_file_read_iter+0xda ([kernel.kallsyms])
+        ffffffffb399e946 ext4_file_read_iter+0x56 ([kernel.kallsyms])
+        ffffffffb38dbfd2 new_sync_read+0x122 ([kernel.kallsyms])
+        ffffffffb38df189 __vfs_read+0x29 ([kernel.kallsyms])
+        ffffffffb38df22e vfs_read+0x8e ([kernel.kallsyms])
+        ffffffffb38df5d6 ksys_pread64+0x76 ([kernel.kallsyms])
+        ffffffffb38df60e __x64_sys_pread64+0x1e ([kernel.kallsyms])
+        ffffffffb3604417 do_syscall_64+0x57 ([kernel.kallsyms])
+        ffffffffb420008c entry_SYSCALL_64_after_hwframe+0x44 ([kernel.kallsyms])
+            7f491f98c08f __libc_pread64+0x4f (/lib/x86_64-linux-gnu/libpthread-2.27.so)
+        ddda0300dbda0300 [unknown] ([unknown])
+```
+
+1. `__libc_pread64`
+2. `do_syscall_64` => `__x64_sys_pread64` => `ksys_pread64`
+3. `vfs_read` => `__vfs_read` => `new_sync_read`
+    - `vfs_read(f.file, buf, count, &pos);`
+4. `ext4_file_read_iter` => `generic_file_read_iter` => `ext4_direct_IO` => `__blockdev_direct_IO` => `do_blockdev_direct_IO`
+5. `blk_finish_plug` => `blk_flush_plug_list` => `blk_mq_flush_plug_list` => `blk_mq_sched_insert_requests` => `blk_mq_try_issue_list_directly` => `blk_mq_request_issue_directly` => `__blk_mq_try_issue_directly`
+6. `nvme_queue_rq` => `nvme_setup_rw` => `blk_mq_start_request` => `nvme_submit_cmd` => `nvme_write_sq_db` => `writel` => `__raw_writel` => `IO_CONCAT`
+
 ## Reference
 
 - [Introduction to NVMe Technology](https://www.osr.com/nt-insider/2014-issue4/introduction-nvme-technology)
 - [Linux Kernel Networking](https://docplayer.net/12120292-Linux-kernel-networking-raoul-rivas.html)
 - [NVMe Specification](https://nvmexpress.org/)
+- [](https://www.flashmemorysummit.com/English/Collaterals/Proceedings/2013/20130812_PreConfD_Marks.pdf)
