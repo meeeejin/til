@@ -139,6 +139,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Doublewrite buffer](mysql/doublewrite-buffer.md)
 - [Understanding InnoDB Lock Stats](mysql/innodb-lock-stats.md) :kr:
 - [How to get the LBA of DWB](mysql/how-to-get-lba-of-dwb.md)
+- [InnoDB Flushing and Checkpoints](https://www.slideshare.net/meeeejin/innodb-flushing-and-checkpoints) :link:
+- [Secondary Index Search in InnoDB](https://www.slideshare.net/meeeejin/secondary-index-search-in-innodb) :link:
+- [MySQL Space Management](https://www.slideshare.net/meeeejin/mysql-space-management) :link:
+- [MySQL Buffer Management](https://www.slideshare.net/meeeejin/mysql-buffer-management) :link:
 
 ### NVRAM
 
@@ -184,6 +188,8 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [How to use db_bench](rocksdb/how-to-use-db_bench.md)
 - [Write stalls](rocksdb/write-stalls.md) :kr:
+- [RocksDB detail](https://www.slideshare.net/meeeejin/rocksdb-detail) :link:
+- [RocksDB compaction](https://www.slideshare.net/meeeejin/rocksdb-compaction) :link:
 
 ### Rockset
 
