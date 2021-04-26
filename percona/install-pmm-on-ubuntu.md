@@ -122,6 +122,13 @@ $ sudo docker create \
    percona/pmm-server:latest /bin/true
 ```
 
+```bash
+$ sudo docker ps -a
+CONTAINER ID        IMAGE                       COMMAND             CREATED             STATUS                     PORTS               NAMES
+b26cb590b36c        percona/pmm-server:latest   "/bin/true"         11 seconds ago      Created                                        pmm-data
+98025b2672e2        hello-world                 "/hello"            2 minutes ago       Exited (0) 2 minutes ago                       goofy_mcnulty
+```
+
 For version 1.x, use the below command:
 
 ```bash
@@ -137,7 +144,7 @@ $ sudo docker create \
 ```bash
 $ sudo docker ps -a
 CONTAINER ID        IMAGE                       COMMAND             CREATED             STATUS                     PORTS               NAMES
-b26cb590b36c        percona/pmm-server:latest   "/bin/true"         11 seconds ago      Created                                        pmm-data
+b26cb590b36c        percona/pmm-server:1   "/bin/true"              11 seconds ago      Created                                        pmm-data
 98025b2672e2        hello-world                 "/hello"            2 minutes ago       Exited (0) 2 minutes ago                       goofy_mcnulty
 ```
 
@@ -154,6 +161,14 @@ $ sudo docker run -d \
    percona/pmm-server:latest
 ```
 
+```bash
+$ sudo docker ps -a
+CONTAINER ID        IMAGE                       COMMAND                CREATED             STATUS                     PORTS                         NAMES
+26351b668b82        percona/pmm-server:latest   "/opt/entrypoint.sh"   5 seconds ago       Up 3 seconds               0.0.0.0:80->80/tcp, 443/tcp   pmm-server
+b26cb590b36c        percona/pmm-server:latest   "/bin/true"            52 seconds ago      Created                                                  pmm-data
+98025b2672e2        hello-world                 "/hello"               3 minutes ago       Exited (0) 3 minutes ago                                 goofy_mcnulty
+```
+
 For version 1.x, use the below command:
 
 ```bash
@@ -168,8 +183,8 @@ $ sudo docker run -d \
 ```bash
 $ sudo docker ps -a
 CONTAINER ID        IMAGE                       COMMAND                CREATED             STATUS                     PORTS                         NAMES
-26351b668b82        percona/pmm-server:latest   "/opt/entrypoint.sh"   5 seconds ago       Up 3 seconds               0.0.0.0:80->80/tcp, 443/tcp   pmm-server
-b26cb590b36c        percona/pmm-server:latest   "/bin/true"            52 seconds ago      Created                                                  pmm-data
+26351b668b82        percona/pmm-server:1        "/opt/entrypoint.sh"   5 seconds ago       Up 3 seconds               0.0.0.0:80->80/tcp, 443/tcp   pmm-server
+b26cb590b36c        percona/pmm-server:1        "/bin/true"            52 seconds ago      Created                                                  pmm-data
 98025b2672e2        hello-world                 "/hello"               3 minutes ago       Exited (0) 3 minutes ago                                 goofy_mcnulty
 ```
 
