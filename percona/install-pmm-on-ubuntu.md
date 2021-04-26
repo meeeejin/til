@@ -104,6 +104,12 @@ For more examples and ideas, visit:
 $ sudo docker pull percona/pmm-server:latest
 ```
 
+For version 1.x, use the below command:
+
+```bash
+$ sudo docker pull percona/pmm-server:1
+```
+
 2. Create a container for persistent PMM data:
 
 ```bash
@@ -114,6 +120,18 @@ $ sudo docker create \
    -v /var/lib/grafana \
    --name pmm-data \
    percona/pmm-server:latest /bin/true
+```
+
+For version 1.x, use the below command:
+
+```bash
+$ sudo docker create \
+   -v /opt/prometheus/data \
+   -v /opt/consul-data \
+   -v /var/lib/mysql \
+   -v /var/lib/grafana \
+   --name pmm-data \
+   percona/pmm-server:1 /bin/true
 ```
 
 ```bash
@@ -134,6 +152,17 @@ $ sudo docker run -d \
    --name pmm-server \
    --restart always \
    percona/pmm-server:latest
+```
+
+For version 1.x, use the below command:
+
+```bash
+$ sudo docker run -d \
+   -p 80:80 \
+   --volumes-from pmm-data \
+   --name pmm-server \
+   --restart always \
+   percona/pmm-server:1
 ```
 
 ```bash
