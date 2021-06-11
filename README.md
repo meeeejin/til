@@ -143,6 +143,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Secondary Index Search in InnoDB](https://www.slideshare.net/meeeejin/secondary-index-search-in-innodb) :link:
 - [MySQL Space Management](https://www.slideshare.net/meeeejin/mysql-space-management) :link:
 - [MySQL Buffer Management](https://www.slideshare.net/meeeejin/mysql-buffer-management) :link:
+- [Temporary Tablespaces](mysql/temporary-tablespace.md) :kr:
 
 ### NVRAM
 
