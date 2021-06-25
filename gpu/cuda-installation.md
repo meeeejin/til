@@ -1,7 +1,5 @@
 # How to install CUDA on Ubuntu
 
-## Installation
-
 1. Download [CUDA Toolkit](https://developer.nvidia.com/cuda-11.0-update1-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=2004&target_type=deblocal):
 
 ```bash
@@ -22,7 +20,7 @@ sudo apt-get purge nvidia-*
 sudo apt autoremove
 ```
 
-3. Install CUDA Toolkit
+3. Install CUDA Toolkit:
 
 ```bash
 $ sudo apt-get -y install cuda
