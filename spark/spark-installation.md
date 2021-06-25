@@ -15,7 +15,7 @@ $ tar -xvzf spark-3.1.2-bin-hadoop3.2.tgz
 $ mv spark-3.1.2-bin-hadoop3.2 spark
 ```
 
-### Spark Configuration
+## Spark Configuration
 
 1. `~/.bash_profile`:
 
@@ -83,7 +83,7 @@ spark.sql.hive.thriftServer.singleSession true
 spark.local.dir /nvme/data_01
 ```
 
-### Start Spark
+## Start Spark
 
 - Master Node:
 
@@ -107,7 +107,7 @@ $ jps
 615419 Worker
 ```
 
-### Stop Spark
+## Stop Spark
 
 - Master Node:
 
@@ -122,7 +122,7 @@ $ $SPARK_HOME/sbin/stop-history-server.sh
 $ rm -rf $SPARK_HOME/eventLog/*
 ```
 
-### Web UI
+## Web UI
 
 - Spark Context: http://server01:4040
 - Spark Master: http://server01:8080

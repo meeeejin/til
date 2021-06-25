@@ -1,4 +1,4 @@
-# How to install Hadoop 3 (with Yarn) on Ubuntu
+# How to install Hadoop 3 (with YARN) on Ubuntu
 
 ## Java Installation
 
@@ -13,16 +13,16 @@ $ tar -xvzf jdk-8u291-linux-x64.tar.gz
 3. Add the JDK bin directory to the existing PATH variable:
 
 ```bash
-$ vi .bash_profile
+$ vi ~/.bash_profile
 
 export JAVA_HOME=/home/mijin/jdk1.8.0_291
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
-4. Reload `.bash_profile`:
+4. Reload `~/.bash_profile`:
 
 ```bash
-$ source .bash_profile
+$ source ~/.bash_profile
 ```
 
 5. Check the Java version:
@@ -54,9 +54,9 @@ $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 3. Synchronize `~/.ssh/authorized_keys` across all servers:
 
 ```bash
-$ scp ~/.ssh/authorized_keys server02:~/.ssh/authorized_keys
-$ scp ~/.ssh/authorized_keys server03:~/.ssh/authorized_keys
-$ scp ~/.ssh/authorized_keys server04:~/.ssh/authorized_keys
+$ scp ~/.ssh/authorized_keys server02:~/.ssh/
+$ scp ~/.ssh/authorized_keys server03:~/.ssh/
+$ scp ~/.ssh/authorized_keys server04:~/.ssh/
 ```
 
 ## Hadoop Installation
@@ -239,7 +239,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 ```bash
 ...
-export JAVA_HOME=/home/skt/jdk1.8.0_291
+export JAVA_HOME=/home/mijin/jdk1.8.0_291
 ...
 ```
 
