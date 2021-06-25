@@ -100,7 +100,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### LightningDB
 
 - [How to deploy LightningDB](lightningdb/deploy-ltdb.md)
-- [How to monitor the status of LTDB clusters](ltdb/monitor-status.md)
+- [How to monitor the status of LTDB clusters](lightningdb/monitor-status.md)
 - [How to reset a LTDB cluster](lightningdb/reset-cluster.md)
 
 ### Linux
