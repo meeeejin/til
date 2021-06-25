@@ -16,6 +16,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [GPU](#gpu)
 * [Hadoop](#hadoop)
 * [IPL](#ipl)
+* [LightningDB](#lightningdb)
 * [Linux](#linux)
 * [MariaDB](#mariadb)
 * [MyRocks](#myrocks)
@@ -58,7 +59,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### CPU
 
-- [AMD uProf](cpu/amd-uprof.md)
+- [AMD uProf](cpu/amd-uprof.md) :kr:
 
 ### DBMS
 
@@ -95,6 +96,12 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [Basic concept](ipl/basic-concept.md) :kr:
 - [Merge operation](ipl/merge-operation.md)
+
+### LightningDB
+
+- [How to deploy LightningDB](lightningdb/deploy-ltdb.md)
+- [How to monitor the status of LTDB clusters](ltdb/monitor-status.md)
+- [How to reset a LTDB cluster](lightningdb/reset-cluster.md)
 
 ### Linux
 
@@ -218,6 +225,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 - [How to install Spark 3 on Ubuntu](spark/spark-installation.md)
 - [How to install Spark RAPIDS](spark/spark-rapids-installation.md)
+- [How to run Spark Executor via command line](spark/run-executor-cli.md)
 
 ### SSD
 
