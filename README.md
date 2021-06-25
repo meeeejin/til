@@ -31,6 +31,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [SSD](#ssd)
 * [TensorFlow](#tensorflow)
 * [Vim](#vim)
+* [Zeppelin](#zeppelin)
 * [Zero](#zero)
 
 ---
@@ -82,6 +83,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Hadoop
 
 - [How to install Hadoop 3 (with Yarn) on Ubuntu](hadoop/hadoop-installation.md)
+- [Hadoop commands](hadoop/hadoop-command.md)
 
 ### IPL
 
@@ -231,6 +233,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Vim
 
 - [Search and replace](vim/search-and-replace.md)
+
+### Zeppelin
+
+- [How to install Zeppelin](zeppelin/zeppelin-installation.md)
 
 ### Zero
 
