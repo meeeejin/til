@@ -79,6 +79,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### GPU
 
 - [How to install CUDA on Ubuntu](gpu/cuda-installation.md)
+- [Nvidia Nsight Systems](gpu/nvidia-nsight-systems.md) :kr:
 
 ### Hadoop
 
