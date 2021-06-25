@@ -12,6 +12,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Docker](#docker)
 * [Git](#git)
 * [Go](#go)
+* [Hadoop](#hadoop)
 * [IPL](#ipl)
 * [Linux](#linux)
 * [MariaDB](#mariadb)
@@ -25,6 +26,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Predix](#predix)
 * [RocksDB](#rocksdb)
 * [Rockset](#rockset)
+* [Spark](#spark)
 * [SSD](#ssd)
 * [TensorFlow](#tensorflow)
 * [Vim](#vim)
@@ -72,6 +74,9 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 ### Go
 
+### Hadoop
+
+- [How to install Hadoop 3 (with Yarn) on Ubuntu](hadoop/hadoop-installation.md)
 
 ### IPL
 
@@ -195,6 +200,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Rockset
 
 - [Remote Compactions in RocksDB-Cloud](rockset/remote-compaction.md) :kr:
+
+### Spark
+
+- [How to install Spark 3 on Ubuntu](spark/spark-installation.md)
 
 ### SSD
 
