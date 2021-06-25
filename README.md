@@ -8,6 +8,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 
 * [Arcus](#arcus)
 * [Benchmark](#benchmark)
+* [CPU](#cpu)
 * [DBMS](#dbms)
 * [Docker](#docker)
 * [Git](#git)
@@ -54,6 +55,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to install LinkBench on Ubuntu](benchmark/how-to-install-linkbench-on-ubuntu.md)
 - [How to install TPC-H for Oracle](benchmark/how-to-install-tpch-for-oracle.md)
 - [Summary of LinkBench for MySQL](benchmark/summary-of-linkbench-for-mysql.md)
+
+### CPU
+
+- [AMD uProf](cpu/amd-uprof.md)
 
 ### DBMS
 

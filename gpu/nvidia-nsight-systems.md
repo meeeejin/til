@@ -3,7 +3,7 @@
 ## 특징
 
 - Nvidia GPU 기반 시스템 성능 분석 툴
-- 크게 시스템 전반적인 CPU 및 GPU 활용률과 CPU-GPU 간 상호작용을 확인할 수 있는 성능 Metric을 제공
+- 시스템 전반적인 CPU 및 GPU 활용률, CPU-GPU 간 상호작용을 확인할 수 있는 성능 Metric 제공
     - CPU core 활용률, backtrace 샘플링, GPU 워크로드 트레이스, GPU 및 CPU의 context switch 샘플링, CUDA/OpenGL API 사용 현황 등
 - 특정 프로세스를 명시해 Profiler 자체에서 Profiling 대상이 되는 프로세스를 실행하고 성능 지표 수집
     - e.g., 프로세스 시작 - 프로파일링 시작 - 프로파일링 종료
