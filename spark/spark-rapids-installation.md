@@ -16,6 +16,7 @@ $ wget https://repo1.maven.org/maven2/ai/rapids/cudf/0.19.2/cudf-0.19.2-cuda11.j
 export SPARK_RAPIDS_DIR=/home/mijin/sparkRapidsPlugin
 export SPARK_CUDF_JAR=${SPARK_RAPIDS_DIR}/cudf-0.19.2-cuda11.jar
 export SPARK_RAPIDS_PLUGIN_JAR=${SPARK_RAPIDS_DIR}/rapids-4-spark_2.12-0.5.0.jar
+export MASTER_HOST=server01
 ```
 
 3. Install the GPU discovery script:
