@@ -253,7 +253,7 @@ server04
 
 ### Start Hadoop
 
-- Master Node:
+- Master node:
 
 ```bash
 $ hdfs namenode -format -force
@@ -268,7 +268,7 @@ $ jps
 127006 ZeppelinServer
 ```
 
-- Worker Node:
+- Worker node:
 
 ```bash
 $ jps
@@ -279,7 +279,7 @@ $ jps
 
 ### Stop Hadoop
 
-- Master Node:
+- Master node:
 
 ```bash
 $ stop-dfs.sh
@@ -287,7 +287,7 @@ $ stop-yarn.sh
 $ rm -rf $HADOOP_HOME/data/namenode/*
 ```
 
-- Worker Node:
+- Worker node:
 
 ```bash
 $ rm -rf $HADOOP_HOME/data/namenode/*
@@ -295,9 +295,10 @@ $ rm -rf $HADOOP_HOME/data/namenode/*
 
 ### Web UI
 
-- NameNode (http://server01:50070)
-- ResourceManager (http://server01:8088)
+- NameNode: http://server01:50070
+- ResourceManager: http://server01:8088
 
 ## Reference
 
 - [Hadoop 3.2.2](https://hadoop.apache.org/release/3.2.2.html)
+- [ltdb-for-AWS: Hadoop Configuration Files](https://github.com/mnms/ltdb-for-AWS/tree/master/conf/hadoop)
