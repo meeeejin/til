@@ -12,6 +12,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 * [Docker](#docker)
 * [Git](#git)
 * [Go](#go)
+* [GPU](#gpu)
 * [Hadoop](#hadoop)
 * [IPL](#ipl)
 * [Linux](#linux)
@@ -73,6 +74,10 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Clone a single branch in Git](git/clone-a-single-branch.md)
 
 ### Go
+
+### GPU
+
+- [How to install CUDA on Ubuntu](gpu/cuda-installation.md)
 
 ### Hadoop
 
@@ -204,6 +209,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### Spark
 
 - [How to install Spark 3 on Ubuntu](spark/spark-installation.md)
+- [How to install Spark RAPIDS](spark/spark-rapids-installation.md)
 
 ### SSD
 
