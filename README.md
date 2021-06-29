@@ -243,6 +243,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 ### TensorFlow
 
 - [How to use Slim](tensorflow/how-to-use-slim.md)
+- [How to install TensorFlow GPU on Ubuntu](tensorflow/how-to-install-tf-gpu.md)
 
 ### Vim
 

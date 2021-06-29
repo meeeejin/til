@@ -26,7 +26,19 @@ sudo apt autoremove
 $ sudo apt-get -y install cuda
 ```
 
-4. Check the CUDA version: 
+4. Add Cuda to the `PATH`:
+
+```bash
+$ vi ~/.bash_profile
+
+export CUDADIR=/usr/local/cuda
+export PATH=$PATH:$CUDADIR/bin
+export LD_LIBRARY_PATH=$CUDADIR/lib64:$LD_LIBRARY_PATH
+
+$ source ~/.bash_profile
+```
+
+5. Check the CUDA version: 
 
 ```bash
 $ nvidia-smi
@@ -47,6 +59,15 @@ Fri Jun 25 17:36:29 2021
 |                               |                      |             Disabled |
 +-------------------------------+----------------------+----------------------+
 ...
+```
+
+```bash
+$ nvcc -V
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2020 NVIDIA Corporation
+Built on Wed_Jul_22_19:09:09_PDT_2020
+Cuda compilation tools, release 11.0, V11.0.221
+Build cuda_11.0_bu.TC445_37.28845127_0
 ```
 
 ## Reference
