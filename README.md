@@ -239,6 +239,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [Writes](ssd/writes.md)
 - [Reads](ssd/reads.md)
 - [Concurrent reads and writes](ssd/concurrent-reads-and-writes.md)
+- [How to get SMART information for NVMe](ssd/nvme-waf.md)
 
 ### TensorFlow
 
