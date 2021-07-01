@@ -7,7 +7,7 @@ $ sudo apt-get update
 $ sudo apt-get install nvme-cli
 ```
 
-2. Get SMART information:
+2. Get SMART information for *Intel NVMe*:
 
 ```bash
 $ sudo nvme intel smart-log-add /dev/nvme1
@@ -31,3 +31,15 @@ host_bytes_written              :   0%       sectors: 0
 - `nand_bytes_written`: The bytes written to NAND cells
 - `host_bytes_written`: The bytes written to the NVMe storage from the system
 - **Write Amplification Factor (WAF)** = `nand_bytes_written` / `host_bytes_written` 
+
+:warning: Not all NVMe devices support it:
+
+```bash
+The following are all installed plugin extensions:
+  intel           Intel vendor specific extensions
+  lnvm            LightNVM specific extensions
+  memblaze        Memblaze vendor specific extensions
+  wdc             Western Digital vendor specific extensions
+  huawei          Huawei vendor specific extensions
+  micron          Micron vendor specific extensions
+```
