@@ -52,8 +52,14 @@ $ ./bin/ycsb load rocksdb -s -P workloads/workloadb -p rocksdb.dir=/home/mijin/y
 2. Run the workload:
 
 ```bash
+$ ./bin/ycsb run rocksdb -s -P workloads/workloadb -p rocksdb.dir=/home/mijin/ycsb-rocksdb-data
+```
+
+To write the output to a file, you can use the below command:
+
+```bash
 $ ./bin/ycsb run rocksdb -s -P workloads/workloadb \
-    -p rocksdb.dir=/home/mijin/ycsb-rocksdb-data/ \
+    -p rocksdb.dir=/home/mijin/ycsb-rocksdb-data \
     -threads 8 2>&1 | tee result.dat
 ```
 
