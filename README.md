@@ -57,6 +57,7 @@ TIL is a collection of the things that I learned today. The contents can be anyt
 - [How to install TPC-H for Oracle](benchmark/how-to-install-tpch-for-oracle.md)
 - [Summary of LinkBench for MySQL](benchmark/summary-of-linkbench-for-mysql.md)
 - [How to install YCSB for RocksDB](benchmark/how-to-install-ycsb-for-rocksdb.md)
+- [How to install TPC-H for PostgreSQL](benchmark/how-to-install-tpch-for-pgsql.md)
 
 ### CPU
 
