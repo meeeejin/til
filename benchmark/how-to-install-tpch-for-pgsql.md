@@ -156,11 +156,17 @@ postgres=# \i tpch-index.sql
 ...
 ```
 
+11. Run the TPC-H benchmark:
 
+```bash
+$ ./tpch.sh ./results postgres vldb
+```
 
- initdb -D /home/vldb/test-data2/
- 2027  pg_ctl -D /home/vldb/test-data2 -l /home/vldb/test-log/logfile start
- 2028  pg_ctl -D /home/vldb/test-data2 -m smart stop
+12. Stop the PostgreSQL server:
+
+```bash
+$ pg_ctl -D /home/vldb/test-data -m smart stop
+```
 
  ## Reference
 
