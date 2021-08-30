@@ -103,6 +103,7 @@ $ for i in `ls *.tbl`; do sed 's/|$//' $i > ${i/tbl/csv}; echo $i; done;
 7. Generate Queries:
 
 ```bash
+$ cd ~
 $ git clone https://github.com/tvondra/pg_tpch
 
 $ cp -r pg_tpch/dss tpch/TPC-H_Tools_v3.0.0/dbgen/
@@ -130,17 +131,21 @@ done
 9. Update the `.csv` file path of `dbgen/dss/tpch-load.sql`
 
 ```bash
+$ cd ..
+$ vi tpch-load.sql
 :%s/\/tmp\/dss-data/\/home\/vldb\/tpch\/TPC-H_Tools_v3.0.0\/dbgen/g
 ```
 
 10. Start a PostgreSQL server and load TPC-H data:
 
 ```bash
+$ cd ~
 $ initdb -D /home/vldb/test-data/
 $ pg_ctl -D /home/vldb/test-data -l /home/vldb/test-log/logfile start
 ```
 
 ```bash
+$ cd tpch/TPC-H_Tools_v3.0.0/dbgen/dss
 $ psql postgres
 psql (13.3)
 Type "help" for help.
