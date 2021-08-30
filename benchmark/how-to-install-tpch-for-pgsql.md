@@ -163,6 +163,8 @@ postgres=# \i tpch-index.sql
 11. Run the TPC-H benchmark:
 
 ```bash
+$ cd ~/tpch/TPC-H_Tools_v3.0.0/dbgen
+$ cp ~/pg_tpch/tpch.sh .
 $ ./tpch.sh ./results postgres vldb
 ```
 
