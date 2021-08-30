@@ -108,20 +108,19 @@ $ git clone https://github.com/tvondra/pg_tpch
 $ cp -r pg_tpch/dss tpch/TPC-H_Tools_v3.0.0/dbgen/
 $ cp -r tpch/TPC-H_Tools_v3.0.0/dbgen/queries ~/tpch/TPC-H_Tools_v3.0.0/dbgen/dss/
 
+$ cd tpch/TPC-H_Tools_v3.0.0/dbgen
 $ for q in `seq 1 22`
 do
-    DSS_QUERY=dss/templates ./qgen $q >> dss/queries/$q.sql
-    sed 's/^select/explain select/' dss/queries/$q.sql > dss/queries/$q.explain.sql
-    cat dss/queries/$q.sql >> dss/queries/$q.explain.sql;
+        DSS_QUERY=dss/templates ./qgen $q > dss/queries/$q.sql
+        sed 's/^select/explain (analyze, buffers)\nselect/' dss/queries/$q.sql > dss/queries/$q.explain.sql
 done
 ```
 
 8. To remove `^M` in each file, run the below script:
 
 ```bash
-#!/bin/bash
-
-for dir in $(ls *.sql);
+$ cd dss/queries
+$ for dir in $(ls *.sql);
 do
   echo "$dir";
   sed -i s/^M//g $dir  # ^M은 Control + v + m 으로 입력 가능
