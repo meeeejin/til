@@ -23,6 +23,12 @@ $ sudo apt-get install libaio1 libaio-dev
 $ sudo apt-get install libssl-dev
 ```
 
+- gcc
+
+```bash
+$ sudo apt-get install gcc-8 g++-8
+```
+
 - etc.
 
 ```bash
